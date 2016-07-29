@@ -1,0 +1,19 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+sourceCompatibility = 1.6
+version = '0.0.1-alpha'
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Interledger Protocol Core',
+                   'Implementation-Version': version
+    }
+}
+
+repositories {
+	maven { url "https://jitpack.io" }
+}
+
+dependencies {
+ 	compile 'com.github.adrianhopebailie:java-crypto-conditions:0.0.1-alpha'
+}
