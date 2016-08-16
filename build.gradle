@@ -15,5 +15,5 @@ repositories {
 }
 
 dependencies {
- 	compile 'com.github.adrianhopebailie:java-crypto-conditions:0.0.1-alpha'
+ 	compile 'com.github.interledger:java-crypto-conditions:0.0.1-alpha'
 }
