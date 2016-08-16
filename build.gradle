@@ -1,6 +1,10 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: 'maven'
+
 sourceCompatibility = 1.6
+
+group = 'org.interledger'
 version = '0.0.1-alpha'
 
 jar {
@@ -11,9 +15,28 @@ jar {
 }
 
 repositories {
-	maven { url "https://jitpack.io" }
+    mavenLocal()
+    maven { url "https://jitpack.io" }
 }
 
 dependencies {
- 	compile 'com.github.adrianhopebailie:java-crypto-conditions:0.0.1-alpha'
+ 	compile 'org.interledger:java-crypto-conditions:0.0.1-alpha'
+}
+
+//Maven compatibility task:
+
+task createPom << {
+    pom {
+        project {
+            inceptionYear '2016'
+            /*
+            licenses {
+                license {
+                    name 'The Apache Software License, Version 2.0'
+                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    distribution 'repo'
+                }
+            }*/
+        }
+    }.writeTo("pom.xml")
 }
