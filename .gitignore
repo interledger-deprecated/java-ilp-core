@@ -1,3 +1,9 @@
 /bin/
 /.gradle/
 /build/
+/.nb-gradle/
+/target/
+.classpath
+.project
+.settings/*
+*~
