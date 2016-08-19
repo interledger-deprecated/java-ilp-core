@@ -28,15 +28,14 @@ dependencies {
 task writePom << {
     pom {
         project {
-            inceptionYear '2016'
-            /*
+            inceptionYear '2016'       
             licenses {
                 license {
                     name 'The Apache Software License, Version 2.0'
                     url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
                     distribution 'repo'
                 }
-            }*/
+            }
         }
     }.writeTo("pom.xml")
 }
