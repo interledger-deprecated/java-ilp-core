@@ -9,15 +9,14 @@ import org.interledger.ilp.core.Ledger;
  */
 public abstract class LedgerEvent extends EventObject {
 
-	private static final long serialVersionUID = 3292998781708775780L;
+    private static final long serialVersionUID = 3292998781708775780L;
 
-	public LedgerEvent(Ledger source) {
-		super(source);
-	}
-	
-	public Ledger getLedger()
-	{
-		return (Ledger) getSource();
-	}
-	
+    public LedgerEvent(Ledger source) {
+        super(source);
+    }
+
+    public Ledger getLedger() {
+        return (Ledger) getSource();
+    }
+
 }
