@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.interledger</groupId>
   <artifactId>java-ilp-core</artifactId>
-  <version>0.0.1-alpha</version>
+  <version>0.1.1-SNAPSHOT</version>
   <inceptionYear>2016</inceptionYear>
   <licenses>
     <license>
