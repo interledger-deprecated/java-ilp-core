@@ -12,7 +12,6 @@ public class InterledgerPacketHeader {
 
     public InterledgerPacketHeader(String destinationAddress, String amount,
             Condition condition, Date expiry) {
-        super();
         this.destinationAddress = destinationAddress;
         this.amount = amount;
         this.condition = condition;
