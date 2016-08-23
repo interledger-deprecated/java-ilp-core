@@ -1,6 +1,6 @@
 package org.interledger.ilp.core;
 
-import org.interledger.cryptoconditions.Fullfilment;
+import org.interledger.cryptoconditions.Fulfillment;
 import org.interledger.ilp.core.events.LedgerEventHandler;
 
 public interface Ledger {
@@ -35,7 +35,7 @@ public interface Ledger {
      * @param fulfillment the fulfillment for this transfer
      * @return
      */
-    void fulfillCondition(Fullfilment fulfillment);
+    void fulfillCondition(Fulfillment fulfillment);
 
     /**
      * Register an event handler for one of the LedgerEvents
