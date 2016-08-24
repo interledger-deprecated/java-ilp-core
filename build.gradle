@@ -1,35 +1,40 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'maven'
+apply plugin: 'checkstyle'
 
-sourceCompatibility = 1.6
 group = 'org.interledger'
 version = '0.1.1-SNAPSHOT'
+description = 'Interledger Protocol Core'
 
-buildscript {
-     println "in buildscript"
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+
+checkstyle {
+    configFile file('../google_checks.xml')
+    toolVersion '7.1'
+    showViolations = true
 }
 
 jar {
     manifest {
-        attributes 'Implementation-Title': 'Interledger Protocol Core',
+        attributes 'Implementation-Title': description,
                    'Implementation-Version': version
     }
 }
 
 repositories {
     mavenLocal()
-    maven { url "https://jitpack.io" }
+    maven { url "http://repo.maven.apache.org/maven2" }
+    maven { url "https://jitpack.io" }    
 }
 
 dependencies {
-    compile 'org.interledger:java-crypto-conditions:0.0.1-alpha'
+    compile 'org.interledger:java-crypto-conditions:0.0.2-alpha'
 }
 
 //Maven compatibility task:
-
-task writePom << {
-    println "(Over)Writing POM"
+task writePom << {    
     pom {
         project {
             inceptionYear '2016'    
@@ -37,12 +42,22 @@ task writePom << {
                 "project.build.sourceEncoding" "UTF-8"
                 "maven.compiler.source" "1.6"
                 "maven.compiler.target" "1.6"
+                "checkstyle.config.location" "../google_checks.xml"
             }            
             licenses {
                 license {
                     name 'The Apache Software License, Version 2.0'
                     url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
                     distribution 'repo'
+                }
+            }
+            reporting  {
+                plugins {
+                    plugin {
+                        groupId "org.apache.maven.plugins"
+                        artifactId "maven-checkstyle-plugin"
+                        version "2.17"
+                    }
                 }
             }
         }

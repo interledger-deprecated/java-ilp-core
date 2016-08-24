@@ -1,17 +1,19 @@
 package org.interledger.ilp.core;
 
-import org.interledger.cryptoconditions.Fullfilment;
+import org.interledger.cryptoconditions.Fulfillment;
 import org.interledger.ilp.core.events.LedgerEventHandler;
 
 public interface Ledger {
 
     /**
      * Retrieve some meta-data about the ledger.
+     * @return <code>LedgerInfo</code>
      */
     LedgerInfo getInfo();
 
     /**
      * Initiates a ledger-local transfer.
+     * @param transfer <code>LedgerTransfer</code>
      */
     void send(LedgerTransfer transfer);
 
@@ -33,9 +35,8 @@ public interface Ledger {
      * fulfillment.
      *
      * @param fulfillment the fulfillment for this transfer
-     * @return
      */
-    void fulfillCondition(Fullfilment fulfillment);
+    void fulfillCondition(Fulfillment fulfillment);
 
     /**
      * Register an event handler for one of the LedgerEvents
