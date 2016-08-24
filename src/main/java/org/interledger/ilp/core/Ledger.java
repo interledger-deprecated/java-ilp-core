@@ -7,12 +7,14 @@ public interface Ledger {
 
     /**
      * Retrieve some meta-data about the ledger.
+     *
      * @return <code>LedgerInfo</code>
      */
     LedgerInfo getInfo();
 
     /**
      * Initiates a ledger-local transfer.
+     *
      * @param transfer <code>LedgerTransfer</code>
      */
     void send(LedgerTransfer transfer);
