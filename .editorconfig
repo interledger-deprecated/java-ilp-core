@@ -8,10 +8,6 @@ end_of_line=lf
 insert_final_newline = true
 charset = utf-8
 
-[*.java]
-indent_style = space
-indent_size = 4
-
-[*.xml]
+[*.java,*.xml,*.gradle]
 indent_style = space
 indent_size = 4
