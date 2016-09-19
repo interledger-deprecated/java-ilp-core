@@ -7,9 +7,9 @@ package org.interledger.ilp.core.exceptions;
  */
 public abstract class InterledgerException extends RuntimeException {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
+    /**
      * Creates a new instance of <code>InterledgerException</code> without
      * detail message.
      */
