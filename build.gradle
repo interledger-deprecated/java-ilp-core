@@ -4,7 +4,7 @@ apply plugin: 'maven'
 apply plugin: 'checkstyle'
 
 group = 'org.interledger'
-version = '0.1.1-SNAPSHOT'
+version = java_ilp_core_version
 description = 'Interledger Protocol Core'
 
 sourceCompatibility = 1.6
@@ -30,7 +30,7 @@ repositories {
 }
 
 dependencies {
-    compile 'org.interledger:java-crypto-conditions:0.0.2-alpha'
+    compile project(':java-crypto-conditions')
 }
 
 //Maven compatibility task:
