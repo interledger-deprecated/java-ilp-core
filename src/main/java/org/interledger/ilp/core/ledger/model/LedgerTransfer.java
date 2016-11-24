@@ -1,4 +1,6 @@
-package org.interledger.ilp.core;
+package org.interledger.ilp.core.ledger.model;
+
+import org.interledger.ilp.core.InterledgerPacketHeader;
 
 public interface LedgerTransfer {
 
