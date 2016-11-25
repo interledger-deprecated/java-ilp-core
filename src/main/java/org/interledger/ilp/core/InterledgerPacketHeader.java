@@ -1,6 +1,6 @@
 package org.interledger.ilp.core;
 
-import java.util.Date;
+import java.time.ZonedDateTime;
 
 import org.interledger.cryptoconditions.Condition;
 
@@ -11,7 +11,7 @@ import org.interledger.cryptoconditions.Condition;
 public class InterledgerPacketHeader {
 
     public InterledgerPacketHeader(String destinationAddress, String amount,
-            Condition condition, Date expiry) {
+            Condition condition, ZonedDateTime expiry) {
         this.destinationAddress = destinationAddress;
         this.amount = amount;
         this.condition = condition;
@@ -32,7 +32,7 @@ public class InterledgerPacketHeader {
     private String destinationAddress;
     private String amount;
     private Condition condition;
-    private Date expiry;
+    private ZonedDateTime expiry;
 
     /**
      * The ILP Address of the destination account
@@ -67,7 +67,7 @@ public class InterledgerPacketHeader {
      *
      * @return the expiry
      */
-    public Date getExpiry() {
+    public ZonedDateTime getExpiry() {
         return expiry;
     }
 
