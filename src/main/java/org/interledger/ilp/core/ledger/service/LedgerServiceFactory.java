@@ -6,4 +6,5 @@ public interface LedgerServiceFactory {
 
   public LedgerAccountService getAccountService() throws Exception;
 
+  public LedgerTransferService getTransferService() throws Exception;
 }
