@@ -10,6 +10,13 @@ public interface LedgerTransfer {
      * @return the Interledger Packet Header
      */
     InterledgerPacketHeader getHeader();
+    
+    /**
+     * Get the id assigned to this transfer.
+     * 
+     * @return transfer identifier
+     */
+    String getId();
 
     /**
      * Get the local account that funds are being debited from.
