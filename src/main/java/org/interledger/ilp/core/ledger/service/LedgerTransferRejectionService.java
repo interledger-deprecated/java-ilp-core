@@ -11,6 +11,7 @@ public interface LedgerTransferRejectionService {
    *
    * @param transfer
    * @param reason
+   * @throws Exception 
    */
-  void rejectTransfer(LedgerTransfer transfer, TransferRejectedReason reason);
+  void rejectTransfer(LedgerTransfer transfer, TransferRejectedReason reason) throws Exception;
 }
