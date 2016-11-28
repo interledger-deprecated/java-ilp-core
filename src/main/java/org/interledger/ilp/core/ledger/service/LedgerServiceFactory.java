@@ -9,4 +9,7 @@ public interface LedgerServiceFactory {
   public LedgerTransferService getTransferService() throws Exception;
   
   public LedgerTransferRejectionService getTransferRejectionService() throws Exception;
+
+  public LedgerMessageService getMessageService() throws Exception;
+
 }
