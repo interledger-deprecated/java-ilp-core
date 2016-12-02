@@ -7,6 +7,6 @@ public interface Message {
   
   public String getToAccount();
   
-  public String getData();
+  public Object getData();
 
 }

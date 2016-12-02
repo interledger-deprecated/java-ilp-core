@@ -5,8 +5,6 @@ import org.interledger.ilp.core.ledger.model.Notification;
 
 public interface LedgerNotificationListenerService {
   
-  public String getConnectionString();
-  
   public void connect() throws Exception;
   
   public void disconnect() throws Exception;
