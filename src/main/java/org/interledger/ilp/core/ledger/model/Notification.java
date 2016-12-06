@@ -1,33 +1,17 @@
 package org.interledger.ilp.core.ledger.model;
 
-public interface Notification {
+import java.util.Map;
+import java.util.UUID;
+
+public interface Notification<T>   {
   
-  public String getId();
+  public UUID getId();
   
   public String getEvent();
   
-  public Resource getResource();
+  public T getResource();
   
-  public RelatedResources getRelatedResources();
+  public Map<String, String> getRelatedResources();
   
-  public interface Resource {
     
-    public String getLedger();
-
-    public String getFrom();
-
-    public String getTo();
-
-    public String getData();
-    
-  }
-  
-  public interface RelatedResources {
-    
-    public String getCancellationConditionFulfillment();
-    
-    public String getExecutionConditionFulfillment();
-    
-  }
-  
 }

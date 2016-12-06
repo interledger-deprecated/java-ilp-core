@@ -4,6 +4,8 @@ import org.interledger.ilp.core.ledger.model.Account;
 
 public interface LedgerAccountService {
 
-  public Account getAccount(String name) throws Exception;
+  Account getAccount(String accountName) throws Exception;
+
+  void subscribeToAccountNotifications(String accountName) throws Exception;
 
 }

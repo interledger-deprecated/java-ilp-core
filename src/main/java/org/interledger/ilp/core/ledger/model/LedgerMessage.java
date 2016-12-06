@@ -1,8 +1,10 @@
 package org.interledger.ilp.core.ledger.model;
 
-public interface Message {
+public interface LedgerMessage {
   
   //TODO - Strongly type the identifiers
+  public String getLedger();
+  
   public String getFromAccount();
   
   public String getToAccount();
