@@ -1,23 +1,33 @@
 package org.interledger.ilp.core.ledger.model;
 
-import java.net.URI;
 import java.time.ZonedDateTime;
-import java.util.List;
 
 public interface LedgerTransfer {
 
   String getId();
 
-  URI getLedger();
+  String getLedgerId();
 
-  List<LedgerTransferAccountEntry> getCredits();
+  String getFromAccount();
+  
+  String getToAccount();
 
-  List<LedgerTransferAccountEntry> getDebits();
+  String getAmount();
+
+  boolean isAuthorized();
+
+  String getInvoice();
+
+  Object getMemo();
 
   String getExecutionCondition();
 
   String getCancellationCondition();
 
   ZonedDateTime getExpiresAt();
+  
+  boolean isRejected();
+
+  String getRejectionMessage();
 
 }

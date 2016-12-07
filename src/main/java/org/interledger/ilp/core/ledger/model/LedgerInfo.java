@@ -1,11 +1,10 @@
 package org.interledger.ilp.core.ledger.model;
 
-import java.net.URI;
 import java.util.List;
 
 public interface LedgerInfo {
   
-  URI getId();
+  String getId();
 
   int getPrecision();
 
