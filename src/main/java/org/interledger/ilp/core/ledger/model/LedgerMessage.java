@@ -5,9 +5,9 @@ public interface LedgerMessage {
   //TODO - Strongly type the identifiers
   public String getLedger();
   
-  public String getFromAccount();
+  public String getFrom();
   
-  public String getToAccount();
+  public String getTo();
   
   public Object getData();
 
