@@ -6,7 +6,7 @@ public interface LedgerTransfer {
 
   String getId();
 
-  String getLedgerId();
+  String getLedger();
 
   String getFromAccount();
   
@@ -18,7 +18,7 @@ public interface LedgerTransfer {
 
   String getInvoice();
 
-  Object getMemo();
+  byte[] getData();
 
   String getExecutionCondition();
 

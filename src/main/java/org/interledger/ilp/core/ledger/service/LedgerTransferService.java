@@ -1,7 +1,5 @@
 package org.interledger.ilp.core.ledger.service;
 
-import java.net.URI;
-
 import org.interledger.ilp.core.ledger.model.LedgerTransfer;
 import org.interledger.ilp.core.ledger.model.TransferRejectedReason;
 
@@ -30,6 +28,6 @@ public interface LedgerTransferService {
    * Get a transfer ID to use for a new transfer
    * @return
    */
-  URI getNextTransferId();
+  String getNextTransferId();
 
 }
