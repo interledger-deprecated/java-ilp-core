@@ -1,6 +1,10 @@
 package org.interledger.ilp.core.ledger.model;
 
+import java.security.PublicKey;
+import java.util.Currency;
 import java.util.List;
+
+import org.interledger.ilp.core.InterledgerAddress;
 
 public interface LedgerInfo {
   
@@ -10,18 +14,14 @@ public interface LedgerInfo {
 
   int getScale();
 
-  String getCurrencyCode();
-
-  String getCurrencySymbol();
+  Currency getCurrency();
   
-  String getLedgerPrefix();
+  InterledgerAddress getLedgerPrefix();
   
-  //TODO: Decode public key
-  String getConditionSignPublicKey();
+  PublicKey getConditionSignPublicKey();
 
-  //TODO: Decode public key
-  String getNotificationSignPublicKey();
+  PublicKey getNotificationSignPublicKey();
 
-  List<ConnectorInfo> getConnectors();
+  List<Account> getConnectors();
 
 }

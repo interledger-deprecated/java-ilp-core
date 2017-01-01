@@ -1,18 +1,21 @@
 package org.interledger.ilp.core.ledger.model;
 
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
+
+import org.interledger.cryptoconditions.Condition;
 
 public interface LedgerTransfer {
 
   String getId();
 
-  String getLedger();
+  LedgerInfo getLedger();
 
-  String getFromAccount();
+  Account getFromAccount();
   
-  String getToAccount();
+  Account getToAccount();
 
-  String getAmount();
+  BigDecimal getAmount();
 
   boolean isAuthorized();
 
@@ -20,9 +23,9 @@ public interface LedgerTransfer {
 
   byte[] getData();
 
-  String getExecutionCondition();
+  Condition getExecutionCondition();
 
-  String getCancellationCondition();
+  Condition getCancellationCondition();
 
   ZonedDateTime getExpiresAt();
   

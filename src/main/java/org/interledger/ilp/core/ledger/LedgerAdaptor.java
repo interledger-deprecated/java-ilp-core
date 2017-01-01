@@ -1,5 +1,6 @@
 package org.interledger.ilp.core.ledger;
 
+import org.interledger.ilp.core.InterledgerAddress;
 import org.interledger.ilp.core.ledger.events.LedgerEvent;
 import org.interledger.ilp.core.ledger.events.LedgerEventHandler;
 import org.interledger.ilp.core.ledger.model.Account;
@@ -21,6 +22,8 @@ public interface LedgerAdaptor {
   void setEventHandler(LedgerEventHandler eventHandler);
   
   LedgerInfo getLedgerInfo();
+  
+  InterledgerAddress getIlpAddressForAccount(Account account);
   
   /**
    * Initiates a ledger-local transfer.
@@ -65,6 +68,6 @@ public interface LedgerAdaptor {
    * @param accountName
    * @throws Exception
    */
-  void subscribeToAccountNotifications(String accountName);
+  void subscribeToAccountNotifications(Account account);
     
 }

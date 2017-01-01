@@ -1,5 +1,6 @@
 package org.interledger.ilp.core;
 
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 
 import org.interledger.cryptoconditions.Condition;
@@ -10,8 +11,11 @@ import org.interledger.cryptoconditions.Condition;
  */
 public class InterledgerPacketHeader {
 
-    public InterledgerPacketHeader(String destinationAddress, String amount,
-            Condition condition, ZonedDateTime expiry) {
+    public InterledgerPacketHeader(
+        InterledgerAddress destinationAddress, 
+        BigDecimal amount,
+        Condition condition, 
+        ZonedDateTime expiry) {
         this.destinationAddress = destinationAddress;
         this.amount = amount;
         this.condition = condition;
@@ -29,8 +33,8 @@ public class InterledgerPacketHeader {
         //TODO Validate amount
     }
 
-    private String destinationAddress;
-    private String amount;
+    private InterledgerAddress destinationAddress;
+    private BigDecimal amount;
     private Condition condition;
     private ZonedDateTime expiry;
 
@@ -39,7 +43,7 @@ public class InterledgerPacketHeader {
      *
      * @return the destinationAddress
      */
-    public String getDestinationAddress() {
+    public InterledgerAddress getDestinationAddress() {
         return destinationAddress;
     }
 
@@ -48,7 +52,7 @@ public class InterledgerPacketHeader {
      *
      * @return the amount
      */
-    public String getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
