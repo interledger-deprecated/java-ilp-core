@@ -1,9 +1,12 @@
 package org.interledger.ilp.core.ledger;
 
+import java.util.Set;
+
 import org.interledger.ilp.core.InterledgerAddress;
+import org.interledger.ilp.core.ledger.events.LedgerConnectEvent;
 import org.interledger.ilp.core.ledger.events.LedgerEvent;
 import org.interledger.ilp.core.ledger.events.LedgerEventHandler;
-import org.interledger.ilp.core.ledger.model.Account;
+import org.interledger.ilp.core.ledger.model.AccountInfo;
 import org.interledger.ilp.core.ledger.model.LedgerInfo;
 import org.interledger.ilp.core.ledger.model.LedgerMessage;
 import org.interledger.ilp.core.ledger.model.LedgerTransfer;
@@ -11,6 +14,13 @@ import org.interledger.ilp.core.ledger.model.TransferRejectedReason;
 
 public interface LedgerAdaptor {
   
+  /**
+   * Async (non-blocking) connect request.
+   * 
+   * The adaptor should raise an {@link LedgerConnectEvent} when it has 
+   * connected to the ledger.
+   * 
+   */
   void connect();
   
   boolean isConnected();
@@ -22,9 +32,7 @@ public interface LedgerAdaptor {
   void setEventHandler(LedgerEventHandler eventHandler);
   
   LedgerInfo getLedgerInfo();
-  
-  InterledgerAddress getIlpAddressForAccount(Account account);
-  
+    
   /**
    * Initiates a ledger-local transfer.
    *
@@ -43,21 +51,15 @@ public interface LedgerAdaptor {
    * @throws Exception 
    */
   void rejectTransfer(LedgerTransfer transfer, TransferRejectedReason reason);
-
-  /**
-   * Get a transfer ID to use for a new transfer
-   * @return
-   */
-  String getNextTransferId();
   
   /**
-   * Get details of an account.
+   * Get basic details of an account.
    * 
-   * @param accountName local account name
+   * @param accountId local account identifier
    * @return 
    * @throws Exception
    */
-  Account getAccount(String accountName);
+  AccountInfo getAccountInfo(InterledgerAddress account);
 
   /**
    * Subscribe to notifications related to an account
@@ -68,6 +70,13 @@ public interface LedgerAdaptor {
    * @param accountName
    * @throws Exception
    */
-  void subscribeToAccountNotifications(Account account);
+  void subscribeToAccountNotifications(InterledgerAddress account);
+
+  /**
+   * Get the set of ledger accounts that are known to be owned by connectors.
+   * 
+   * @return
+   */
+  Set<InterledgerAddress> getConnectors();
     
 }

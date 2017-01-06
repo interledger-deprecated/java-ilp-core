@@ -1,27 +1,28 @@
 package org.interledger.ilp.core.ledger.model;
 
 import java.security.PublicKey;
-import java.util.Currency;
-import java.util.List;
+
+import javax.money.CurrencyUnit;
+import javax.money.format.MonetaryAmountFormat;
 
 import org.interledger.ilp.core.InterledgerAddress;
 
 public interface LedgerInfo {
   
   String getId();
+  
+  InterledgerAddress getAddressPrefix();
 
   int getPrecision();
 
   int getScale();
 
-  Currency getCurrency();
-  
-  InterledgerAddress getLedgerPrefix();
+  CurrencyUnit getCurrencyUnit();
+
+  MonetaryAmountFormat getMonetaryAmountFormat();
   
   PublicKey getConditionSignPublicKey();
 
   PublicKey getNotificationSignPublicKey();
-
-  List<Account> getConnectors();
 
 }

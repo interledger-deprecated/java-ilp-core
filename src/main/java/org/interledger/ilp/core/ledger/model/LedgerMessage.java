@@ -1,12 +1,12 @@
 package org.interledger.ilp.core.ledger.model;
 
+import org.interledger.ilp.core.InterledgerAddress;
+
 public interface LedgerMessage {
-    
-  public LedgerInfo getLedger();
+      
+  public InterledgerAddress getFrom();
   
-  public Account getFrom();
-  
-  public Account getTo();
+  public InterledgerAddress getTo();
   
   public byte[] getData();
 

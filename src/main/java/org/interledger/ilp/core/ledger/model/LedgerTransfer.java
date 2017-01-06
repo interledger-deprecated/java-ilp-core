@@ -1,27 +1,30 @@
 package org.interledger.ilp.core.ledger.model;
 
-import java.math.BigDecimal;
 import java.time.ZonedDateTime;
+import java.util.UUID;
+
+import javax.money.MonetaryAmount;
 
 import org.interledger.cryptoconditions.Condition;
+import org.interledger.ilp.core.InterledgerAddress;
 
 public interface LedgerTransfer {
 
-  String getId();
+  UUID getId();
 
-  LedgerInfo getLedger();
-
-  Account getFromAccount();
+  InterledgerAddress getFromAccount();
   
-  Account getToAccount();
+  InterledgerAddress getToAccount();
 
-  BigDecimal getAmount();
+  MonetaryAmount getAmount();
 
   boolean isAuthorized();
 
   String getInvoice();
 
   byte[] getData();
+
+  byte[] getNoteToSelf();
 
   Condition getExecutionCondition();
 

@@ -1,15 +1,19 @@
 package org.interledger.ilp.core.ledger.model;
 
-import java.math.BigDecimal;
 import java.security.PublicKey;
 
-/**
- * Represents an account on a ledger
- * 
- * @author adrianhopebailie
- *
- */
-public interface Account {
+import javax.money.MonetaryAmount;
+
+import org.interledger.ilp.core.InterledgerAddress;
+
+public interface AccountInfo {
+  
+  /**
+   * The ledger on which the account is held
+   * 
+   * @return the ILP address of the ledger
+   */
+  InterledgerAddress getLedger();
 
   /**
    * A unique identifier for the account with respect to the ledger
@@ -19,18 +23,24 @@ public interface Account {
   String getId();
 
   /**
-   * The account name
+   * A human-readable account name
    * 
    * @return the account name
    */
   String getName();
-
+  
+  /**
+   * The Interledger address of the account
+   */
+  InterledgerAddress getAddress();
+  
+  
   /**
    * The current balance of the account
    *
    * @return
    */
-  BigDecimal getBalance();
+  MonetaryAmount getBalance();
 
   /**
    * Flag indicating if the account is currently able to transact
@@ -38,13 +48,6 @@ public interface Account {
    * @return true if the account is disabled
    */
   boolean isDisabled();
-
-  /**
-   * The ledger on which the account is held
-   * 
-   * @return the ledger
-   */
-  LedgerInfo getLedger();
 
   /**
    * The fingerprint of the account certificate
@@ -56,18 +59,11 @@ public interface Account {
   /**
    * The minimum allowed balance for the account.
    * 
-   * MUST return null is there is no limit.
+   * MUST return null if there is no limit.
    * 
    * @return the minimum allowed balance for the account or null if there is no limit
    */
-  BigDecimal getMinimumAllowedBalance();
-
-  /**
-   * The account password
-   * 
-   * @return the account password
-   */
-  String getPassword();
+  MonetaryAmount getMinimumAllowedBalance();
 
   /**
    * The public key of this account
@@ -75,5 +71,5 @@ public interface Account {
    * @return the account public key
    */
   PublicKey getPublicKey();
-
+  
 }
