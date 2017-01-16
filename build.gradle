@@ -43,8 +43,8 @@ task writePom << {
             inceptionYear '2016'    
             properties {
                 "project.build.sourceEncoding" "UTF-8"
-                "maven.compiler.source" "1.6"
-                "maven.compiler.target" "1.6"
+                "maven.compiler.source" "1.8"
+                "maven.compiler.target" "1.8"
                 "checkstyle.config.location" "google_checks.xml"
                 "checkstyle.consoleOutput" "true"
             }            
