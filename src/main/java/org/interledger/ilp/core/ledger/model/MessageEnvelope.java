@@ -1,4 +1,4 @@
-package org.interledger.ilp.core.client.model;
+package org.interledger.ilp.core.ledger.model;
 
 public interface MessageEnvelope {
 

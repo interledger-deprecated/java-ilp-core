@@ -64,6 +64,10 @@ public class InterledgerAddress {
     
   }
   
+  public boolean startsWith(InterledgerAddress prefix) {
+    return address.startsWith(prefix.toString());
+  }
+  
   public boolean isLedgerPrefix() {
     return InterledgerAddress.isLedgerPrefix(this.address);
   }
@@ -73,6 +77,9 @@ public class InterledgerAddress {
   }
 
   public static boolean isValid(String address) {
+    if(address == null) {
+      return false;
+    }
     return REGEX.matcher(address).matches();
   }
   

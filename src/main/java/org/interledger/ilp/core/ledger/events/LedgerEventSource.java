@@ -1,9 +1,9 @@
 package org.interledger.ilp.core.ledger.events;
 
-import java.net.URI;
+import org.interledger.ilp.core.InterledgerAddress;
 
 public interface LedgerEventSource {
   
-  URI getLedgerId();
+  InterledgerAddress getLedgerId();
 
 }
