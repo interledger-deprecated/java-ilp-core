@@ -78,5 +78,6 @@ public interface LedgerAdaptor {
    * @return
    */
   Set<InterledgerAddress> getConnectors();
-    
+  
+      
 }

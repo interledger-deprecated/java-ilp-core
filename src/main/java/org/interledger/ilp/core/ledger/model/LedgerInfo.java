@@ -9,6 +9,7 @@ import org.interledger.ilp.core.InterledgerAddress;
 
 public interface LedgerInfo {
   
+  //TODO Is this required?
   String getId();
   
   InterledgerAddress getAddressPrefix();
