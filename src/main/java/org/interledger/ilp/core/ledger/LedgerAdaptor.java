@@ -1,7 +1,9 @@
 package org.interledger.ilp.core.ledger;
 
 import java.util.Set;
+import java.util.UUID;
 
+import org.interledger.cryptoconditions.Fulfillment;
 import org.interledger.ilp.core.InterledgerAddress;
 import org.interledger.ilp.core.ledger.events.LedgerConnectEvent;
 import org.interledger.ilp.core.ledger.events.LedgerEvent;
@@ -78,6 +80,14 @@ public interface LedgerAdaptor {
    * @return
    */
   Set<InterledgerAddress> getConnectors();
+
+  /**
+   * Fulfill a condition for a transfer that has been prepared on a ledger.
+   * 
+   * @param transferId
+   * @param fulfillment
+   */
+  void fulfillTransfer(UUID transferId, Fulfillment fulfillment);
   
       
 }
