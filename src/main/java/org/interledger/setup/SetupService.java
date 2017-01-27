@@ -13,15 +13,15 @@ public interface SetupService {
    * The sender (this service) queries the receiver endpoint to get information about the type of 
    * payment that can be made to this receiver:
    *
-   * @param receiverEndpoint
-   *  The URL of the receiver endpoint
+   * @param query
+   *  An appropriate ReceiverQuery for this service.
    * @return
    *  Information about the receiver
    */
   Receiver query(ReceiverQuery query);
 
   /**
-   * The sender submits payment information to the receiver to set up a payment. 
+   * The service produces an InterldgerPaymentRequest for this Receiver, Amount and with the given sender data. 
    *
    * @param receiver
    *  The receiver
@@ -30,8 +30,7 @@ public interface SetupService {
    * @param senderIdentifier
    *  Identifies the sender
    * @param memo
-   *  A message for the recipient linked to the payment. Only relevant to payee receivers, not
-   *  invoices.
+   *  A message for the recipient linked to the payment.
    * @return
    */
   InterledgerPaymentRequest setupPayment(Receiver receiver, MonetaryAmount amount,
