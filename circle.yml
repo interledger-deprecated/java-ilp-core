@@ -9,7 +9,12 @@ dependencies:
     - cd .. && git clone https://github.com/interledger/java-crypto-conditions
 
 test:
+  override:
+    # we override the standard circleci gradle test to include the checkstyle checks
+    - if [ -e ./gradlew ]; then ./gradlew test check;else gradle test check;fi
   post:
     # see https://circleci.com/docs/test-metadata/#gradle-junit-results
     - mkdir -p $CIRCLE_TEST_REPORTS/junit/
     - find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
+    - mkdir -p $CIRCLE_TEST_REPORTS/checkstyle/
+    - find . -type f -regex ".*/build/reports/checkstyle/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/checkstyle/ \;
