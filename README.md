@@ -1,4 +1,4 @@
-# Interledger Core (Java) [![Join the chat at https://gitter.im/interledger/java](https://badges.gitter.im/interledger/java.svg)](https://gitter.im/interledger/java)
+# Interledger Core (Java) [![Join the chat at https://gitter.im/interledger/java](https://badges.gitter.im/interledger/java.svg)](https://gitter.im/interledger/java) [![CircleCI](https://circleci.com/gh/interledger/java-ilp-core.svg?style=svg)](https://circleci.com/gh/interledger/java-ilp-core)
 
 Base library for ILP projects providing basic service interfaces, event descriptions, exceptions and data models.
 
