@@ -1,9 +1,12 @@
 package org.interledger.setup.spsp.model;
 
-import java.net.URI;
-
 import org.interledger.setup.model.ReceiverQuery;
 
+import java.net.URI;
+
+/**
+ * Concrete implementation of a receiver query for the Simple Payment Setup Protocol.
+ */
 public final class SpspReceiverQuery implements ReceiverQuery {
   
   private URI endpoint;
