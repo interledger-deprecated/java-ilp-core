@@ -1,75 +1,63 @@
 package org.interledger.ilp.ledger.model;
 
+import org.interledger.ilp.InterledgerAddress;
+
 import java.security.PublicKey;
 
 import javax.money.MonetaryAmount;
 
-import org.interledger.ilp.InterledgerAddress;
 
+/**
+ * Defines information about a given account.
+ */
 public interface AccountInfo {
-  
+
   /**
-   * The ledger on which the account is held
-   * 
-   * @return the ILP address of the ledger
+   * Returns the ILP address of the ledger on which the account is held.
    */
   InterledgerAddress getLedger();
 
   /**
-   * A unique identifier for the account with respect to the ledger
-   * 
-   * @return a unique account identifier
+   * Returns a unique identifier for the account with respect to the ledger.
    */
   String getId();
 
   /**
-   * A human-readable account name
-   * 
-   * @return the account name
+   * Returns a human-readable account name.
    */
   String getName();
-  
+
   /**
-   * The Interledger address of the account
+   * Returns the Interledger address of the account.
    */
   InterledgerAddress getAddress();
-  
-  
+
+
   /**
-   * The current balance of the account
-   *
-   * @return
+   * Returns the current balance of the account.
    */
   MonetaryAmount getBalance();
 
   /**
-   * Flag indicating if the account is currently able to transact
+   * Flag indicating if the account is currently able to transact.
    * 
-   * @return true if the account is disabled
+   * @return true if the account is disabled.
    */
   boolean isDisabled();
 
   /**
-   * The fingerprint of the account certificate
-   * 
-   * @return the fingerprint of the account certificate
+   * Returns the fingerprint of the account certificate.
    */
   byte[] getCertificateFingerprint();
 
   /**
-   * The minimum allowed balance for the account.
-   * 
-   * MUST return null if there is no limit.
-   * 
-   * @return the minimum allowed balance for the account or null if there is no limit
+   * Returns the minimum allowed balance for the account, or null if there is no limit.
    */
   MonetaryAmount getMinimumAllowedBalance();
 
   /**
-   * The public key of this account
-   * 
-   * @return the account public key
+   * Returns the public key for this account.
    */
   PublicKey getPublicKey();
-  
+
 }

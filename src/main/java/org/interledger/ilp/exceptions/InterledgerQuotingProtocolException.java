@@ -7,7 +7,7 @@ public class InterledgerQuotingProtocolException extends Exception {
   public InterledgerQuotingProtocolException(String message) {
     super(message);
   }
-  
+
   public InterledgerQuotingProtocolException(String message, Throwable cause) {
     super(message, cause);
   }
