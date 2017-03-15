@@ -1,5 +1,6 @@
 package org.interledger.ilp;
 
+import org.interledger.core.InterledgerAddress;
 import org.interledger.cryptoconditions.Condition;
 
 import java.math.BigDecimal;

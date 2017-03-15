@@ -1,12 +1,11 @@
 package org.interledger.ilp.ledger.model;
 
+import org.interledger.core.InterledgerAddress;
 import org.interledger.cryptoconditions.Condition;
-import org.interledger.ilp.InterledgerAddress;
-
-import java.time.ZonedDateTime;
-import java.util.UUID;
 
 import javax.money.MonetaryAmount;
+import java.time.ZonedDateTime;
+import java.util.UUID;
 
 
 /**

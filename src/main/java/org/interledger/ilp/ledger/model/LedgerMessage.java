@@ -1,9 +1,8 @@
 package org.interledger.ilp.ledger.model;
 
-import org.interledger.ilp.InterledgerAddress;
+import org.interledger.core.InterledgerAddress;
 
 import java.util.UUID;
-
 
 /**
  * Defines a message that is exchanged with a ledger.

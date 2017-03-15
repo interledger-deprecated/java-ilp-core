@@ -1,10 +1,9 @@
 package org.interledger.quoting.model;
 
-import org.interledger.ilp.InterledgerAddress;
-
-import java.time.Duration;
+import org.interledger.core.InterledgerAddress;
 
 import javax.money.MonetaryAmount;
+import java.time.Duration;
 
 
 /**
