@@ -1,11 +1,11 @@
+group = 'org.interledger'
+description = 'Interledger Protocol Core'
+version = '0.2.0-SNAPSHOT'
+
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'maven'
 apply plugin: 'checkstyle'
-
-group = 'org.interledger'
-description = 'Interledger Protocol Core'
-version = '0.2.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -33,37 +33,41 @@ dependencies {
     
     //JSR-354 introduces better money and currency support to the JDK
     //http://javamoney.org
-	compile ('javax.money:money-api:1.0.1')
+    compile ('javax.money:money-api:1.0.1')
+
+    testCompile("junit:junit:4.12")
 }
 
 //Maven compatibility task:
-task writePom << {    
-    pom {
-        project {
-            inceptionYear '2016'    
-            properties {
-                "project.build.sourceEncoding" "UTF-8"
-                "maven.compiler.source" "1.8"
-                "maven.compiler.target" "1.8"
-                "checkstyle.config.location" "google_checks.xml"
-                "checkstyle.consoleOutput" "true"
-            }            
-            licenses {
-                license {
-                    name 'The Apache Software License, Version 2.0'
-                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    distribution 'repo'
+task writePom {
+    doLast {
+        pom {
+            project {
+                inceptionYear '2016'    
+                properties {
+                    "project.build.sourceEncoding" "UTF-8"
+                    "maven.compiler.source" "1.8"
+                    "maven.compiler.target" "1.8"
+                    "checkstyle.config.location" "google_checks.xml"
+                    "checkstyle.consoleOutput" "true"
+                }            
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        distribution 'repo'
+                    }
+                }
+                reporting  {
+                    plugins {
+                        plugin {
+                            groupId "org.apache.maven.plugins"
+                            artifactId "maven-checkstyle-plugin"
+                            version "2.17"
+                        }                   
+                    }
                 }
             }
-            reporting  {
-                plugins {
-                    plugin {
-                        groupId "org.apache.maven.plugins"
-                        artifactId "maven-checkstyle-plugin"
-                        version "2.17"
-                    }                   
-                }
-            }
-        }
-    }.writeTo("pom.xml")
+        }.writeTo("pom.xml")
+    }
 }
