@@ -120,8 +120,6 @@ public class OerOutputStream extends OutputStream {
     /**
      * Closes the stream. This method must be called to release any resources
      * associated with the stream.
-     *
-     * @throws IOException If an I/O error has occurred.
      */
     public void close() {
         try {

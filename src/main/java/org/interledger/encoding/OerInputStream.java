@@ -1,7 +1,6 @@
 package org.interledger.encoding;
 
 import java.io.EOFException;
-
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -130,4 +129,17 @@ System.out.println("deteleme:  byte length = (byte) stream.read():"+length);
         }
     }
 
+    /**
+     * Closes the stream. This method must be called to release any resources
+     * associated with the stream.
+     */
+    public void close() {
+        try {
+            stream.close();
+        } catch(Exception e) {
+            // TODO: Improvement. Inject Logger.
+            System.out.println("WARN: Couldn't properly close the stream due to "+
+                e.toString());
+        }
+    }
 }
