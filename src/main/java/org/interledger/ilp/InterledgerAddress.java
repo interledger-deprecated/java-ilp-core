@@ -1,190 +1,89 @@
 package org.interledger.ilp;
 
-import java.nio.charset.Charset;
-import java.util.regex.Pattern;
+import java.util.Objects;
 
 /**
- * An interledger account address.
- * 
- * @author adrianhopebailie
+ * Interledger Protocol (ILP) Addresses identify Ledger accounts (or groups of Ledger accounts) in
+ * an ILP network, and provide a way to route a payment to its intended destination.
  *
+ * <p>Interledger Addresses can be subdivided into two categories:</p>
+ *
+ * <p> <b>Destination Addresses</b> are complete addresses that can receive payments. A destination
+ * address always maps to one account in a ledger, though it can also provide more specific
+ * information, such as an invoice ID or a sub-account.  Destination addresses MUST NOT end in a
+ * period (.) character. </p>
+ *
+ * <p> <b>Address Prefixes</b> are incomplete addresses representing a grouping of
+ * destination addresses. Many depths of grouping are possible, for example: groups of accounts or
+ * sub-accounts; an individual ledger or sub-ledger; or entire neighborhoods of ledgers.  Address
+ * prefixes MUST end in a period (.) character. </p>
+ *
+ * <p> The formal specification for an Interledger Addresses is defined in <a
+ * href="https://github.com/interledger/rfcs/tree/master/0015-ilp-addresses">Interledger RFC
+ * #15</a>. </p>
+ *
+ * @see "https://github.com/interledger/rfcs/tree/master/0015-ilp-addresses"
  */
-public class InterledgerAddress {
-
-  // US-ASCII is basically IA5 and we're only using a limited set
-  private static Charset IA5 = Charset.forName("US-ASCII");
-  private static Pattern REGEX = Pattern.compile("^[a-zA-Z0-9._~-]+$");
-
-  private String address;
+public interface InterledgerAddress {
 
   /**
-   * Constructs an Interledger Address from the binary data assumed to be encoded in the 
-   * IA5 character set (currently treated as US-ASCII).
-   * @param binaryData
-   *    The raw data representing a IA5/US-ASCII encoded string Interledger address.
+   * Return this address's value as a non-null {@link String}.  For example:
+   * <code>us.usd.bank.account</code>
+   *
+   * @return A {@link String} representation of this Interledger address.
    */
-  public InterledgerAddress(byte[] binaryData) {
-    address = new String(binaryData, IA5);
-    if (!isValid(address)) {
-      throw new IllegalArgumentException("Invalid characters in address.");
-    }
-  }
-
-  /**
-   * Constructs an Interledger Address from the given string.
-   * @param address
-   *    A string representing an Interledger address
-   */
-  public InterledgerAddress(String address) {
-    if (!isValid(address)) {
-      throw new IllegalArgumentException("Invalid characters in address.");
-    }
-    this.address = address;
-  }
-
-  /**
-   * Forms an Interledger Address based on a ledger prefix and a path. For example, given
-   * the prefix 'ilpdemo.red.' and path 'bob', the method will return the address 'ilpdemo.red.bob'
-   * 
-   * @param ledgerPrefix
-   *    The ledger prefix that should form part of the final Interledger address
-   * @param path
-   *    A path to add to the prefix to form a final Interledger address.
-   * @return
-   *    An Interledger address that is the combination of the ledger prefix and the given path.
-   */
-  public static InterledgerAddress fromPrefixAndPath(InterledgerAddress ledgerPrefix, String path) {
-    if (!isValid(path)) {
-      throw new IllegalArgumentException("Invalid characters in path.");
-    }
-
-    //TODO: why this restriction - cant we infer that it should end in a '.' if it  doesnt already?
-    String prefix = ledgerPrefix.toString();
-    if (!isLedgerPrefix(prefix)) {
-      throw new IllegalArgumentException("A ledger prefix should end in '.' (dot).");
-    }
-
-    if (path.startsWith(prefix)) {
-      return new InterledgerAddress(path);
-    }
-
-    return new InterledgerAddress(prefix + path);
-  }
-
-  /**
-   * Forms an Interledger Address by removing the given prefix from the current address. 
-   * For example, given the address 'ilpdemo.red.bob' and prefix 'ilpdemo.red.', the method will 
-   * return the address 'bob'
-   * 
-   * @param prefix
-   *    The prefix to remove from the current Interledger address.
-   * @return
-   *    A new Interledger address with the given prefix removed.
-   */
-  public InterledgerAddress trimPrefix(InterledgerAddress prefix) {
-    String prefixStr = prefix.toString();
-
-    //TODO: why this restriction - cant we infer that it should end in a '.' if it  doesnt already?
-    if (!isLedgerPrefix(prefixStr)) {
-      throw new IllegalArgumentException("A ledger prefix should end in '.' (dot).");
-    }
-
-    if (!address.startsWith(prefixStr)) {
-      throw new IllegalArgumentException(
-          "Invalid ILP Address prefix [" + prefixStr + "] for address [" + address + "]");
-    }
-
-    return new InterledgerAddress(address.substring(prefixStr.length()));
-  }
-
-  /**
-   * Tests if this Interledger address starts with the specified prefix.
-   * 
-   * @param prefix
-   *    The prefix.
-   * @return
-   *    True if the address begins with the specified prefix, false otherwise.
-   */
-  public boolean startsWith(InterledgerAddress prefix) {
-    return address.startsWith(prefix.toString());
-  }
+  String getValue();
 
   /**
    * Tests if this Interledger address represents a ledger prefix.
-   * 
-   * @return
-   *    True if the address is a ledger prefix, false otherwise.
+   *
+   * @return True if the address is a ledger prefix, false otherwise.
    */
-  public boolean isLedgerPrefix() {
-    return InterledgerAddress.isLedgerPrefix(this.address);
+  default boolean isLedgerPrefix() {
+    return getValue().endsWith(".");
   }
 
   /**
-   * Tests if the given address represents a ledger prefix.
-   * 
-   * @return
-   *    True if the address is a ledger prefix, false otherwise.
+   * Tests if this InterledgerAddress starts with the specified {@code addressSegment}.
+   *
+   * @param addressSegment An {@link String} prefix to compare against.
+   *     @return {@code true} if this InterledgerAddress begins with the specified prefix, {@code
+   *     false} otherwise.
    */
-  public static boolean isLedgerPrefix(String address) {
-    return address.endsWith(".");
+  default boolean startsWith(final String addressSegment) {
+    Objects.requireNonNull(addressSegment, "addressSegment must not be null!");
+    return this.getValue().startsWith(addressSegment);
   }
 
   /**
-   * Tests if the given string represents a valid Interledger address. A valid address is a non 
-   * empty sequence of upper and lower case US-ASCII characters and numbers including the special 
-   * characters '.', '~', '_', and '-'. 
-   * 
-   * @param address
-   *    The address to test.
-   * @return
-   *    True if the address is valid, false otherwise.
+   * Tests if this InterledgerAddress starts with the specified {@code interledgerAddress}.
+   *
+   * @param interledgerAddress An {@link InterledgerAddress} prefix to compare against.
+   * @return {@code true} if this InterledgerAddress begins with the specified prefix, {@code false}
+   *     otherwise.
    */
-  public static boolean isValid(String address) {
-    if (address == null) {
-      return false;
-    }
-    return REGEX.matcher(address).matches();
+  default boolean startsWith(final InterledgerAddress interledgerAddress) {
+    Objects.requireNonNull(interledgerAddress, "interledgerAddress must not be null!");
+    return this.startsWith(interledgerAddress.toString());
   }
 
   /**
-   * Returns the address as a sequence of bytes using the IA5 character encoding scheme.
+   * Return a new InterledgerAddress by postfixing the supplied {@code segment} to this address.
+   *
+   * <p>This method can be used to construct both address prefixes and destination addresses. For
+   * example, if the value of this address is '<code>us.usd.</code>', then calling this method with
+   * an argument of '<code>bob</code>' would result in a new Interledger Address with a value of
+   * '<code>us.usd.bob</code>', which is a destination address.</p>
+   *
+   * <p>Likewise, if the value of this address is '<code>us.usd.pacific.</code>', then calling this
+   * method with an argument of '<code>creditunions.</code>' would result in a new Interledger
+   * Address with a value of '<code>us.usd.pacific.creditunions.</code>', which is an address
+   * prefix. </p>
+   *
+   * @param addressSegment A {@link String} to be appended to this address as an additional
+   *     segment.
+   * @return A new instance of InterledgerAddress representing the original address with a newly
+   *     specified final segment.
    */
-  public byte[] toByteArray() {
-    return address.getBytes(IA5);
-  }
-
-  @Override
-  public String toString() {
-    return address;
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((address == null) ? 0 : address.hashCode());
-    return result;
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    InterledgerAddress other = (InterledgerAddress) obj;
-    if (address == null) {
-      if (other.address != null) {
-        return false;
-      }
-    } else if (!address.equals(other.address)) {
-      return false;
-    }
-    return true;
-  }
+  InterledgerAddress with(String addressSegment);
 }

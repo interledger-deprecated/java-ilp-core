@@ -2,9 +2,8 @@ package org.interledger.ilp;
 
 import org.interledger.cryptoconditions.Condition;
 
-import java.time.ZonedDateTime;
-
 import javax.money.MonetaryAmount;
+import java.time.ZonedDateTime;
 
 
 /**

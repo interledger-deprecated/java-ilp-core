@@ -4,7 +4,6 @@ import org.interledger.ilp.InterledgerAddress;
 
 import java.util.UUID;
 
-
 /**
  * Defines a message that is exchanged with a ledger.
  */
