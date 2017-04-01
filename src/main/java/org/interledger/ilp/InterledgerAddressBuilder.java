@@ -1,13 +1,13 @@
-package org.interledger.core;
+package org.interledger.ilp;
 
 import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
- * A Builder for immutable instances of {@link InterledgerAddress}.
+ * A builder for immutable instances of {@link InterledgerAddress}.
  *
- * <em>{@code InterledgerAddressBuilder} is not thread-safe and generally should not be stored in a
- * field or collection, but instead used immediately to create instances.</em>
+ * <p> <em>NOTE: j{@code InterledgerAddressBuilder} is not thread-safe and generally should not be
+ * stored in a field or collection, but instead used immediately to create instances.</em> </p>
  */
 public class InterledgerAddressBuilder {
 
@@ -23,8 +23,8 @@ public class InterledgerAddressBuilder {
    * Constructor to enable copy-functionality.
    */
   public InterledgerAddressBuilder(final InterledgerAddress interledgerAddress) {
-    this.value = Objects.requireNonNull(interledgerAddress, "InterledgerAddress must not be null!")
-        .getValue();
+    Objects.requireNonNull(interledgerAddress, "InterledgerAddress must not be null!");
+    this.value = interledgerAddress.getValue();
   }
 
   /**
@@ -41,7 +41,7 @@ public class InterledgerAddressBuilder {
    * @param value A {@link String} representing this builder's "value", which is the string version
    *     of an Interledger Address.
    */
-  public InterledgerAddressBuilder withValue(final String value) {
+  public InterledgerAddressBuilder value(final String value) {
     this.value = Objects.requireNonNull(value, "value must not be null!");
     return this;
   }
@@ -81,7 +81,7 @@ public class InterledgerAddressBuilder {
 
       if (!isValidInterledgerAddress(builder.value)) {
         throw new IllegalArgumentException(
-            "Invalid characters in address.  Reference RFC 15 for proper format.");
+            "Invalid characters in address.  Reference Interledger RFC-15 for proper format.");
       }
 
       this.value = builder.value;
@@ -123,7 +123,7 @@ public class InterledgerAddressBuilder {
       }
       sb.append(segment);
 
-      return new InterledgerAddressBuilder().withValue(sb.toString()).build();
+      return new InterledgerAddressBuilder().value(sb.toString()).build();
     }
 
     @Override

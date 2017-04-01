@@ -1,6 +1,6 @@
 package org.interledger.ilp.ledger;
 
-import org.interledger.core.InterledgerAddress;
+import org.interledger.ilp.InterledgerAddress;
 import org.interledger.cryptoconditions.Fulfillment;
 import org.interledger.ilp.ledger.events.LedgerConnectEvent;
 import org.interledger.ilp.ledger.events.LedgerEvent;

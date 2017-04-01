@@ -1,6 +1,6 @@
 package org.interledger.ilp.ledger.model;
 
-import org.interledger.core.InterledgerAddress;
+import org.interledger.ilp.InterledgerAddress;
 
 import javax.money.CurrencyUnit;
 import javax.money.format.MonetaryAmountFormat;

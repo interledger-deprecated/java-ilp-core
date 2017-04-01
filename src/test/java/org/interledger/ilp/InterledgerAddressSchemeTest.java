@@ -1,15 +1,13 @@
-package org.interledger.core;
+package org.interledger.ilp;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import java.util.Arrays;
 import org.junit.Test;
-
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
-
-import java.util.Arrays;
 
 /**
  * Unit tests for {@link InterledgerAddressBuilder} schemes.
@@ -18,7 +16,7 @@ import java.util.Arrays;
 public class InterledgerAddressSchemeTest {
 
   private static final String EXPECTED_ERROR_MESSAGE
-      = "Invalid characters in address.  Reference RFC 15 for proper format.";
+      = "Invalid characters in address.  Reference Interledger RFC-15 for proper format.";
 
   /**
    * Generates an {@link Iterable} of arrays containing Strings that will be passed to each of the
@@ -42,7 +40,7 @@ public class InterledgerAddressSchemeTest {
    */
   @Test
   public void test_scheme_with_neighborhood_and_account_as_address() throws Exception {
-    final InterledgerAddress address = InterledgerAddressBuilder.builder().withValue(
+    final InterledgerAddress address = InterledgerAddressBuilder.builder().value(
         this.scheme + ".foo.bob").build();
     assertThat(address.getValue(), is(this.scheme + ".foo.bob"));
     assertThat(address.isLedgerPrefix(), is(false));
@@ -53,7 +51,7 @@ public class InterledgerAddressSchemeTest {
    */
   @Test
   public void test_scheme_with_neighborhood_and_ledger_identifier_as_prefix() throws Exception {
-    final InterledgerAddress addressPrefix = InterledgerAddressBuilder.builder().withValue(
+    final InterledgerAddress addressPrefix = InterledgerAddressBuilder.builder().value(
         this.scheme + ".foo.bob.").build();
     assertThat(addressPrefix.getValue(), is(this.scheme + ".foo.bob."));
     assertThat(addressPrefix.isLedgerPrefix(), is(true));
@@ -64,7 +62,7 @@ public class InterledgerAddressSchemeTest {
    */
   @Test
   public void test_scheme_with_only_address() throws Exception {
-    final InterledgerAddress address = InterledgerAddressBuilder.builder().withValue(
+    final InterledgerAddress address = InterledgerAddressBuilder.builder().value(
         this.scheme + ".foo").build();
     assertThat(address.getValue(), is(this.scheme + ".foo"));
     assertThat(address.isLedgerPrefix(), is(false));
@@ -75,7 +73,7 @@ public class InterledgerAddressSchemeTest {
    */
   @Test
   public void test_scheme_with_neighborhood_as_prefix() throws Exception {
-    final InterledgerAddress addressPrefix = InterledgerAddressBuilder.builder().withValue(
+    final InterledgerAddress addressPrefix = InterledgerAddressBuilder.builder().value(
         this.scheme + ".foo.").build();
     assertThat(addressPrefix.getValue(), is(this.scheme + ".foo."));
     assertThat(addressPrefix.isLedgerPrefix(), is(true));
@@ -87,7 +85,7 @@ public class InterledgerAddressSchemeTest {
   @Test
   public void test_address_with_only_scheme_prefix() throws Exception {
     final InterledgerAddress address = InterledgerAddressBuilder.builder()
-        .withValue(this.scheme + ".").build();
+        .value(this.scheme + ".").build();
     assertThat(address.getValue(), is(this.scheme + "."));
     assertThat(address.isLedgerPrefix(), is(true));
   }
@@ -98,7 +96,7 @@ public class InterledgerAddressSchemeTest {
   @Test(expected = IllegalArgumentException.class)
   public void test_address_with_only_scheme_address() throws Exception {
     try {
-      InterledgerAddressBuilder.builder().withValue(this.scheme).build();
+      InterledgerAddressBuilder.builder().value(this.scheme).build();
     } catch (IllegalArgumentException e) {
       assertThat(e.getMessage(), is(EXPECTED_ERROR_MESSAGE));
       throw e;
@@ -108,7 +106,7 @@ public class InterledgerAddressSchemeTest {
   @Test(expected = IllegalArgumentException.class)
   public void test_destination_address_with_invalid_scheme() throws Exception {
     try {
-      InterledgerAddressBuilder.builder().withValue(this.scheme + "1.foo").build();
+      InterledgerAddressBuilder.builder().value(this.scheme + "1.foo").build();
     } catch (IllegalArgumentException e) {
       assertThat(e.getMessage(), is(EXPECTED_ERROR_MESSAGE));
       throw e;
@@ -118,7 +116,7 @@ public class InterledgerAddressSchemeTest {
   @Test(expected = IllegalArgumentException.class)
   public void test_prefix_with_invalid_scheme() throws Exception {
     try {
-      InterledgerAddressBuilder.builder().withValue(this.scheme + "1.foo.").build();
+      InterledgerAddressBuilder.builder().value(this.scheme + "1.foo.").build();
     } catch (IllegalArgumentException e) {
       assertThat(e.getMessage(), is(EXPECTED_ERROR_MESSAGE));
       throw e;

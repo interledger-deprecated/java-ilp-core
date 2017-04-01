@@ -1,6 +1,6 @@
 package org.interledger.ilp.ledger.events;
 
-import org.interledger.core.InterledgerAddress;
+import org.interledger.ilp.InterledgerAddress;
 
 public interface LedgerEventSource {
   

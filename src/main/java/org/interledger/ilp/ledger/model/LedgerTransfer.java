@@ -1,6 +1,6 @@
 package org.interledger.ilp.ledger.model;
 
-import org.interledger.core.InterledgerAddress;
+import org.interledger.ilp.InterledgerAddress;
 import org.interledger.cryptoconditions.Condition;
 
 import javax.money.MonetaryAmount;

@@ -1,6 +1,6 @@
 package org.interledger.quoting;
 
-import org.interledger.core.InterledgerAddress;
+import org.interledger.ilp.InterledgerAddress;
 import org.interledger.ilp.exceptions.InterledgerQuotingProtocolException;
 import org.interledger.quoting.model.QuoteRequest;
 import org.interledger.quoting.model.QuoteResponse;
