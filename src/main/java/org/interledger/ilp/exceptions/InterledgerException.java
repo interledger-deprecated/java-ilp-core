@@ -1,90 +1,137 @@
 package org.interledger.ilp.exceptions;
 
+import java.util.ArrayList;
+import java.time.ZonedDateTime;
+
+import org.interledger.ilp.InterledgerAddress;
+
 /**
  * Base ILP exception.
  *
- * @author Manuel Polo [mistermx@gmail.com]
+ * RFC REF: https://github.com/interledger/rfcs/blob/master/0003-interledger-protocol/0003-interledger-protocol.md
+ *
  */
 public class InterledgerException extends RuntimeException {
-    
-    private static final int BAD_REQUEST           = 400;
-    private static final int UNAUTHORIZED          = 401;
-    private static final int FORBIDDEN             = 403;
-    private static final int NOT_FOUND             = 404;
-    private static final int UNPROCESSABLE_ENTITY  = 422;
-    private static final int INTERNAL_SERVER_ERROR = 500;
 
-    final RegisteredException exception;
-    final String description;
-    final Throwable cause;
-    
-    private static final Throwable NOT_CAUSE_ATTACHED = new Throwable();
+    // TODO:(0) Add encoding support to serialize it through the wire (binary, JSON,...?, check the RFCs)
 
-    public enum RegisteredException {
-        // TODO:(0) Adjust to RFC:  https://github.com/interledger/rfcs/blob/master/0003-interledger-protocol/0003-interledger-protocol.md (Errors section)
-        
-        /*
-         * TODO: Avoid Oracle attachs. 
-         * Providing detailed exception info can be used by attackants
-         * about the internals of the server. Since we are treating withh
-         * money minimal information must be provided.
-         * Ussually BAD_REQUEST , INTERNAL_ERROR must be enough to let external
-         * peers known whether the problem is on their request or in the internal
-         * processing of such request.
-         */
-        InternalError             (INTERNAL_SERVER_ERROR, "InternalErrorError"),
-        InsufficientAmountError   (INTERNAL_SERVER_ERROR, "InsufficientAmountError"),
-        InsufficientPrecisionError(INTERNAL_SERVER_ERROR, "InsufficientPrecisionError"),
-        LedgerTransferError       (INTERNAL_SERVER_ERROR, "LedgerTransferError"),
-        MaximunDataSizeExceeded   (INTERNAL_SERVER_ERROR, "MaximunDataSizeExceededError"),
-        TransferNotFoundError     (NOT_FOUND            , "TransferNotFoundError"),
-        AccountExists             (INTERNAL_SERVER_ERROR, "AccountExistsError"),
-        AccountNotFoundError      (NOT_FOUND            , "AccountNotFoundError"),
-        FulfillmentNotFoundError  (NOT_FOUND            , "FulfillmentNotFoundError"),
-        UnauthorizedError         (UNAUTHORIZED         , "UnauthorizedError"),
-        ForbiddenError            (FORBIDDEN            , "UnauthorizedError"),
-        BadRequestError           (BAD_REQUEST          , "BadRequestError"),
-        MissingFulfillmentError   (NOT_FOUND            , "MissingFulfillmentError"),
-        AlreadyRolledBackError    (UNPROCESSABLE_ENTITY , "AlreadyRolledBackError"),
-        TransferNotConditionalError(UNPROCESSABLE_ENTITY , "TransferNotConditionalError"),
-//        InvalidFulfillmentError   (HttpResponseStatus.UNPROCESSABLE_ENTITY , "InvalidFulfillmentError"),
-        UnmetConditionError       (UNPROCESSABLE_ENTITY , "UnmetConditionError");
-        
-        
-        
-        private final int HTTPErrorCode;
-        private final String sID;
+    public enum ErrorCode {
+        // FINAL ERRORS            
+        F00_BAD_REQUEST               ("F00", "BAD REQUEST"             ),
+        F01_INVALID_PAQUET            ("F01", "INVALID PAQUET"          ),
+        F02_UNREACHABLE               ("F02", "UNREACHABLE"             ),
+        F03_INVALID_AMOUNT            ("F03", "INVALID AMOUNT"          ),
+        F04_INSUFFICIENT_DST_AMOUNT   ("F04", "INSUFFICIENT DST. AMOUNT"),
+        F05_WRONG_CONDITION           ("F05", "WRONG CONDITION"         ),
+        F06_UNEXPECTED_PAYMENT        ("F06", "UNEXPECTED PAYMENT"      ),
+        F07_CANNOT_RECEIVE            ("F07", "CANNOT RECEIVE"          ),
+        F99_APPLICATION_ERROR         ("F99", "APPLICATION ERROR"       ),
 
-        RegisteredException(int HTTPErrorCode, String sID) {
-            this.HTTPErrorCode = HTTPErrorCode;
-            this.sID = sID;
+        T00_INTERNAL_ERROR            ("T00", "INTERNAL ERROR"          ),
+        T01_LEDGER_UNREACHABLE        ("T01", "LEDGER UNREACHABLE"      ),
+        T02_LEDGER_BUSY               ("T02", "LEDGER BUSY"             ),
+        T03_CONNECTOR_BUSY            ("T03", "CONNECTOR BUSY"          ),
+        T04_INSUFFICIENT_LIQUIDITY    ("T04", "INSUFFICIENT LIQUIDITY"  ),
+        T05_RATE_LIMITED              ("T05", "RATE LIMITED"            ),
+        T99_APPLICATION_ERROR         ("T99", "APPLICATION ERROR"       ),
+
+        R00_TRANSFER_TIMED_OUT        ("R00", "TRANSFER TIMED OUT"      ),
+        R01_INSUFFICEINT_SOURCE_AMOUNT("R01", "INSUFFICEINT SOURCE AMOUNT"),
+        R02_INSUFFICIENT_TIMEOUT      ("R02", "INSUFFICIENT TIMEOUT"    ),
+        R99_APPLICATION_ERROR         ("R99", "APPLICATION ERROR"       )
+        ;
+
+        private final String code;
+        private final String name;
+
+        ErrorCode(String code, String name) {
+            if (code==null || name==null){
+                throw new RuntimeException("code and/or name can not be null");
+            }
+            code = code.trim();
+            name = name.trim();
+            if (code.length()!=3) {
+                throw new RuntimeException("error code length must be equal to 3");
+            }
+            char type = code.charAt(0);
+            if (type != 'F' && type !='T' && type !='R'){
+                throw new RuntimeException("error code must be := 'F' | 'T' | 'R'");
+            }
+            this.code = code;
+            this.name = name;
         }
 
-
-        public int getHTTPErrorCode() {
-            return HTTPErrorCode;
+        @Override
+        public String toString(){
+            return this.code + "-" +this.name();
         }
 
-        public String getsID() {
-            return sID;
-        }
     }
+
     private static final long serialVersionUID = 1L;
-
-    /**
-     * Constructs an instance of <code>InterledgerException</code> with the specified detail message.
-     *
-     * @param msg the detail message.
-     */
-    public InterledgerException(RegisteredException exception, String description, Throwable cause) {
-        super();
-        this.exception = exception;
-        this.description = description;
-        this.cause = cause;
-    }
+    private final ErrorCode errCode;
+    private final InterledgerAddress triggeredBy;
     
-    public InterledgerException(RegisteredException exception, String description) {
-        this(exception, description, NOT_CAUSE_ATTACHED);
-   }
+    /**
+     * Note. The forwardedBy ArrayList is final but it's still possible to add members
+     *    to it through the addSelfToForwardedByList method.
+     *    (It's just the forwardedBy reference that is final, so it can NOT be assigned
+     *    to a different arrayList)
+     *    This is done on purpose since the InterledgerException instances can
+     *    be relatively big (data is up to 8192 bytes) and cloning the full exception
+     *    to add a single a member to the list could cause performance/memory trouble in
+     *    some scenarios.
+     */
+    private final ArrayList<InterledgerAddress> forwardedBy;
+    private final ZonedDateTime triggeredAt;
+    private final String data;
+    /**
+     * Constructs an instance of <code>InterledgerException</code> 
+     * Check the RFC https://github.com/interledger/rfcs/blob/master/0003-interledger-protocol/0003-interledger-protocol.md
+     * for the newest updated doc.
+     * 
+     * @param errCode,    one of the defined InterledgerException.ErrorCode defined.
+     * @param triggeredBy ILP address (prefix if it's a ledger) of the entity that originally emitted the error
+     * @param forwardedBy ILP address list of connectors that relayed the error message
+     * @param triggeredAt Time when the error was initially emitted
+     * @param data        OCTET STRINGSIZE(0..8192) Unless otherwise specified, data SHOULD be encoded as UTF-8. 
+     *                    Protocols built on top of ILP SHOULD specify the encoding format of error data 
+     */
+    public InterledgerException(
+        ErrorCode errCode,
+        InterledgerAddress triggeredBy,
+        ArrayList<InterledgerAddress> forwardedBy,
+        ZonedDateTime triggeredAt, String data) {
+        super();
+        this.errCode     = errCode;
+        this.triggeredBy = triggeredBy;
+        this.forwardedBy = forwardedBy;
+        this.triggeredAt = triggeredAt;
+        this.data        = data;
+    }
+
+    public ErrorCode getErrCode() {
+        return errCode;
+    }
+
+    public InterledgerAddress getTriggeredBy() {
+        return triggeredBy;
+    }
+
+    public ArrayList<InterledgerAddress> getForwardedBy() {
+        return forwardedBy;
+    }
+
+    public ZonedDateTime getTriggeredAt() {
+        return triggeredAt;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void addSelfToForwardedByList(InterledgerAddress selfAdd) {
+        this.forwardedBy.add(selfAdd);
+    }
 
 }

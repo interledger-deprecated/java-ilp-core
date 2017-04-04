@@ -2,6 +2,7 @@ package org.interledger.ilp.ledger;
 
 import org.interledger.cryptoconditions.Fulfillment;
 import org.interledger.ilp.InterledgerAddress;
+import org.interledger.ilp.exceptions.InterledgerException;
 import org.interledger.ilp.ledger.events.LedgerConnectEvent;
 import org.interledger.ilp.ledger.events.LedgerEvent;
 import org.interledger.ilp.ledger.events.LedgerEventHandler;
@@ -9,7 +10,6 @@ import org.interledger.ilp.ledger.model.AccountInfo;
 import org.interledger.ilp.ledger.model.LedgerInfo;
 import org.interledger.ilp.ledger.model.LedgerMessage;
 import org.interledger.ilp.ledger.model.LedgerTransfer;
-import org.interledger.ilp.ledger.model.TransferRejectedReason;
 
 import java.util.Set;
 import java.util.UUID;
@@ -66,7 +66,7 @@ public interface LedgerAdaptor {
    * @param transfer The transfer being proposed.
    * @param reason The reason why the transfer should be rejected.
    */
-  void rejectTransfer(LedgerTransfer transfer, TransferRejectedReason reason);
+  void rejectTransfer(LedgerTransfer transfer, InterledgerException.ErrorCode reason);
 
   /**
    * Get basic details of an account.
