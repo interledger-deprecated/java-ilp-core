@@ -64,9 +64,9 @@ public interface LedgerAdaptor {
    * receiver.
    *
    * @param transfer The transfer being proposed.
-   * @param reason The reason why the transfer should be rejected.
+   * @param reason The reason (InterledgerException) why the transfer should be rejected.
    */
-  void rejectTransfer(LedgerTransfer transfer, InterledgerException.ErrorCode reason);
+  void rejectTransfer(LedgerTransfer transfer, InterledgerException reason);
 
   /**
    * Get basic details of an account.
