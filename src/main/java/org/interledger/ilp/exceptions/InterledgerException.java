@@ -185,7 +185,7 @@ public class InterledgerException extends RuntimeException {
     public static InterledgerAddress[] addSelfToForwardedBy(InterledgerAddress[] forwardedBy, InterledgerAddress selfAddress) {
         InterledgerAddress[] result = new InterledgerAddress[forwardedBy.length+1];
         for (int idx=0; idx < forwardedBy.length ; idx++){
-            if (forwardedBy[idx].equals(selfAddress)){
+            if (forwardedBy[idx].getValue().equals(selfAddress.getValue())){
                 throw new RuntimeException("loop was detected in the forwardedBy list.");
             }
             result[idx] = forwardedBy[idx];
