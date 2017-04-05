@@ -4,11 +4,12 @@ import java.util.Objects;
 import java.time.ZonedDateTime;
 
 import org.interledger.ilp.InterledgerAddress;
+import org.interledger.ilp.InterledgerAddressBuilder;
 
 /**
  * Base ILP exception.
  *
- * RFC REF: https:https://interledger.org/rfcs/0003-interledger-protocol/#errors
+ * RFC REF: https://interledger.org/rfcs/0003-interledger-protocol/#errors
  *
  */
 public class InterledgerException extends RuntimeException {
@@ -105,8 +106,14 @@ public class InterledgerException extends RuntimeException {
     private final ZonedDateTime triggeredAt;
     private final String data;
 
+    // TRIGGERING_ILP_NODE is used as a "mark" to avoid nulls.
+    // This way our code can differentiate between a coding error
+    // (developer sent a null by mistake) and the real intention of not
+    // sending selfAddress.
+    static final InterledgerAddress TRIGGERING_ILP_NODE = new InterledgerAddressBuilder().value("g.selfAddressNONE").build();
     /**
      * Constructs an inmutable instance of <code>InterledgerException</code> 
+     * Used by connectors forwarding the exception.
      * Check the RFC https://interledger.org/rfcs/0003-interledger-protocol/#errors
      * for the newest updated doc.
      * The helper static method InterledgerAddress[] InterledgerException.addSelfToForwardedBy(forwardedBy, selfAddress)
@@ -118,19 +125,37 @@ public class InterledgerException extends RuntimeException {
      * @param triggeredAt Time when the error was initially emitted
      * @param data        OCTET STRINGSIZE(0..8192) Unless otherwise specified, data SHOULD be encoded as UTF-8. 
      *                    Protocols built on top of ILP SHOULD specify the encoding format of error data 
+     * @param selfAddress 
      */
     public InterledgerException(
         ErrorCode errCode,
         InterledgerAddress triggeredBy,
         InterledgerAddress[] forwardedBy,
         ZonedDateTime triggeredAt,
-        String data) {
+        String data,
+        InterledgerAddress selfAddress) {
         super();
         this.errCode     = Objects.requireNonNull(errCode    , "errCode     must not be null");
         this.triggeredBy = Objects.requireNonNull(triggeredBy, "triggeredBy must not be null");
-        this.forwardedBy = Objects.requireNonNull(forwardedBy, "forwardedBy must not be null");
+
         this.triggeredAt = Objects.requireNonNull(triggeredAt, "triggeredAt must not be null");
         this.data        = Objects.requireNonNull(data       , "data        must not be null");
+
+        Objects.requireNonNull(forwardedBy, "forwardedBy must not be null");
+        Objects.requireNonNull(selfAddress, "selfAddress must not be null");
+        if (TRIGGERING_ILP_NODE.getValue().equals(selfAddress.getValue())) {
+            this.forwardedBy = forwardedBy; // Ignore selfAddress
+        } else {
+            InterledgerAddress[] forwardedByNew = new InterledgerAddress[forwardedBy.length+1];
+            for (int idx=0; idx < forwardedByNew.length ; idx++){
+                if (forwardedByNew[idx].getValue().equals(selfAddress.getValue())){
+                    throw new RuntimeException("loop was detected in the forwardedBy list.");
+                }
+                forwardedByNew[idx] = forwardedBy[idx];
+                forwardedByNew[forwardedByNew.length-1] = selfAddress;
+            }
+            this.forwardedBy = forwardedByNew;
+        }
     }
 
     /**
@@ -149,7 +174,7 @@ public class InterledgerException extends RuntimeException {
         ErrorCode errCode,
         InterledgerAddress triggeredBy,
         String data) {
-        this(errCode, triggeredBy, new InterledgerAddress[]{}, ZonedDateTime.now(), data);
+        this(errCode, triggeredBy, new InterledgerAddress[]{}, ZonedDateTime.now(), "", TRIGGERING_ILP_NODE);
     }
 
     public ErrorCode getErrCode() {
@@ -180,17 +205,5 @@ public class InterledgerException extends RuntimeException {
         return data;
     }
 
-    // Utility static methods 
 
-    public static InterledgerAddress[] addSelfToForwardedBy(InterledgerAddress[] forwardedBy, InterledgerAddress selfAddress) {
-        InterledgerAddress[] result = new InterledgerAddress[forwardedBy.length+1];
-        for (int idx=0; idx < forwardedBy.length ; idx++){
-            if (forwardedBy[idx].getValue().equals(selfAddress.getValue())){
-                throw new RuntimeException("loop was detected in the forwardedBy list.");
-            }
-            result[idx] = forwardedBy[idx];
-            result[result.length-1] = selfAddress;
-        }
-        return result;
-    }
 }
