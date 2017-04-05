@@ -142,7 +142,9 @@ public class InterledgerException extends RuntimeException {
         ZonedDateTime triggeredAt, 
         String data) {
         super();
-        // TODO:(0) check params are not null.
+        if (errCode == null || triggeredBy == null || forwardedBy == null || data == null) {
+            throw new IllegalArgumentException("parameters can NOT be null");
+        }
         this.errCode     = errCode;
         this.triggeredBy = triggeredBy;
         this.forwardedBy = forwardedBy;
