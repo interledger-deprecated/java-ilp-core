@@ -1,6 +1,6 @@
 package org.interledger.ilp.exceptions;
 
-import java.util.ArrayList;
+import java.util.Objects;
 import java.time.ZonedDateTime;
 
 import org.interledger.ilp.InterledgerAddress;
@@ -67,11 +67,9 @@ public class InterledgerException extends RuntimeException {
         private final String name;
 
         private ErrorCode(String code, String name) {
-            if (code==null || name==null){
-                throw new RuntimeException("code and/or name can not be null");
-            }
-            code = code.trim();
-            name = name.trim();
+            code = Objects.requireNonNull(code, "code must not be null").trim();
+            name = Objects.requireNonNull(name, "code must not be null").trim();
+
             if (code.length()!=3) {
                 throw new RuntimeException("error code length must be equal to 3");
             }
@@ -102,28 +100,17 @@ public class InterledgerException extends RuntimeException {
 
     private final ErrorCode errCode;
     private final InterledgerAddress triggeredBy;
-    
-    /**
-     * Note. The forwardedBy ArrayList is final but it's still possible to add members
-     *    to it through the addSelfToForwardedByList method.
-     *    (It's just the forwardedBy reference that is final, so it can NOT be assigned
-     *    to a different arrayList)
-     *    This is done on purpose since the InterledgerException instances can
-     *    be relatively big (data is up to 8192 bytes) and cloning the full exception
-     *    to add a single a member to the list could cause performance/memory trouble in
-     *    some scenarios.
-     */
-    private final ArrayList<InterledgerAddress> forwardedBy;
+
+    private final InterledgerAddress[] forwardedBy;
     private final ZonedDateTime triggeredAt;
     private final String data;
-    
-    // Avoid nulls when forwaredBy is empty
-    public static final ArrayList<InterledgerAddress> EMPTY_ForwardedBy_List = 
-            new ArrayList<InterledgerAddress>();
+
     /**
-     * Constructs an instance of <code>InterledgerException</code> 
+     * Constructs an inmutable instance of <code>InterledgerException</code> 
      * Check the RFC https://interledger.org/rfcs/0003-interledger-protocol/#errors
      * for the newest updated doc.
+     * The helper static method InterledgerAddress[] InterledgerException.addSelfToForwardedBy(forwardedBy, selfAddress)
+     * can be used to create an updated forwardedBy list right before calling the constructor.
      * 
      * @param errCode,    one of the defined InterledgerException.ErrorCode defined.
      * @param triggeredBy ILP address (prefix if it's a ledger) of the entity that originally emitted the error
@@ -135,20 +122,17 @@ public class InterledgerException extends RuntimeException {
     public InterledgerException(
         ErrorCode errCode,
         InterledgerAddress triggeredBy,
-        ArrayList<InterledgerAddress> forwardedBy,
-        ZonedDateTime triggeredAt, 
+        InterledgerAddress[] forwardedBy,
+        ZonedDateTime triggeredAt,
         String data) {
         super();
-        if (errCode == null || triggeredBy == null || forwardedBy == null || data == null) {
-            throw new IllegalArgumentException("parameters can NOT be null");
-        }
-        this.errCode     = errCode;
-        this.triggeredBy = triggeredBy;
-        this.forwardedBy = forwardedBy;
-        this.triggeredAt = triggeredAt;
-        this.data        = data;
+        this.errCode     = Objects.requireNonNull(errCode    , "errCode     must not be null");
+        this.triggeredBy = Objects.requireNonNull(triggeredBy, "triggeredBy must not be null");
+        this.forwardedBy = Objects.requireNonNull(forwardedBy, "forwardedBy must not be null");
+        this.triggeredAt = Objects.requireNonNull(triggeredAt, "triggeredAt must not be null");
+        this.data        = Objects.requireNonNull(data       , "data        must not be null");
     }
-    
+
     /**
      * Constructs an instance of <code>InterledgerException</code>
      * with default parameters for forwardedBy (Empty list) and 
@@ -165,7 +149,7 @@ public class InterledgerException extends RuntimeException {
         ErrorCode errCode,
         InterledgerAddress triggeredBy,
         String data) {
-        this(errCode, triggeredBy, EMPTY_ForwardedBy_List, ZonedDateTime.now(), data);
+        this(errCode, triggeredBy, new InterledgerAddress[]{}, ZonedDateTime.now(), data);
     }
 
     public ErrorCode getErrCode() {
@@ -184,7 +168,7 @@ public class InterledgerException extends RuntimeException {
         return triggeredBy;
     }
 
-    public ArrayList<InterledgerAddress> getForwardedBy() {
+    public InterledgerAddress[] getForwardedBy() {
         return forwardedBy;
     }
 
@@ -196,12 +180,17 @@ public class InterledgerException extends RuntimeException {
         return data;
     }
 
-    /**
-     * Used by connectors to add themself to the forwaredBy list
-     * @param selfAdd connector ILP address.
-     */
-    public void addSelfToForwardedByList(InterledgerAddress selfAdd) {
-        this.forwardedBy.add(selfAdd);
-    }
+    // Utility static methods 
 
+    public static InterledgerAddress[] addSelfToForwardedBy(InterledgerAddress[] forwardedBy, InterledgerAddress selfAddress) {
+        InterledgerAddress[] result = new InterledgerAddress[forwardedBy.length+1];
+        for (int idx=0; idx < forwardedBy.length ; idx++){
+            if (forwardedBy[idx].equals(selfAddress)){
+                throw new RuntimeException("loop was detected in the forwardedBy list.");
+            }
+            result[idx] = forwardedBy[idx];
+            result[result.length-1] = selfAddress;
+        }
+        return result;
+    }
 }
