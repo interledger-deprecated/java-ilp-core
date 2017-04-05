@@ -21,8 +21,8 @@ public class InterledgerException extends RuntimeException {
         TEMPORARY('T'),
         RELATIVE('R');
 
-        String t;
-        ErrorType(char t){
+        private final String t;
+        private ErrorType(char t){
             this.t = Character.toString(t);
         }
 
@@ -62,10 +62,11 @@ public class InterledgerException extends RuntimeException {
         // IMAGINE node1 -> conector1 -> conector2 -> (ERR. FORBIDEN) contector3
         //  - How must routing be updated in  conector1/2/3 ?
 
+        public  final ErrorType errorType;
         private final String code;
         private final String name;
 
-        ErrorCode(String code, String name) {
+        private ErrorCode(String code, String name) {
             if (code==null || name==null){
                 throw new RuntimeException("code and/or name can not be null");
             }
@@ -75,9 +76,20 @@ public class InterledgerException extends RuntimeException {
                 throw new RuntimeException("error code length must be equal to 3");
             }
             char type = code.charAt(0);
-            if (type != 'F' && type !='T' && type !='R'){
-                throw new RuntimeException("error code must be := 'F' | 'T' | 'R'");
+            switch (type) {
+            case 'F':
+                errorType = ErrorType.FINAL;
+                break;
+            case 'T':
+                errorType = ErrorType.TEMPORARY;
+                break;
+            case 'R':
+                errorType = ErrorType.RELATIVE;
+                break;
+            default:
+                throw new IllegalArgumentException("code must start with 'F', 'T' or 'R'.");
             }
+
             this.code = code;
             this.name = name;
         }
@@ -86,21 +98,6 @@ public class InterledgerException extends RuntimeException {
         public String toString(){
             return this.code + "-" +this.name;
         }
-
-        public ErrorType getErrorType(){
-            char type = code.charAt(0);
-            switch (type) {
-            case 'F':
-                return ErrorType.FINAL;
-            case 'T':
-                return ErrorType.TEMPORARY;
-            case 'R':
-                return ErrorType.RELATIVE;
-            default:
-                throw new IllegalArgumentException("Invalid type " + type + ", InterledgerException serialVersionUID: " + serialVersionUID);
-            }
-        }
-
     }
 
     private final ErrorCode errCode;
@@ -174,9 +171,13 @@ public class InterledgerException extends RuntimeException {
     public ErrorCode getErrCode() {
         return errCode;
     }
-    
+
+    /**
+     * @return ErrorType categorizes the error as FINAL, TEMPORARY or RELATIVE
+     *         (See RFC for more info)
+     */
     public ErrorType getErrorType(){
-        return errCode.getErrorType();
+        return errCode.errorType;
     }
 
     public InterledgerAddress getTriggeredBy() {
