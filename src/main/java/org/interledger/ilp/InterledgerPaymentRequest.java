@@ -1,19 +1,20 @@
 package org.interledger.ilp;
 
-import org.interledger.cryptoconditions.Condition;
-
-import javax.money.MonetaryAmount;
 import java.time.ZonedDateTime;
+import javax.money.MonetaryAmount;
+import org.interledger.cryptoconditions.Condition;
 
 
 /**
  * An Interledger Payment Request as defined in ILP RFC 11 at:
  * https://github.com/interledger/rfcs/blob/master/0011-interledger-payment-request/0011-interledger-payment-request.md
- * 
+ *
  * @author adrianhopebailie
+ * @deprecated This should be moved to some other module.
  */
 //FIXME: The types for getData() and getAdditionalHeaders() are probably wrong for now pending a
 //decision on the ILP packet format
+@Deprecated
 public class InterledgerPaymentRequest {
 
   private InterledgerAddress address;
