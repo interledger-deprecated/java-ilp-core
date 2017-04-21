@@ -51,6 +51,18 @@ public class PskMessageBuilder {
    * @param value The value associated with the header.
    */
   public PskMessageBuilder addPublicHeader(String name, String value) {
+    Objects.requireNonNull(name, "Cannot add null header name");
+    Objects.requireNonNull(value, "Cannot add null header value");
+    
+    //TODO: not sure about this. the writers will set the header correctly, so it makes sense that
+    //we prevent this happening. on the other hand, we are coupling this convenience builder to the
+    //internal writer implementation.
+    if (name.equalsIgnoreCase(PskMessageHeader.PublicHeaders.ENCRYPTION)) {
+      throw new IllegalArgumentException(
+          "Encryption headers should not be added manually, "
+          + "the message writer will set the appropriate header");
+    }
+    
     message.addPublicHeader(name, value);
     
     return this;

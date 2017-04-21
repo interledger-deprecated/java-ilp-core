@@ -33,14 +33,15 @@ public class EncryptedPskMessageReader extends UnencryptedPskMessageReader {
   }
 
   @Override
-  protected void parsePrivatePortion(StreamReader reader, PskMessageImpl message) throws Exception {
+  protected void parsePrivatePortion(StreamReader reader, PskMessageImpl message,
+      boolean parseHeaders) throws Exception {
 
     PskEncryptionHeader encryptionHeader = PskUtils.getEncryptionHeader(message);
 
     switch (encryptionHeader.getEncryptionType()) {
       case NONE:
         /* no encryption, let the unencrypted reader do its thing */
-        super.parsePrivatePortion(reader, message);
+        super.parsePrivatePortion(reader, message, true);
         break;
         
       case AES_256_GCM:
@@ -72,7 +73,7 @@ public class EncryptedPskMessageReader extends UnencryptedPskMessageReader {
       StreamReader plaintextReader = new StreamReader(bis);
 
       /* we've decrypted the data, so we can simply let the underlying reader do its thing */
-      super.parsePrivatePortion(plaintextReader, message);
+      super.parsePrivatePortion(plaintextReader, message, true);
     }
   }
 }

@@ -74,8 +74,12 @@ public class UnencryptedPskMessageReader implements PskMessageReader {
     /* read and populate the public headers */
     parseHeaders(reader, message, true);
 
+    PskEncryptionHeader encryptionHeader = PskUtils.getEncryptionHeader(message);
+    
     /* the remainder of the data *might* be unencrypted, so we should try read it if possible */
-    parsePrivatePortion(reader, message);
+    
+    parsePrivatePortion(reader, message,
+        PskEncryptionType.NONE == encryptionHeader.getEncryptionType());
   }
 
   /**
@@ -84,11 +88,12 @@ public class UnencryptedPskMessageReader implements PskMessageReader {
    * 
    * @param reader The reader providing access to the underlying message content.
    * @param message A message to populate with the content read from the input.
+   * @param parseHeaders Indicates if the reader should attempt to parse the private headers or not
    */
-  protected void parsePrivatePortion(StreamReader reader, PskMessageImpl message) throws Exception {
-    PskEncryptionHeader encryptionHeader = PskUtils.getEncryptionHeader(message);
+  protected void parsePrivatePortion(StreamReader reader, PskMessageImpl message,
+      boolean parseHeaders) throws Exception {
 
-    if (PskEncryptionType.NONE == encryptionHeader.getEncryptionType()) {
+    if (parseHeaders) {
       parseHeaders(reader, message, false);
     }
 
