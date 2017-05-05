@@ -1,5 +1,6 @@
 package org.interledger.encoding;
 
+import java.io.FilterOutputStream;
 import java.io.IOException;
 
 import java.io.OutputStream;
@@ -14,9 +15,10 @@ import java.io.OutputStream;
  * @author adrianhopebailie
  *
  */
-public class OerOutputStream extends OutputStream {
-
-  protected final OutputStream stream;
+public class OerOutputStream extends FilterOutputStream {
+  
+  public static final long MAX_UINT_32_VALUE = 4294967295L;
+  public static final int MAX_VAR_UINT_VALUE = 16777215;
 
   /**
    * Creates an <code>OerOutputStream</code> instance.
@@ -24,12 +26,7 @@ public class OerOutputStream extends OutputStream {
    * @param stream the underlying output stream to write to.
    */
   public OerOutputStream(OutputStream stream) {
-    this.stream = stream;
-  }
-
-  @Override
-  public void write(int value) throws IOException {
-    stream.write(value);
+    super(stream);
   }
 
   /**
@@ -43,7 +40,7 @@ public class OerOutputStream extends OutputStream {
       throw new IllegalArgumentException(value + " exceeds 8 bit representation limit.");
     }
 
-    stream.write(value);
+    write(value);
   }
 
   /**
@@ -57,8 +54,8 @@ public class OerOutputStream extends OutputStream {
       throw new IllegalArgumentException(value + "exceeds 16 bit representation limit.");
     }
 
-    stream.write((value >> 8));
-    stream.write(value);
+    write((value >> 8));
+    write(value);
   }
 
   /**
@@ -67,14 +64,15 @@ public class OerOutputStream extends OutputStream {
    * @param value The value to write to the stream. Must be in the range 0-4294967295.
    */
   public void write32BitUInt(long value) throws IOException {
-    int max = ((1 << 31) - 1);
-    if (value > max) {
-      throw new IllegalArgumentException(Long.toString(value) + "is greater than 32 bits." + max);
+    if (value > MAX_UINT_32_VALUE) {
+      throw new IllegalArgumentException(
+          value + " is greater than 32 bit unsigned int maximum value (" + MAX_UINT_32_VALUE + ")");
     }
-    stream.write((byte) (value >> 24 & 255));
-    stream.write((byte) (value >> 16 & 255));
-    stream.write((byte) (value >> 8 & 255));
-    stream.write((byte) (value >> 0 & 255));
+
+    write((byte) (value >> 24 & 255));
+    write((byte) (value >> 16 & 255));
+    write((byte) (value >> 8 & 255));
+    write((byte) (value >> 0 & 255));
   }
 
   /**
@@ -83,26 +81,27 @@ public class OerOutputStream extends OutputStream {
    * @param value The value to write to the stream. Must be in the range 0-16777215 (3 bytes).
    */
   public void writeVarUInt(int value) throws IOException {
-    // We only support a 3 byte length indicator otherwise we go beyond
-    // Integer.MAX_SIZE
+    if (value > MAX_VAR_UINT_VALUE) {
+      throw new IllegalArgumentException(
+          "Integers of greater than " + MAX_VAR_UINT_VALUE + " are not supported.");
+    }
+    
+    /* We only support a 3 byte length indicator otherwise we go beyond Integer.MAX_SIZE */
 
     // TODO add some safe checks
     if (value <= 255) {
-      stream.write(1);
-      stream.write(value);
+      write(1);
+      write(value);
     } else if (value <= 65535) {
-      stream.write(2);
-      stream.write((value >> 8));
-      stream.write(value);
-    } else if (value <= 16777215) {
-      stream.write(3);
-      stream.write((value >> 16));
-      stream.write((value >> 8));
-      stream.write(value);
+      write(2);
+      write((value >> 8));
+      write(value);
     } else {
-      throw new IllegalArgumentException("Integers of greater than 16777215 are not supported.");
+      write(3);
+      write((value >> 16));
+      write((value >> 8));
+      write(value);
     }
-
   }
 
   /**
@@ -114,10 +113,10 @@ public class OerOutputStream extends OutputStream {
     if (bytes == null) {
       throw new IllegalArgumentException("Cannot write null byte array to the stream.");
     }
-      
+
     writeLengthIndicator(bytes.length);
 
-    stream.write(bytes);
+    write(bytes);
   }
 
   /**
@@ -128,50 +127,25 @@ public class OerOutputStream extends OutputStream {
   protected void writeLengthIndicator(int length) throws IOException {
 
     if (length < 128) {
-      stream.write(length);
+      write(length);
     } else if (length <= 255) {
       // Write length of length byte "1000 0001"
-      stream.write(128 + 1);
-      stream.write(length);
+      write(128 + 1);
+      write(length);
     } else if (length <= 65535) {
       // Write length of length byte "1000 0010"
-      stream.write(128 + 2);
-      stream.write((length >> 8));
-      stream.write(length);
+      write(128 + 2);
+      write((length >> 8));
+      write(length);
     } else if (length <= 16777215) {
       // Write length of length byte "1000 0011"
-      stream.write(128 + 3);
-      stream.write((length >> 16));
-      stream.write((length >> 8));
-      stream.write(length);
+      write(128 + 3);
+      write((length >> 16));
+      write((length >> 8));
+      write(length);
     } else {
       throw new IllegalArgumentException(
           "Field lengths of greater than 16777215 are not supported.");
-    }
-  }
-
-  /**
-   * Flushes the stream. This will write any buffered output bytes and flush through to the
-   * underlying stream.
-   *
-   * @throws IOException If an I/O error has occurred.
-   */
-  public void flush() throws IOException {
-    stream.flush();
-  }
-
-  /**
-   * Closes the stream. This method must be called to release any resources associated with the
-   * stream.
-   */
-  public void close() {
-    try {
-      flush();
-      stream.close();
-    } catch (Exception e) {
-      // TODO: Improvement. Inject Logger.
-      System.out.println("WARN: Couldn't properly close the stream due to " + e.toString()
-          + ", Some data could have not been flushed to disk");
     }
   }
 }
