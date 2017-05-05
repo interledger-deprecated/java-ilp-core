@@ -2,8 +2,8 @@ package org.interledger.quoting.model;
 
 import org.interledger.ilp.InterledgerAddress;
 
-import javax.money.MonetaryAmount;
 import java.time.Duration;
+import javax.money.MonetaryAmount;
 
 
 /**

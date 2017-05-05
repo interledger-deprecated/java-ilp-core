@@ -2,13 +2,15 @@ package org.interledger.ilp;
 
 import org.interledger.cryptoconditions.Condition;
 
-import javax.money.MonetaryAmount;
 import java.time.ZonedDateTime;
-
+import javax.money.MonetaryAmount;
 
 /**
  * An Interledger Payment Request as defined in ILP RFC 11 at:
+ * 
+ * <p>
  * https://github.com/interledger/rfcs/blob/master/0011-interledger-payment-request/0011-interledger-payment-request.md
+ * </p>
  * 
  * @author adrianhopebailie
  */
