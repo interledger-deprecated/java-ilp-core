@@ -1,6 +1,6 @@
 package org.interledger.setup.model;
 
-import org.interledger.ilp.InterledgerAddress;
+import org.interledger.InterledgerAddress;
 
 import javax.money.CurrencyUnit;
 
