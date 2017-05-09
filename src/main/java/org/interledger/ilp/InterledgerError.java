@@ -10,7 +10,6 @@ import org.interledger.InterledgerAddressBuilder;
  * @REF: REF: https://interledger.org/rfcs/0003-interledger-protocol/#errors
  */
 public class InterledgerError {
-
   /**
    * Valid error codes that might be encountered during an Interledger payment.
    */
@@ -41,21 +40,18 @@ public class InterledgerError {
      * code value.
      */
     enum ErrorType {
-      FINAL('F'),
-      TEMPORARY('T'),
-      RELATIVE('R');
+      FINAL('F'), TEMPORARY('T'), RELATIVE('R');
 
-      private final String t;
+      private final String errorPrefix;
 
-      private ErrorType(char t) {
-        this.t = Character.toString(t);
+      private ErrorType(char prefix) {
+        this.errorPrefix = Character.toString(prefix);
       }
 
       @Override
       public String toString() {
-        return t;
+        return errorPrefix;
       }
-
     }
 
     final String code;
@@ -95,18 +91,20 @@ public class InterledgerError {
     }
 
     /**
-     * <p>Accessor for this ErrorCode's {@code code} property.</p>
+     * Accessor for this ErrorCode's {@code code} property.
      *
-     * <p>Per IL-RFC-3: "Implementations SHOULD NOT depend on the name instead of the code. The
-     * name is primarily provided as a convenience to facilitate debugging by humans. If the name
-     * does not match the code, the code is the definitive identifier of the error."</p>
+     * <p>
+     * Per IL-RFC-3: "Implementations SHOULD NOT depend on the name instead of the code. The name is
+     * primarily provided as a convenience to facilitate debugging by humans. If the name does not
+     * match the code, the code is the definitive identifier of the error."
+     * </p>
      */
     public String getCode() {
       return this.code;
     }
 
     /**
-     * Returns the {@link Type} of this {@link ErrorCode}.
+     * Returns the {@link ErrorType} of this {@link ErrorCode}.
      */
     public ErrorType getType() {
       return this.type;
@@ -123,19 +121,16 @@ public class InterledgerError {
   // This way our code can differentiate between a coding error
   // (developer sent a null by mistake) and the real intention of not
   // sending selfAddress.
-  static final InterledgerAddress TRIGGERING_ILP_NODE = new InterledgerAddressBuilder()
-      .value("g.selfAddressNONE").build();
+  static final InterledgerAddress TRIGGERING_ILP_NODE =
+      new InterledgerAddressBuilder().value("g.selfAddressNONE").build();
 
   /**
    * Constructor used by ILP Connectors.
    */
-  private InterledgerError(
-      final ErrorCode errorCode,
-      final InterledgerAddress triggeredBy,
-      final ZonedDateTime triggeredAt,
-      List<InterledgerAddress> forwardedBy,
-      final InterledgerAddress selfAddress,
-      final String data) {
+  private InterledgerError(final ErrorCode errorCode, final InterledgerAddress triggeredBy,
+      final ZonedDateTime triggeredAt, List<InterledgerAddress> forwardedBy,
+      final InterledgerAddress selfAddress, final String data) {
+
     this.errorCode = Objects.requireNonNull(errorCode, "errorCode   can not be null");
     this.triggeredBy = Objects.requireNonNull(triggeredBy, "triggeredBy can not be null");
     this.triggeredAt = Objects.requireNonNull(triggeredAt, "triggeredAt can not be null");
@@ -147,10 +142,10 @@ public class InterledgerError {
       for (InterledgerAddress forwardedByConnector : forwardedBy) {
         if (forwardedByConnector.getValue().equals(selfAddress)) {
           // TODO:(0) Recheck next claim:
-          //   On the way back of forwardedBy-connectors our ilpConnector selfAddress
-          //   has already been found. This means that the error is
-          //   "running-in-circles" trying to reach the client. This must never happen.
-          //   launch a RuntimeException to break the loop.
+          // On the way back of forwardedBy-connectors our ilpConnector selfAddress
+          // has already been found. This means that the error is
+          // "running-in-circles" trying to reach the client. This must never happen.
+          // launch a RuntimeException to break the loop.
           throw new RuntimeException("CRITICAL, InterledgerError: " + selfAddress.getValue()
               + "was already found in the forwardedBy list");
         }
@@ -161,50 +156,61 @@ public class InterledgerError {
   }
 
   /**
-   * Constructs an instance of <code>InterledgerException</code>
-   * with default parameters for forwardedBy (Empty list) and
-   * triggeredAt (ZonedDateTime.now()).
-   * In most situations such values match the default ones
-   * when triggering a new exception (vs an exception received
-   * from another ILP node that is being forwarded back to
-   * originating request clients)
+   * Constructs an instance of <code>InterledgerException</code> with default parameters for
+   * forwardedBy (Empty list) and triggeredAt (ZonedDateTime.now()). In most situations such values
+   * match the default ones when triggering a new exception (vs an exception received from another
+   * ILP node that is being forwarded back to originating request clients).
    *
-   * Check the RFC https://interledger.org/rfcs/0003-interledger-protocol/#errors
-   * for the newest updated doc.
+   * <p>
+   * Check the RFC https://interledger.org/rfcs/0003-interledger-protocol/#errors for the newest
+   * updated doc.
+   * </p>
    */
-  public InterledgerError(
-      ErrorCode errorCode,
-      InterledgerAddress triggeredBy,
-      String data) {
+  public InterledgerError(ErrorCode errorCode, InterledgerAddress triggeredBy, String data) {
     this(errorCode, triggeredBy, ZonedDateTime.now(), new java.util.ArrayList<InterledgerAddress>(),
         TRIGGERING_ILP_NODE, "");
   }
 
 
+  /**
+   * Returns the {@link ErrorCode} code of this {@link InterledgerError}.
+   */
   public ErrorCode getErrCode() {
     return errorCode;
   }
 
   /**
-   * @return ErrorType categorizes the error as FINAL, TEMPORARY or RELATIVE
-   * (See RFC for more info)
+   * Returns the ErrorType that categorizes the error as FINAL, TEMPORARY or RELATIVE (See RFC for
+   * more info).
    */
   public ErrorCode.ErrorType getErrorType() {
     return this.errorCode.getType();
   }
 
+  /**
+   * Returns the interledger address of the party that triggered this error.
+   */
   public InterledgerAddress getTriggeredBy() {
     return triggeredBy;
   }
 
+  /**
+   * Returns a list of interledger addresse of the parties that forwarded this error.
+   */
   public List<InterledgerAddress> getForwardedBy() {
     return forwardedBy;
   }
 
+  /**
+   * Returns the time at which the error was triggered.
+   */
   public ZonedDateTime getTriggeredAt() {
     return triggeredAt;
   }
 
+  /**
+   * Returns any data associated with the error.
+   */
   public String getData() {
     return data;
   }

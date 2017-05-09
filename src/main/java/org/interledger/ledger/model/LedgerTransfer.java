@@ -3,9 +3,9 @@ package org.interledger.ledger.model;
 import org.interledger.InterledgerAddress;
 import org.interledger.cryptoconditions.Condition;
 
-import javax.money.MonetaryAmount;
 import java.time.ZonedDateTime;
 import java.util.UUID;
+import javax.money.MonetaryAmount;
 
 
 /**
@@ -22,7 +22,7 @@ public interface LedgerTransfer {
    * Returns the account from which funds will be transferred.
    */
   InterledgerAddress getFromAccount();
-  
+
   /**
    * Returns the account to which funds will be transferred.
    */
@@ -67,7 +67,7 @@ public interface LedgerTransfer {
    * The date when the transfer expires and will be rejected by the ledger.
    */
   ZonedDateTime getExpiresAt();
-  
+
   /**
    * Indicates if the transfer has been rejected.
    */

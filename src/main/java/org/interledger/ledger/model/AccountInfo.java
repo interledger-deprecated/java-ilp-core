@@ -2,8 +2,8 @@ package org.interledger.ledger.model;
 
 import org.interledger.InterledgerAddress;
 
-import javax.money.MonetaryAmount;
 import java.security.PublicKey;
+import javax.money.MonetaryAmount;
 
 
 /**
