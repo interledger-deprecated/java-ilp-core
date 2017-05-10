@@ -44,7 +44,7 @@ public class InterledgerError {
 
       private final String errorPrefix;
 
-      private ErrorType(char prefix) {
+      ErrorType(final char prefix) {
         this.errorPrefix = Character.toString(prefix);
       }
 
@@ -128,8 +128,8 @@ public class InterledgerError {
    * Constructor used by ILP Connectors.
    */
   private InterledgerError(final ErrorCode errorCode, final InterledgerAddress triggeredBy,
-      final ZonedDateTime triggeredAt, List<InterledgerAddress> forwardedBy,
-      final InterledgerAddress selfAddress, final String data) {
+    final ZonedDateTime triggeredAt, List<InterledgerAddress> forwardedBy,
+    final InterledgerAddress selfAddress, final String data) {
 
     this.errorCode = Objects.requireNonNull(errorCode, "errorCode   can not be null");
     this.triggeredBy = Objects.requireNonNull(triggeredBy, "triggeredBy can not be null");
@@ -147,7 +147,7 @@ public class InterledgerError {
           // "running-in-circles" trying to reach the client. This must never happen.
           // launch a RuntimeException to break the loop.
           throw new RuntimeException("CRITICAL, InterledgerError: " + selfAddress.getValue()
-              + "was already found in the forwardedBy list");
+            + "was already found in the forwardedBy list");
         }
       }
       forwardedBy.add(selfAddress);
