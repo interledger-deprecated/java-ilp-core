@@ -12,7 +12,7 @@ public class PskEncryptionHeader extends BasicPskHeader {
    *
    * @param encryptionType The encryption type indicated.
    */
-  public PskEncryptionHeader(PskEncryptionType encryptionType) {
+  public PskEncryptionHeader(final PskEncryptionType encryptionType) {
     super(PskMessageHeader.PublicHeaders.ENCRYPTION, encryptionType.toString());
   }
 
@@ -23,12 +23,12 @@ public class PskEncryptionHeader extends BasicPskHeader {
    * @param encryptionType The encryption type indicated.
    * @param authenticationTag The authentication tag value.
    */
-  public PskEncryptionHeader(PskEncryptionType encryptionType, byte[] authenticationTag) {
+  public PskEncryptionHeader(final PskEncryptionType encryptionType, final byte[] authenticationTag) {
     super(PskMessageHeader.PublicHeaders.ENCRYPTION,
       encryptionType.toString() + " " + Base64.getUrlEncoder().encodeToString(authenticationTag));
   }
 
-  public PskEncryptionHeader(String name, String value) {
+  public PskEncryptionHeader(final String name, final String value) {
     super(name, value);
   }
 

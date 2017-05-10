@@ -19,26 +19,27 @@ import javax.crypto.spec.SecretKeySpec;
  * AES-256-GCM.
  */
 public class EncryptedPskMessageWriter extends UnencryptedPskMessageWriter {
-  
+
   private SecretKey key;
 
   /**
    * Constructs a new instance of the writer, using the given clear pre-shared key.
-   * 
+   *
    * @param key The clear value of the pre-shared key.
    */
   public EncryptedPskMessageWriter(byte[] key) {
     if (key == null || key.length != PskUtils.AES_KEY_LEN_BYTES) {
       throw new IllegalArgumentException(
-          "Invalid key - must be " + PskUtils.AES_KEY_LEN_BYTES + " bytes");
+        "Invalid key - must be " + PskUtils.AES_KEY_LEN_BYTES + " bytes");
     }
 
     this.key = new SecretKeySpec(key, "AES");
   }
 
   @Override
-  public void writeMessage(PskMessage message, OutputStream out) {
-    Objects.requireNonNull(out, "Cannot write to null outputstream");
+  public void writeMessage(final PskMessage message, final OutputStream out) {
+    Objects.requireNonNull(message, "Cannot write null message");
+    Objects.requireNonNull(message, "Cannot write to null outputstream");
     validateMessage(message);
 
     try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
@@ -65,7 +66,7 @@ public class EncryptedPskMessageWriter extends UnencryptedPskMessageWriter {
       List<PskMessageHeader> publicHeaders = message.getPublicHeaders();
 
       PskMessageHeader encryptionHeader =
-          new PskEncryptionHeader(PskEncryptionType.AES_256_GCM, encrypted.getAuthenticationTag());
+        new PskEncryptionHeader(PskEncryptionType.AES_256_GCM, encrypted.getAuthenticationTag());
 
       publicHeaders.add(encryptionHeader);
 

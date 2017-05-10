@@ -2,6 +2,7 @@ package org.interledger.wire.codecs;
 
 import org.interledger.ilqp.QuoteLiquidityResponse;
 import org.interledger.wire.InterledgerPacketType;
+import org.interledger.wire.codecs.packets.InterledgerPacketCodec;
 import org.interledger.wire.codecs.packets.QuoteLiquidityResponsePacketType;
 
 /**
@@ -9,7 +10,7 @@ import org.interledger.wire.codecs.packets.QuoteLiquidityResponsePacketType;
  * QuoteLiquidityResponse}.
  */
 public interface QuoteLiquidityResponseCodec extends
-    InterledgerPacketCodec<QuoteLiquidityResponse> {
+  InterledgerPacketCodec<QuoteLiquidityResponse> {
 
   InterledgerPacketType TYPE = new QuoteLiquidityResponsePacketType();
 

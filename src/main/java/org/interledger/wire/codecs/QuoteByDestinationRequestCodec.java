@@ -2,6 +2,7 @@ package org.interledger.wire.codecs;
 
 import org.interledger.ilqp.QuoteByDestinationRequest;
 import org.interledger.wire.InterledgerPacketType;
+import org.interledger.wire.codecs.packets.InterledgerPacketCodec;
 import org.interledger.wire.codecs.packets.QuoteByDestinationRequestPacketType;
 
 /**

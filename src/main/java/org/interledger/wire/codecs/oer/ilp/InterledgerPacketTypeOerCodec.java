@@ -9,7 +9,7 @@ import org.interledger.wire.codecs.Codec;
 import org.interledger.wire.codecs.CodecContext;
 import org.interledger.wire.InterledgerPacketType;
 import org.interledger.wire.InterledgerPacketType.InvalidPacketTypeException;
-import org.interledger.wire.codecs.InterledgerPacketTypeCodec;
+import org.interledger.wire.codecs.packets.InterledgerPacketTypeCodec;
 import org.interledger.wire.codecs.oer.OerUint8Codec.OerUint8;
 
 /**

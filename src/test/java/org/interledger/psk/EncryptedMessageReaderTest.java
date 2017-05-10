@@ -15,7 +15,7 @@ import java.nio.charset.StandardCharsets;
  */
 public class EncryptedMessageReaderTest {
 
-  /* to make testing easier, we set the nonce and key as all 0's */
+  /* to make testing easier, we set the nonce and sharedSecretKey as all 0's */
   public static final byte[] nonce = new byte[16];
   public static final byte[] key = new byte[256 / 8]; /* 256 bits long */
   

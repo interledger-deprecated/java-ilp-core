@@ -21,7 +21,7 @@ import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
 /**
- * Unit tests to validate the {@link Codec} functionality for all Interledger packets.
+ * Unit tests to validate the {@link Codec} functionality for all {@link InterledgerPayment} packets.
  */
 @RunWith(Parameterized.class)
 public class InterledgerPaymentOerCodecTests {
@@ -33,29 +33,30 @@ public class InterledgerPaymentOerCodecTests {
   @Parameters
   public static Collection<Object[]> data() {
 
+    // This ByteArrayOutputStream contains a random amount of 32kb for testing purposes.
     final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
     for (int i = 0; i < 32768; i++) {
       byteArrayOutputStream.write(i);
     }
 
     return Arrays.asList(new Object[][]{
-        {new InterledgerPayment.Builder().
-            destinationAccount(InterledgerAddressBuilder.builder().value("test3.foo").build())
-            .destinationAmount(100L)
-            .data(new byte[]{})
-            .build()},
+      {new InterledgerPayment.Builder().
+        destinationAccount(InterledgerAddressBuilder.builder().value("test3.foo").build())
+        .destinationAmount(100L)
+        .data(new byte[]{})
+        .build()},
 
-        {new InterledgerPayment.Builder().
-            destinationAccount(InterledgerAddressBuilder.builder().value("test1.bar").build())
-            .destinationAmount(50L)
-            .data(new byte[]{1, 2, 3, 4, 5, 6, 7, 8})
-            .build()},
+      {new InterledgerPayment.Builder().
+        destinationAccount(InterledgerAddressBuilder.builder().value("test1.bar").build())
+        .destinationAmount(50L)
+        .data(new byte[]{1, 2, 3, 4, 5, 6, 7, 8})
+        .build()},
 
-        {new InterledgerPayment.Builder().
-            destinationAccount(InterledgerAddressBuilder.builder().value("test1.bar").build())
-            .destinationAmount(50L)
-            .data(byteArrayOutputStream.toByteArray())
-            .build()},
+      {new InterledgerPayment.Builder().
+        destinationAccount(InterledgerAddressBuilder.builder().value("test1.bar").build())
+        .destinationAmount(50L)
+        .data(byteArrayOutputStream.toByteArray())
+        .build()},
 
     });
   }
@@ -64,8 +65,6 @@ public class InterledgerPaymentOerCodecTests {
    * The primary difference between this test and {@link #testInterledgerPaymentCodec()} is that
    * this context call specifies the type, whereas the test below determines the type from the
    * payload.
-   *
-   * @throws IOException
    */
   @Test
   public void testIndividualRead() throws IOException {
@@ -78,10 +77,8 @@ public class InterledgerPaymentOerCodecTests {
 
   /**
    * The primary difference between this test and {@link #testIndividualRead()} is that
-   * this context determines the packet type from the payload, whereas the test above specifies the
+   * this context determines the interledgerPayment type from the payload, whereas the test above specifies the
    * type in the method call.
-   *
-   * @throws IOException
    */
   @Test
   public void testInterledgerPaymentCodec() throws Exception {

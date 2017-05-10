@@ -59,7 +59,7 @@ public interface InterledgerPayment extends InterledgerPacket {
 
   /**
    * Arbitrary data for the receiver that is set by the transport layer of a payment (for example,
-   * this may contain PSK Headers.)
+   * this may contain PSK data).
    *
    * @return A byte array.
    */
@@ -80,7 +80,7 @@ public interface InterledgerPayment extends InterledgerPacket {
      * @param destinationAccount An instance of {@link InterledgerAddress}.
      */
     public Builder destinationAccount(
-        final InterledgerAddress destinationAccount) {
+      final InterledgerAddress destinationAccount) {
       this.destinationAccount = Objects.requireNonNull(destinationAccount);
       return this;
     }
@@ -91,7 +91,7 @@ public interface InterledgerPayment extends InterledgerPacket {
      * @param destinationAmount An instance of {@link MonetaryAmount}.
      */
     public Builder destinationAmount(
-        final Long destinationAmount) {
+      final Long destinationAmount) {
       this.destinationAmount = Objects.requireNonNull(destinationAmount);
       return this;
     }
@@ -134,9 +134,9 @@ public interface InterledgerPayment extends InterledgerPacket {
       private Impl(final Builder builder) {
         Objects.requireNonNull(builder);
         this.destinationAccount = Objects
-            .requireNonNull(builder.destinationAccount, "destinationAccount must not be null!");
+          .requireNonNull(builder.destinationAccount, "destinationAccount must not be null!");
         this.destinationAmount = Objects
-            .requireNonNull(builder.destinationAmount, "destinationAmount must not be null!");
+          .requireNonNull(builder.destinationAmount, "destinationAmount must not be null!");
         this.data = Objects.requireNonNull(builder.data, "data must not be null!");
       }
 
