@@ -12,9 +12,10 @@ public enum PskEncryptionType {
 
   /**
    * Internal constructor that binds the enum to the description found in PSK message headers.
-   * @param name    The description of the encryption type found in PSK message headers.
+   *
+   * @param name The description of the encryption type found in PSK message headers.
    */
-  PskEncryptionType(String name) {
+  PskEncryptionType(final String name) {
     this.name = name;
   }
 
@@ -25,12 +26,11 @@ public enum PskEncryptionType {
 
   /**
    * Convenience method to return the {@link PskEncryptionType} that matches the text description.
-   * 
-   * @param description The text description of the encryption type, typically found in PSK message
-   *        headers.
+   *
+   * @param description The text description of the encryption type, typically found in PSK message headers.
    * @return The matching {@link PskEncryptionType} if one can be found, otherwise null.
    */
-  public static PskEncryptionType fromString(String description) {
+  public static PskEncryptionType fromString(final String description) {
     Objects.requireNonNull(description);
 
     for (PskEncryptionType type : PskEncryptionType.values()) {

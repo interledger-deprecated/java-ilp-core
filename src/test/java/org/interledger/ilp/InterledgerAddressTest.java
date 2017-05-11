@@ -3,6 +3,8 @@ package org.interledger.ilp;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import org.interledger.InterledgerAddress;
+import org.interledger.InterledgerAddressBuilder;
 import org.junit.Test;
 
 /**

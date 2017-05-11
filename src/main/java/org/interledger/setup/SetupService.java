@@ -1,6 +1,6 @@
 package org.interledger.setup;
 
-import org.interledger.ilp.InterledgerPaymentRequest;
+import org.interledger.ipr.InterledgerPaymentRequest;
 import org.interledger.setup.model.Receiver;
 import org.interledger.setup.model.ReceiverQuery;
 

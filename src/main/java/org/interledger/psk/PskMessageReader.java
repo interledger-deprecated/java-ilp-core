@@ -15,7 +15,7 @@ public interface PskMessageReader {
    * @param message A buffer containing the encoded PSK message.
    * @return The message read from the buffer.
    */
-  public PskMessage readMessage(byte[] message);
+  PskMessage readMessage(byte[] message);
 
   /**
    * Reads the PskMessage from the input stream. Note: it is the responsibility of the caller
@@ -24,5 +24,5 @@ public interface PskMessageReader {
    * @param in An input stream containing the encoded PSK message.
    * @return The message read from the stream.
    */
-  public PskMessage readMessage(InputStream in);
+  PskMessage readMessage(InputStream in);
 }

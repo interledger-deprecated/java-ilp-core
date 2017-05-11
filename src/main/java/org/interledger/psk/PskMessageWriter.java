@@ -15,7 +15,7 @@ public interface PskMessageWriter {
    * @param message The message to write
    * @return    a buffer containing the encoded PSK message.
    */
-  public byte[] writeMessage(PskMessage message);
+  byte[] writeMessage(PskMessage message);
   
   /**
    * Writes the PskMessage to the given output stream.
@@ -23,5 +23,5 @@ public interface PskMessageWriter {
    * @param message The message to write.
    * @param out The output stream to write the message to.
    */
-  public void writeMessage(PskMessage message, OutputStream out);
+  void writeMessage(PskMessage message, OutputStream out);
 }

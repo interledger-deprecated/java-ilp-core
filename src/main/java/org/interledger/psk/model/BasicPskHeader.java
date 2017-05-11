@@ -5,24 +5,24 @@ package org.interledger.psk.model;
  */
 public class BasicPskHeader implements PskMessageHeader {
 
-  private String name;
-  private String value;
+  private final String name;
+  private final String value;
 
   /**
    * Constructs a new {@link BasicPskHeader}.
-   * 
+   *
    * @param name The name of the header. Must not be null or an empty string.
    * @param value The value associated with the header. Must not be null or an empty string.
    */
-  public BasicPskHeader(String name, String value) {
+  public BasicPskHeader(final String name, final String value) {
     if (name == null || name.isEmpty() || name.contains("\n")) {
       throw new IllegalArgumentException(
-          "Header name cannot be null or empty and must not contain line endings ('\n')");
+        "Header name cannot be null or empty and must not contain line endings ('\n')");
     }
 
     if (value == null || value.isEmpty() || value.contains("\n")) {
       throw new IllegalArgumentException(
-          "Header value cannot be null or empty and must not contain line endings ('\n')");
+        "Header value cannot be null or empty and must not contain line endings ('\n')");
     }
 
     /* leading and trailing whitespace is optional, remove it. */
@@ -41,7 +41,34 @@ public class BasicPskHeader implements PskMessageHeader {
   }
 
   @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    BasicPskHeader that = (BasicPskHeader) o;
+
+    if (!name.equals(that.name)) {
+      return false;
+    }
+    return value.equals(that.value);
+  }
+
+  @Override
+  public int hashCode() {
+    int result = name.hashCode();
+    result = 31 * result + value.hashCode();
+    return result;
+  }
+
+  @Override
   public String toString() {
-    return name + ": " + value;
+    return "BasicPskHeader{" +
+      "name='" + name + '\'' +
+      ", value='" + value + '\'' +
+      '}';
   }
 }
