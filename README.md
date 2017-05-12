@@ -1,4 +1,12 @@
-# Interledger Core (Java) [![Join the chat at https://gitter.im/interledger/java](https://badges.gitter.im/interledger/java.svg)](https://gitter.im/interledger/java) [![CircleCI](https://circleci.com/gh/interledger/java-ilp-core.svg?style=svg)](https://circleci.com/gh/interledger/java-ilp-core)
+# Interledger Core (Java) [![join the chat on gitter][gitter-image]][gitter-url] [![circle-ci][circle-image]][circle-url] [![codecov][codecov-image]][codecov-url]
+
+[gitter-url]: https://gitter.im/interledger/java
+[gitter-image]: https://badges.gitter.im/interledger/java.svg
+[circle-image]: https://circleci.com/gh/interledger/java-ilp-core.svg?style=shield
+[circle-url]: https://circleci.com/gh/interledger/java-ilp-core
+[codecov-image]: https://codecov.io/gh/interledger/java-ilp-core/branch/master/graph/badge.svg
+[codecov-url]: https://codecov.io/gh/interledger/java-ilp-core
+
 
 Base library for Interledger projects providing service interfaces, event descriptions, exceptions and data models.
 
@@ -26,6 +34,13 @@ To build the project, execute the following command from the top-level folder th
 
 ```bash
 $ gradle build test
+```
+
+#### Checkstyle
+The project uses checkstyle to keep code style consistent. To run the style checks:
+
+```bash
+$ gradle build check
 ```
 
 ### Contributing
