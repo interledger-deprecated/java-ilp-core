@@ -66,7 +66,7 @@ public class InterledgerPaymentWithPskCodecTests {
       .setApplicationData(applicationData)
       .toMessage();
 
-    final PskMessageWriter pskMessageWriter = PskWriterFactory.getWriter(sharedSecretKey);
+    final PskMessageWriter pskMessageWriter = PskWriterFactory.getEncryptedWriter(sharedSecretKey);
     final byte[] pskMessageBytes = pskMessageWriter.writeMessage(pskMessage);
 
     return Arrays.asList(new Object[][]{
@@ -113,7 +113,7 @@ public class InterledgerPaymentWithPskCodecTests {
         assertThat(decodedPayment.getDestinationAccount(), is(interledgerPayment.getDestinationAccount()));
         assertThat(decodedPayment.getDestinationAmount(), is(interledgerPayment.getDestinationAmount()));
 
-        final PskMessage decodedPskMessage = PskReaderFactory.getReader(sharedSecretKey)
+        final PskMessage decodedPskMessage = PskReaderFactory.getEncryptedReader(sharedSecretKey)
           .readMessage(decodedPayment.getData());
 
         assertThat(decodedPskMessage.getApplicationData(), is(pskMessage.getApplicationData()));

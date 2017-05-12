@@ -35,7 +35,7 @@ public class EncryptedMessageWriterTest {
         .setApplicationData("{some_application_data: 123}".getBytes(StandardCharsets.UTF_8))
         .toMessage();
     
-    PskMessageWriter writer = PskWriterFactory.getWriter(key);
+    PskMessageWriter writer = PskWriterFactory.getEncryptedWriter(key);
     
     byte[] data = writer.writeMessage(message);
     
@@ -58,7 +58,7 @@ public class EncryptedMessageWriterTest {
     /* we definitely shouldnt see the application data either */
     assertFalse(messageString.contains("{some_application_data: 123}"));
     
-    PskMessage decrypted = PskReaderFactory.getReader(key).readMessage(data);
+    PskMessage decrypted = PskReaderFactory.getEncryptedReader(key).readMessage(data);
     
     assertEquals(2, decrypted.getPublicHeaders().size());
     assertEquals(1, decrypted.getPrivateHeaders().size());

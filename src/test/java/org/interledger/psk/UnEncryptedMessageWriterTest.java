@@ -25,7 +25,7 @@ public class UnEncryptedMessageWriterTest {
         .setApplicationData("{some_application_data: 123}".getBytes(StandardCharsets.UTF_8))
         .toMessage();
     
-    PskMessageWriter writer = PskWriterFactory.getWriter();
+    PskMessageWriter writer = PskWriterFactory.getUnencryptedWriter();
     
     byte[] data = writer.writeMessage(message);
     

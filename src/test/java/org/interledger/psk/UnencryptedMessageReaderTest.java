@@ -22,7 +22,7 @@ public class UnencryptedMessageReaderTest {
         + "\n"
         + "binary data goes here";
     
-    PskMessageReader reader = PskReaderFactory.getReader();
+    PskMessageReader reader = PskReaderFactory.getUnencryptedReader();
     
     reader.readMessage(testMessage.getBytes(StandardCharsets.UTF_8));
   }
@@ -34,7 +34,7 @@ public class UnencryptedMessageReaderTest {
         + "\n"
         + "binary data goes here";
     
-    PskMessageReader reader = PskReaderFactory.getReader();
+    PskMessageReader reader = PskReaderFactory.getUnencryptedReader();
     
     reader.readMessage(testMessage.getBytes(StandardCharsets.UTF_8));
   }
@@ -46,7 +46,7 @@ public class UnencryptedMessageReaderTest {
         + "\n"
         + "binary data goes here";
     
-    PskMessageReader reader = PskReaderFactory.getReader();
+    PskMessageReader reader = PskReaderFactory.getUnencryptedReader();
     
     PskMessage message = reader.readMessage(testMessage.getBytes(StandardCharsets.UTF_8));
     
@@ -60,7 +60,7 @@ public class UnencryptedMessageReaderTest {
         + "\n"
         + "binary data goes here";
     
-    PskMessageReader reader = PskReaderFactory.getReader();
+    PskMessageReader reader = PskReaderFactory.getUnencryptedReader();
     
     reader.readMessage(testMessage.getBytes(StandardCharsets.UTF_8));
   }
@@ -75,7 +75,7 @@ public class UnencryptedMessageReaderTest {
         + "\n"
         + "binary data goes here";
     
-    PskMessageReader reader = PskReaderFactory.getReader();
+    PskMessageReader reader = PskReaderFactory.getUnencryptedReader();
     
     PskMessage message = reader.readMessage(testMessage.getBytes(StandardCharsets.UTF_8));
     
@@ -104,7 +104,7 @@ public class UnencryptedMessageReaderTest {
         + "\n"
         + "binary data goes here";
     
-    PskMessageReader reader = PskReaderFactory.getReader();
+    PskMessageReader reader = PskReaderFactory.getUnencryptedReader();
     
     PskMessage message = reader.readMessage(testMessage.getBytes(StandardCharsets.UTF_8));
     
@@ -136,7 +136,7 @@ public class UnencryptedMessageReaderTest {
         + "\n"
         + "binary data goes here";
     
-    PskMessageReader reader = PskReaderFactory.getReader();
+    PskMessageReader reader = PskReaderFactory.getUnencryptedReader();
     
     PskMessage message = reader.readMessage(testMessage.getBytes(StandardCharsets.UTF_8));
     
