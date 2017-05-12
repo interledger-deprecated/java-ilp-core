@@ -7,6 +7,7 @@ import org.interledger.psk.model.PskMessageImpl;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -107,44 +108,36 @@ public class PskMessageBuilder {
   }
 
   /**
-   * Sets the Nonce that will be carried in the set of <b>public</b> headers in the PSK message.
-   *
-   * @param nonce The value of the Nonce, expected to be 16 bytes.
+   * Builds the PSK message with the data provided, including adding a Nonce header if none is 
+   * present.
    */
-  public PskMessageBuilder withNonce(final byte[] nonce) {
-    if (nonce == null || nonce.length != 16) {
-      throw new IllegalArgumentException("Invalid Nonce value - Nonce must be 16 bytes.");
-    }
+  public PskMessage toMessage() {
+    addNonce();
 
-    message.addPublicHeader(PskMessageHeader.PublicHeaders.NONCE,
-      Base64.getUrlEncoder().encodeToString(nonce));
-
-    return this;
+    return this.message;
   }
-
+  
   /**
-   * Generates a cryptographically strong Nonce that will be carried in the set of <b>public</b>
-   * headers in the PSK message.
+   * Generates a secure nonce and adds it to the set of <b>public</b> headers in the PSK message
+   * <i>if a nonce header is not already present</i>.
    */
-  public PskMessageBuilder withNonce() {
+  private void addNonce() {
+    
+    if (!message.getPublicHeaders(PskMessageHeader.PublicHeaders.NONCE).isEmpty()) {
+      return;
+    }
+    
     try {
       SecureRandom sr = SecureRandom.getInstanceStrong();
       byte[] nonce = new byte[16];
       sr.nextBytes(nonce);
 
-      withNonce(nonce);
+      message.addPublicHeader(PskMessageHeader.PublicHeaders.NONCE,
+          Base64.getUrlEncoder().encodeToString(nonce));
+
     } catch (NoSuchAlgorithmException nsa) {
       throw new RuntimeException("Could not generate secure nonce", nsa);
     }
-
-    return this;
-  }
-
-  /**
-   * Builds the PSK message with the data provided.
-   */
-  public PskMessage toMessage() {
-    return this.message;
   }
 }
 

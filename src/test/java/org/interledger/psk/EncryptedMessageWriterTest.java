@@ -6,30 +6,38 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import org.interledger.psk.io.UnencryptedPskMessageReader;
-import org.interledger.psk.model.PskMessage;
-import org.junit.Test;
-
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+
+import org.interledger.psk.io.UnencryptedPskMessageReader;
+import org.interledger.psk.model.PskMessage;
+import org.interledger.psk.model.PskMessageHeader;
+import org.junit.Test;
 
 /**
  * JUnit to exercise the {@link UnencryptedPskMessageReader} implementation.
  */
 public class EncryptedMessageWriterTest {
 
-  /* to make testing easier, we set the nonce and sharedSecretKey as all 0's */
-  public static final byte[] nonce = new byte[16];
+  /* to make testing easier, we set the sharedSecretKey as all 0's */
   public static final byte[] key = new byte[256 / 8]; /* 256 bits long */
 
   
   @Test
   public void test() {
     
+    /* we manually add a known nonce into the message for predictability in tests. this should be
+     * frowned on anywhere else */
+    String nonce = Base64.getUrlEncoder().encodeToString(new byte[16]);
+    
     PskMessage message = new PskMessageBuilder()
-        .addPrivateHeader("private header", "\tprivate\theader\tvalue\t").withNonce(nonce)
+        .addPrivateHeader("private header", "\tprivate\theader\tvalue\t")
+        .addPublicHeader(PskMessageHeader.PublicHeaders.NONCE, nonce)
         .setApplicationData("{some_application_data: 123}".getBytes(StandardCharsets.UTF_8))
         .toMessage();
+    
+    PskMessageHeader nonceHeader =
+        message.getPublicHeaders(PskMessageHeader.PublicHeaders.NONCE).get(0);
     
     PskMessageWriter writer = PskWriterFactory.getWriter(key);
     
@@ -45,8 +53,7 @@ public class EncryptedMessageWriterTest {
      * public portion of the message we can expect */
     
     assertTrue(messageString.startsWith("PSK/1.0\n"));
-    assertTrue(
-        messageString.contains("Nonce: " + Base64.getUrlEncoder().encodeToString(nonce) + "\n"));
+    assertTrue(messageString.contains("Nonce: " + nonce + "\n"));
     assertTrue(messageString.contains("Encryption: aes-256-gcm Zty9wEWIRu-saavYXiCtbQ=="));
     
     /* the private header should be encrypted, so we shouldnt be able to see it */

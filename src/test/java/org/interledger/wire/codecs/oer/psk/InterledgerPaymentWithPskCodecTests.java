@@ -54,11 +54,16 @@ public class InterledgerPaymentWithPskCodecTests {
   @Parameters
   public static Collection<Object[]> data() {
 
-    // A sharedSecretKey is created in order to encrypt the private headers and the application data. A nonce is used to generate
-    // the sharedSecretKey, so that the same private headers will not produce the same ciphertext. Also note that the nonce's
-    // inclusion in the ILP payment ensures that multiple payments using the same shared secret result in different hashes.
+    /*
+     * A sharedSecretKey is created in order to encrypt the private headers and the application
+     * data. A nonce is used to generate the sharedSecretKey, so that the same private headers will
+     * not produce the same ciphertext. Also note that the nonce's inclusion in the ILP payment
+     * ensures that multiple payments using the same shared secret result in different hashes.
+     * Note that the nonce is added automatically by the message builder unless a nonce header is 
+     * specifically added.
+     */
 
-    final PskMessage pskMessage = new PskMessageBuilder().withNonce()
+    final PskMessage pskMessage = new PskMessageBuilder()
       .addPrivateHeader(privateHeader1)
       .addPrivateHeader(privateHeader2)
       .addPublicHeader(publicHeader1)
