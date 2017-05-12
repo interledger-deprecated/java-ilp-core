@@ -36,5 +36,12 @@ To build the project, execute the following command from the top-level folder th
 $ gradle build test
 ```
 
+#### Checkstyle
+The project uses checkstyle to keep code style consistent. To run the style checks:
+
+```bash
+$ gradle build check
+```
+
 ### Contributing
 This project utilizes a Pull Request submission model.  Before submitting a pull request, ensure that your build passes with no test failures nor Checkstyle errors.
