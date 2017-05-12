@@ -17,8 +17,8 @@ dependencies:
 
 test:
   post:
-    # run the checkstyle checks 
-    - if [ -e ./gradlew ]; then ./gradlew check;else gradle check;fi
+    # run the checkstyle checks
+    - if [ -e ./gradlew ]; then ./gradlew check;else gradle test ;fi
     # run the code coverage report 
     - if [ -e ./gradlew ]; then ./gradlew jacocoTestReport;else gradle jacocoTestReport;fi
     # gather the junit reports, see https://circleci.com/docs/test-metadata/#gradle-junit-results
