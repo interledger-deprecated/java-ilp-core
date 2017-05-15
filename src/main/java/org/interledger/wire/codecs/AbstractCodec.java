@@ -52,8 +52,8 @@ public abstract class AbstractCodec<T> implements Codec<T> {
    *
    * @param context     An instance of {@link CodecContext}.
    * @param inputStream An instance of {@link InputStream}.
-   * @return
+   * @return An instance of {@link T}.
    */
-  abstract protected T readObject(CodecContext context, InputStream inputStream);
+  protected abstract T readObject(CodecContext context, InputStream inputStream);
 
 }

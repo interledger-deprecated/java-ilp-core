@@ -9,7 +9,8 @@ import org.interledger.wire.codecs.packets.QuoteByDestinationRequestPacketType;
  * An implementation of {@link Codec} that reads and writes instances of {@link
  * QuoteByDestinationRequest}.
  */
-public interface QuoteByDestinationRequestCodec extends InterledgerPacketCodec<QuoteByDestinationRequest> {
+public interface QuoteByDestinationRequestCodec
+    extends InterledgerPacketCodec<QuoteByDestinationRequest> {
 
   InterledgerPacketType TYPE = new QuoteByDestinationRequestPacketType();
 

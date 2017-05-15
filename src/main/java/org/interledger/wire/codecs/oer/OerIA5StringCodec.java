@@ -1,23 +1,22 @@
 package org.interledger.wire.codecs.oer;
 
+import org.interledger.wire.codecs.Codec;
+import org.interledger.wire.codecs.CodecContext;
+import org.interledger.wire.codecs.oer.OerIA5StringCodec.OerIA5String;
+import org.interledger.wire.codecs.oer.OerLengthPrefixCodec.OerLengthPrefix;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
-import org.interledger.wire.codecs.Codec;
-import org.interledger.wire.codecs.CodecContext;
-import org.interledger.wire.codecs.oer.OerIA5StringCodec.OerIA5String;
-import org.interledger.wire.codecs.oer.OerLengthPrefixCodec.OerLengthPrefix;
 
 /**
- * <p>An extension of {@link Codec} for reading and writing an ASN.1 OER IA5String.</p>
- *
+ * An extension of {@link Codec} for reading and writing an ASN.1 OER IA5String.
  * <p>The encoding of IA5String types depends on the size constraint present in the type, if any.
  * Interledger's usage of IA5String always uses a dynamic size constraint, so the encoding of the
  * string value consists of a length prefix followed by the encodings of each character.</p>
- *
  * <p>After encoding a length-prefix using an instance of {@link OerLengthPrefixCodec}, each
  * character
  * in the supplied {@link String} will be encoded in one octet with the highest-order bit set to
@@ -25,16 +24,6 @@ import org.interledger.wire.codecs.oer.OerLengthPrefixCodec.OerLengthPrefix;
  */
 public class OerIA5StringCodec implements Codec<OerIA5String> {
 
-  /**
-   * This method currently uses Guava to read a String value from an {@link InputStream}.
-   * However, there are a number of ways to do this natively using only JDK classes, although it's
-   * unclear
-   *
-   * @param context     An instance of {@link CodecContext}.
-   * @param inputStream An instance of {@link InputStream} to read data from.
-   * @return
-   * @throws IOException
-   */
   @Override
   public OerIA5String read(
       final CodecContext context, final InputStream inputStream
@@ -72,7 +61,7 @@ public class OerIA5StringCodec implements Codec<OerIA5String> {
    *
    * @param inputStream An instance of {@link InputStream}.
    * @return A {@link String}
-   * @throws IOException
+   * @throws IOException If the {@code inputStream} is unable to be read properly.
    * @see "http://stackoverflow.com/questions/309424/read-convert-an-inputstream-to-a-string"
    */
   private String toString(final InputStream inputStream, final int lengthToRead)
@@ -110,15 +99,15 @@ public class OerIA5StringCodec implements Codec<OerIA5String> {
     }
 
     @Override
-    public boolean equals(Object o) {
-      if (this == o) {
+    public boolean equals(Object obj) {
+      if (this == obj) {
         return true;
       }
-      if (o == null || getClass() != o.getClass()) {
+      if (obj == null || getClass() != obj.getClass()) {
         return false;
       }
 
-      OerIA5String oerIA5String = (OerIA5String) o;
+      OerIA5String oerIA5String = (OerIA5String) obj;
 
       return value.equals(oerIA5String.value);
     }

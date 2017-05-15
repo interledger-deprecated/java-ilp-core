@@ -1,22 +1,21 @@
 package org.interledger.wire.codecs.oer;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Arrays;
-import java.util.Objects;
 import org.interledger.wire.codecs.Codec;
 import org.interledger.wire.codecs.CodecContext;
 import org.interledger.wire.codecs.oer.OerLengthPrefixCodec.OerLengthPrefix;
 import org.interledger.wire.codecs.oer.OerOctetStringCodec.OerOctetString;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.Objects;
+
 /**
  * <p>An extension of {@link Codec} for reading and writing an ASN.1 OER OctetString.</p>
- *
  * <p>The encoding of OctetString types depends on the size constraint present in the type, if any.
  * Interledger's usage of OctetString always uses a dynamic size constraint, so the encoding of the
  * string value consists of a length prefix followed by the encodings of each octet.</p>
- *
  * <p>After encoding a length-prefix using an instance of {@link OerLengthPrefixCodec}, each byte
  * in the supplied byte array will be encoded in one octet with the highest-order bit set to
  * zero.</p>
@@ -72,15 +71,15 @@ public class OerOctetStringCodec implements Codec<OerOctetString> {
     }
 
     @Override
-    public boolean equals(Object o) {
-      if (this == o) {
+    public boolean equals(Object obj) {
+      if (this == obj) {
         return true;
       }
-      if (o == null || getClass() != o.getClass()) {
+      if (obj == null || getClass() != obj.getClass()) {
         return false;
       }
 
-      OerOctetString that = (OerOctetString) o;
+      OerOctetString that = (OerOctetString) obj;
 
       return Arrays.equals(value, that.value);
     }

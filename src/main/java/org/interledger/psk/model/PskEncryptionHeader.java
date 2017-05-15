@@ -20,12 +20,13 @@ public class PskEncryptionHeader extends BasicPskHeader {
    * Constructs an instance of the header with the given encryption type and authentication tag.
    * value.
    *
-   * @param encryptionType The encryption type indicated.
+   * @param encryptionType    The encryption type indicated.
    * @param authenticationTag The authentication tag value.
    */
-  public PskEncryptionHeader(final PskEncryptionType encryptionType, final byte[] authenticationTag) {
+  public PskEncryptionHeader(final PskEncryptionType encryptionType,
+                             final byte[] authenticationTag) {
     super(PskMessageHeader.PublicHeaders.ENCRYPTION,
-      encryptionType.toString() + " " + Base64.getUrlEncoder().encodeToString(authenticationTag));
+        encryptionType.toString() + " " + Base64.getUrlEncoder().encodeToString(authenticationTag));
   }
 
   public PskEncryptionHeader(final String name, final String value) {

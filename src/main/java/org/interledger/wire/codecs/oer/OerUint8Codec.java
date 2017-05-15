@@ -1,17 +1,17 @@
 package org.interledger.wire.codecs.oer;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Objects;
 import org.interledger.wire.codecs.Codec;
 import org.interledger.wire.codecs.CodecContext;
 import org.interledger.wire.codecs.oer.OerUint8Codec.OerUint8;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Objects;
+
 /**
  * <p>An extension of {@link Codec} for reading and writing an ASN.1 OER 8-Bit integer type as
  * defined by the Interledger ASN.1 definitions.</p>
- *
  * <p>All Interledger ASN.1 integer types are encoded as fixed-size, non-extensible numbers.  Thus,
  * for a UInt8 type, the integer value is encoded as an unsigned binary integer in one octet.</p>
  */
@@ -54,15 +54,15 @@ public class OerUint8Codec implements Codec<OerUint8> {
     }
 
     @Override
-    public boolean equals(Object o) {
-      if (this == o) {
+    public boolean equals(Object obj) {
+      if (this == obj) {
         return true;
       }
-      if (o == null || getClass() != o.getClass()) {
+      if (obj == null || getClass() != obj.getClass()) {
         return false;
       }
 
-      OerUint8 that = (OerUint8) o;
+      OerUint8 that = (OerUint8) obj;
 
       return value == that.value;
     }

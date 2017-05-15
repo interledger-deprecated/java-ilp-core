@@ -10,7 +10,7 @@ import org.interledger.wire.codecs.packets.QuoteByDestinationResponsePacketType;
  * QuoteByDestinationResponse}.
  */
 public interface QuoteByDestinationResponseCodec extends
-  InterledgerPacketCodec<QuoteByDestinationResponse> {
+    InterledgerPacketCodec<QuoteByDestinationResponse> {
 
   InterledgerPacketType TYPE = new QuoteByDestinationResponsePacketType();
 

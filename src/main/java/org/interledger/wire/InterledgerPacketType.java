@@ -1,7 +1,5 @@
 package org.interledger.wire;
 
-import java.net.URI;
-import java.util.Objects;
 import org.interledger.wire.codecs.packets.PaymentPacketType;
 import org.interledger.wire.codecs.packets.QuoteByDestinationRequestPacketType;
 import org.interledger.wire.codecs.packets.QuoteByDestinationResponsePacketType;
@@ -9,6 +7,9 @@ import org.interledger.wire.codecs.packets.QuoteBySourceRequestPacketType;
 import org.interledger.wire.codecs.packets.QuoteBySourceResponsePacketType;
 import org.interledger.wire.codecs.packets.QuoteLiquidityRequestPacketType;
 import org.interledger.wire.codecs.packets.QuoteLiquidityResponsePacketType;
+
+import java.net.URI;
+import java.util.Objects;
 
 /**
  * An interface that defines how Interledger Packets are typed using ASN.1 OER encoding.
@@ -44,9 +45,9 @@ public interface InterledgerPacketType {
    * InterledgerPacketType}.  Note that this method only handled standard Interledger packets types.
    * To operate upon non-standard packets, a different method should be used.
    *
-   * @param type
-   * @return
-   * @throws InvalidPacketTypeException
+   * @param type The integer type.
+   * @return An instance of {@link InterledgerPacketType}.
+   * @throws InvalidPacketTypeException If the supplied {@code type} is invalid.
    */
   static InterledgerPacketType fromTypeId(final int type) throws InvalidPacketTypeException {
     switch (type) {
@@ -118,15 +119,15 @@ public interface InterledgerPacketType {
     }
 
     @Override
-    public boolean equals(Object o) {
-      if (this == o) {
+    public boolean equals(Object obj) {
+      if (this == obj) {
         return true;
       }
-      if (o == null || getClass() != o.getClass()) {
+      if (obj == null || getClass() != obj.getClass()) {
         return false;
       }
 
-      AbstractInterledgerPacketType that = (AbstractInterledgerPacketType) o;
+      AbstractInterledgerPacketType that = (AbstractInterledgerPacketType) obj;
 
       if (!typeIdentifier.equals(that.typeIdentifier)) {
         return false;

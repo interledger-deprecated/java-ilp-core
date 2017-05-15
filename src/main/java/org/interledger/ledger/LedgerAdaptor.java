@@ -1,8 +1,8 @@
 package org.interledger.ledger;
 
-import org.interledger.cryptoconditions.Fulfillment;
 import org.interledger.InterledgerAddress;
 import org.interledger.InterledgerException;
+import org.interledger.cryptoconditions.Fulfillment;
 import org.interledger.ledger.events.LedgerConnectEvent;
 import org.interledger.ledger.events.LedgerEvent;
 import org.interledger.ledger.events.LedgerEventHandler;
@@ -34,14 +34,14 @@ public interface LedgerAdaptor {
 
   /**
    * Sends a message to the ledger.
-   * 
+   *
    * @param message The message to send.
    */
   void sendMessage(LedgerMessage message);
 
   /**
    * Registers an event handler that will be notified on ledger events.
-   * 
+   *
    * @param eventHandler The event handler to register.
    */
   void setEventHandler(LedgerEventHandler eventHandler);
@@ -64,13 +64,13 @@ public interface LedgerAdaptor {
    * receiver.
    *
    * @param transfer The transfer being proposed.
-   * @param reason The reason (InterledgerException) why the transfer should be rejected.
+   * @param reason   The reason (InterledgerException) why the transfer should be rejected.
    */
   void rejectTransfer(LedgerTransfer transfer, InterledgerException reason);
 
   /**
    * Get basic details of an account.
-   * 
+   *
    * @param account The local account identifier
    * @return Details of the account requested.
    */
@@ -80,7 +80,7 @@ public interface LedgerAdaptor {
    * Subscribe to notifications related to an account. Notifications that are received for this
    * account should then be raised as a {@link LedgerEvent} and passed to the
    * {@link LedgerEventHandler} for the adaptor.
-   * 
+   *
    * @param account The account of interest.
    */
   void subscribeToAccountNotifications(InterledgerAddress account);
@@ -92,8 +92,8 @@ public interface LedgerAdaptor {
 
   /**
    * Fulfill a condition for a transfer that has been prepared on a ledger.
-   * 
-   * @param transferId The unique transfer identifier.
+   *
+   * @param transferId  The unique transfer identifier.
    * @param fulfillment The fulfillment for the transfer.
    */
   void fulfillTransfer(UUID transferId, Fulfillment fulfillment);

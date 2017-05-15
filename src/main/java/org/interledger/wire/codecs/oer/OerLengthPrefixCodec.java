@@ -1,32 +1,28 @@
 package org.interledger.wire.codecs.oer;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Objects;
 import org.interledger.wire.codecs.Codec;
 import org.interledger.wire.codecs.CodecContext;
 import org.interledger.wire.codecs.oer.OerLengthPrefixCodec.OerLengthPrefix;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Objects;
+
 /**
  * <p>An extension of {@link Codec} for reading and writing an ASN.1 OER Length prefix octets.</p>
- *
  * <p>A length prefix specifies the length of a subsequent encoded object in terms of number of
  * octets required to encoded that object.</p>
- *
  * <p>The following rules apply:</p>
- *
  * <p>If the number of octets required to encode an object is less than 128, then that length is
  * encoded in the lowest-order 7 bit positions of the first and only octet.  The highest-order
  * bit of the octet is set to zero.</p>
- *
  * <p>Conversely, the number of octets required to encode an object is greater than 127, then
  * then that length is encoded into 2 or more octets as follows: The first octet will have its
  * highest-order bit set to 1, with the remaining 7 octets representing the number of subsequent
  * octets required to encode a number representing the actual length of the encoded object.
  * Depending on the value of that first length number (called 'N' for now), the next N octets will
- * encode a number representing the number of octets required to encode the actual object.
- *
+ * encode a number representing the number of octets required to encode the actual object.</p>
  * <p>All encodings are in big-endian order.</p>
  */
 public class OerLengthPrefixCodec implements Codec<OerLengthPrefix> {
@@ -129,20 +125,20 @@ public class OerLengthPrefixCodec implements Codec<OerLengthPrefix> {
         return (bytes[0] << 0) & 0x000000ff;
       }
       case 2: {
-        return (bytes[0] << 8) & 0x0000ff00 |
-            (bytes[1] << 0) & 0x000000ff;
+        return (bytes[0] << 8) & 0x0000ff00
+            | (bytes[1] << 0) & 0x000000ff;
       }
       case 3: {
         return
-            (bytes[0] << 16) & 0x00ff0000 |
-                (bytes[1] << 8) & 0x0000ff00 |
-                (bytes[2] << 0) & 0x000000ff;
+            (bytes[0] << 16) & 0x00ff0000
+                | (bytes[1] << 8) & 0x0000ff00
+                | (bytes[2] << 0) & 0x000000ff;
       }
       case 4: {
-        return (bytes[0] << 24) & 0xff000000 |
-            (bytes[1] << 16) & 0x00ff0000 |
-            (bytes[2] << 8) & 0x0000ff00 |
-            (bytes[3] << 0) & 0x000000ff;
+        return (bytes[0] << 24) & 0xff000000
+            | (bytes[1] << 16) & 0x00ff0000
+            | (bytes[2] << 8) & 0x0000ff00
+            | (bytes[3] << 0) & 0x000000ff;
       }
       default: {
         throw new RuntimeException("This method only supports arrays up to length 4!");
@@ -168,15 +164,15 @@ public class OerLengthPrefixCodec implements Codec<OerLengthPrefix> {
     }
 
     @Override
-    public boolean equals(Object o) {
-      if (this == o) {
+    public boolean equals(Object obj) {
+      if (this == obj) {
         return true;
       }
-      if (o == null || getClass() != o.getClass()) {
+      if (obj == null || getClass() != obj.getClass()) {
         return false;
       }
 
-      OerLengthPrefix that = (OerLengthPrefix) o;
+      OerLengthPrefix that = (OerLengthPrefix) obj;
 
       return length == that.length;
     }

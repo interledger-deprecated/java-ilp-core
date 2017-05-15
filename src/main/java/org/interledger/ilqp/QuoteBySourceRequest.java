@@ -1,9 +1,11 @@
 package org.interledger.ilqp;
 
+import org.interledger.InterledgerAddress;
+
 import java.time.Duration;
 import java.util.UUID;
+
 import javax.money.MonetaryAmount;
-import org.interledger.InterledgerAddress;
 
 /**
  * A request for a quote that specifies the amount to deliver at the destination address.
@@ -22,7 +24,7 @@ public interface QuoteBySourceRequest extends QuoteRequest {
   /**
    * The amount that will be taken from the sender.
    *
-   * @return
+   * @return An instance of {@link MonetaryAmount}.
    */
   MonetaryAmount getSourceAmount();
 
