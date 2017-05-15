@@ -4,19 +4,20 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import com.google.common.io.BaseEncoding;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
+
 import org.interledger.wire.codecs.CodecContext;
-import org.interledger.wire.codecs.oer.OerUint8Codec;
 import org.interledger.wire.codecs.oer.OerUint8Codec.OerUint8;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * Parameterized unit tests for encoding an instance of {@link OerUint8Codec}.
@@ -27,6 +28,9 @@ public class OerUint8CodecTest {
   private CodecContext codecContext;
   private OerUint8Codec oerUint8Codec;
 
+  /**
+   * The data for this test...
+   */
   @Parameters
   public static Collection<Object[]> data() {
     return Arrays.asList(new Object[][]
@@ -66,6 +70,9 @@ public class OerUint8CodecTest {
     this.asn1OerBytes = asn1OerBytes;
   }
 
+  /**
+   * Test setup.
+   */
   @Before
   public void setUp() throws Exception {
     // Register the codec to be tested...
