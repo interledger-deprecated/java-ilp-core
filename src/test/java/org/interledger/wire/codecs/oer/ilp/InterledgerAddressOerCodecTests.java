@@ -3,10 +3,6 @@ package org.interledger.wire.codecs.oer.ilp;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.util.Arrays;
-import java.util.Collection;
 import org.interledger.InterledgerAddress;
 import org.interledger.InterledgerAddressBuilder;
 import org.interledger.wire.CodecContextFactory;
@@ -16,6 +12,11 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.util.Arrays;
+import java.util.Collection;
 
 @RunWith(Parameterized.class)
 public class InterledgerAddressOerCodecTests {
@@ -39,9 +40,12 @@ public class InterledgerAddressOerCodecTests {
   @Parameter
   public InterledgerAddress interledgerAddress;
 
+  /**
+   * The data for this test...
+   */
   @Parameters
   public static Collection<Object[]> data() {
-    return Arrays.asList(new Object[][]{
+    return Arrays.asList(new Object[][] {
         {InterledgerAddressBuilder.builder().value("test1.").build()},
         {InterledgerAddressBuilder.builder().value("test3.foo").build()},
         {InterledgerAddressBuilder.builder().value("test2.foo").build()},

@@ -1,17 +1,17 @@
 package org.interledger.wire.codecs.oer;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Objects;
 import org.interledger.wire.codecs.Codec;
 import org.interledger.wire.codecs.CodecContext;
 import org.interledger.wire.codecs.oer.OerUint64Codec.OerUint64;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Objects;
+
 /**
  * <p>An extension of {@link Codec} for reading and writing an ASN.1 OER 64-Bit integer type as
  * defined by the Interledger ASN.1 definitions.</p>
- *
  * <p>All Interledger ASN.1 integer types are encoded as fixed-size, non-extensible numbers.  Thus,
  * for a UInt64 type, the integer value is encoded as an unsigned binary integer in 8 octets.</p>
  */
@@ -24,7 +24,7 @@ public class OerUint64Codec implements Codec<OerUint64> {
    *
    * @param context     An instance of {@link CodecContext}.
    * @param inputStream An instance of @link InputStream}.
-   * @throws IOException If there is a problem writing to the {@code stream}.
+   * @throws IOException              If there is a problem writing to the {@code stream}.
    * @throws IllegalArgumentException If the input has a value greater than 18446744073709551615.
    */
   @Override
@@ -49,7 +49,7 @@ public class OerUint64Codec implements Codec<OerUint64> {
    * @param context      An instance of {@link CodecContext}.
    * @param instance     An instance of {@link OerUint64}.
    * @param outputStream An instance of {@link OutputStream}.
-   * @throws IOException If there is a problem writing to the {@code stream}.
+   * @throws IOException              If there is a problem writing to the {@code stream}.
    * @throws IllegalArgumentException If the input has a value greater than 18446744073709551615.
    */
   @Override
@@ -66,16 +66,6 @@ public class OerUint64Codec implements Codec<OerUint64> {
       byte octet = ((byte) ((value >> (Byte.SIZE * i)) & 255));
       outputStream.write(octet);
     }
-
-//    final long value = instance.getValue();
-//    outputStream.write((byte) (value >> 56 & 255));
-//    outputStream.write((byte) (value >> 48 & 255));
-//    outputStream.write((byte) (value >> 40 & 255));
-//    outputStream.write((byte) (value >> 32 & 255));
-//    outputStream.write((byte) (value >> 24 & 255));
-//    outputStream.write((byte) (value >> 16 & 255));
-//    outputStream.write((byte) (value >> 8 & 255));
-//    outputStream.write((byte) (value >> 0 & 255));
   }
 
   /**
@@ -94,15 +84,15 @@ public class OerUint64Codec implements Codec<OerUint64> {
     }
 
     @Override
-    public boolean equals(Object o) {
-      if (this == o) {
+    public boolean equals(Object obj) {
+      if (this == obj) {
         return true;
       }
-      if (o == null || getClass() != o.getClass()) {
+      if (obj == null || getClass() != obj.getClass()) {
         return false;
       }
 
-      OerUint64 oerUint64 = (OerUint64) o;
+      OerUint64 oerUint64 = (OerUint64) obj;
 
       return value == oerUint64.value;
     }

@@ -6,9 +6,8 @@ import org.interledger.ilqp.QuoteLiquidityResponse;
 import org.interledger.wire.InterledgerPacket;
 
 /**
- * A handler for allowing callers to specify logic based upon an unknown result type. This class can be used in the
- * following manner:
- *
+ * A handler for allowing callers to specify logic based upon an unknown result type. This class can
+ * be used in the following manner:
  * <pre>
  * <code>
  * InterledgerPacket decodedPacket = context.read(asn1OerPaymentBytes);
@@ -33,7 +32,6 @@ public abstract class AbstractVoidInterledgerPacketHandler {
    * Handle an instance of {@link QuoteLiquidityRequest}.
    *
    * @param quoteLiquidityRequest An instance of {@link QuoteLiquidityRequest}.
-   * @return An instance of type <R>, in response to the supplied input.
    */
   protected abstract void handle(final QuoteLiquidityRequest quoteLiquidityRequest);
 
@@ -41,18 +39,16 @@ public abstract class AbstractVoidInterledgerPacketHandler {
    * Handle an instance of {@link QuoteLiquidityResponse}.
    *
    * @param quoteLiquidityResponse An instance of {@link QuoteLiquidityResponse}.
-   * @return An instance of type <R>, in response to the supplied input.
    */
   protected abstract void handle(final QuoteLiquidityResponse quoteLiquidityResponse);
 
   // TODO: Handle the rest of the ILQP packets!
 
   /**
-   * The main handler method to coerce an instance of {@link InterledgerPacket} into its actual type, apply some
-   * business logic, and optionally return a value in response.
+   * The main handler method to coerce an instance of {@link InterledgerPacket} into its actual
+   * type, apply some business logic, and optionally return a value in response.
    *
    * @param packet An instance of {@link InterledgerPacket}.
-   * @return An instance of type <R>, in response to the suppllied input.
    */
   public final void execute(final InterledgerPacket packet) {
     if (packet instanceof InterledgerPayment) {
@@ -63,8 +59,9 @@ public abstract class AbstractVoidInterledgerPacketHandler {
   }
 
   /**
-   * A utility class that provides default implementations of {@link AbstractInterledgerPacketHandler} so that a
-   * caller is only forced to implement the handlers that are of interest.
+   * A utility class that provides default implementations of
+   * {@link AbstractInterledgerPacketHandler} so that a caller is only forced to implement the
+   * handlers that are of interest.
    */
   public static class Template extends AbstractVoidInterledgerPacketHandler {
 

@@ -30,7 +30,7 @@ public class EncryptedPskMessageWriter extends UnencryptedPskMessageWriter {
   public EncryptedPskMessageWriter(byte[] key) {
     if (key == null || key.length != PskUtils.AES_KEY_LEN_BYTES) {
       throw new IllegalArgumentException(
-        "Invalid key - must be " + PskUtils.AES_KEY_LEN_BYTES + " bytes");
+          "Invalid key - must be " + PskUtils.AES_KEY_LEN_BYTES + " bytes");
     }
 
     this.key = new SecretKeySpec(key, "AES");
@@ -66,7 +66,7 @@ public class EncryptedPskMessageWriter extends UnencryptedPskMessageWriter {
       List<PskMessageHeader> publicHeaders = message.getPublicHeaders();
 
       PskMessageHeader encryptionHeader =
-        new PskEncryptionHeader(PskEncryptionType.AES_256_GCM, encrypted.getAuthenticationTag());
+          new PskEncryptionHeader(PskEncryptionType.AES_256_GCM, encrypted.getAuthenticationTag());
 
       publicHeaders.add(encryptionHeader);
 

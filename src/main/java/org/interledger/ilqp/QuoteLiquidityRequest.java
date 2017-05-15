@@ -1,9 +1,10 @@
 package org.interledger.ilqp;
 
 
+import org.interledger.InterledgerAddress;
+
 import java.time.Duration;
 import java.util.UUID;
-import org.interledger.InterledgerAddress;
 
 /**
  * A request to receive liquidity information between the current ledger and the destination

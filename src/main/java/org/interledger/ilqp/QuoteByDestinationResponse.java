@@ -18,7 +18,7 @@ public interface QuoteByDestinationResponse extends QuoteResponse {
   /**
    * The amount the sender needs to send based on the requested destination amount.
    *
-   * @return
+   * @return An instance of {@link MonetaryAmount}.
    */
   MonetaryAmount getSourceAmount();
 

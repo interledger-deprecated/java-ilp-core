@@ -66,11 +66,12 @@ public class UnencryptedPskMessageWriter implements PskMessageWriter {
    * @param message The message to validate.
    */
   protected void validateMessage(PskMessage message) {
-    final List<PskMessageHeader> nonces = message.getPublicHeaders(PskMessageHeader.PublicHeaders.NONCE);
+    final List<PskMessageHeader> nonces
+        = message.getPublicHeaders(PskMessageHeader.PublicHeaders.NONCE);
 
     if (nonces.isEmpty() || nonces.size() > 1) {
       throw new RuntimeException(
-        "Invalid message content - PSK messages must have exactly one public Nonce header");
+          "Invalid message content - PSK messages must have exactly one public Nonce header");
     }
 
     // TODO: this might be a bit confusing - we expect users to add a nonce header, but not the
@@ -79,12 +80,12 @@ public class UnencryptedPskMessageWriter implements PskMessageWriter {
     // headers in PskMessage would make it less confusing?
 
     List<PskMessageHeader> encryptionHeader =
-      message.getPublicHeaders(PskMessageHeader.PublicHeaders.ENCRYPTION);
+        message.getPublicHeaders(PskMessageHeader.PublicHeaders.ENCRYPTION);
 
     if (!encryptionHeader.isEmpty()) {
       throw new RuntimeException(
-        "Invalid message content - the public Encryption header should not be set, "
-          + "it will be set by this writer.");
+          "Invalid message content - the public Encryption header should not be set, "
+              + "it will be set by this writer.");
     }
   }
 
@@ -92,13 +93,14 @@ public class UnencryptedPskMessageWriter implements PskMessageWriter {
    * Convenience method to write a set of PSK headers and data to the stream, optionally preceded
    * by the PSK status line.
    *
-   * @param out The output stream to write the message to.
-   * @param writeStatusLine Indicates whether the status line should be written (true) or not (false).
-   * @param headers The headers to be written.
-   * @param data The application data to be written.
+   * @param out             The output stream to write the message to.
+   * @param writeStatusLine Indicates whether the status line should be written (true) or not
+   *                        (false).
+   * @param headers         The headers to be written.
+   * @param data            The application data to be written.
    */
   protected void writeHeadersAndData(OutputStream out, boolean writeStatusLine,
-    List<PskMessageHeader> headers, byte[] data) throws Exception {
+                                     List<PskMessageHeader> headers, byte[] data) throws Exception {
     if (writeStatusLine) {
       writeString(out, "PSK/1.0\n");
     }
@@ -117,7 +119,7 @@ public class UnencryptedPskMessageWriter implements PskMessageWriter {
    * Utility method to write the given string to the stream using UTF-8 encoding. Null strings are
    * simply ignored.
    *
-   * @param out The stream to write the string to.
+   * @param out   The stream to write the string to.
    * @param value The string to write.
    */
   protected void writeString(OutputStream out, String value) throws Exception {

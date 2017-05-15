@@ -11,18 +11,18 @@ public class BasicPskHeader implements PskMessageHeader {
   /**
    * Constructs a new {@link BasicPskHeader}.
    *
-   * @param name The name of the header. Must not be null or an empty string.
+   * @param name  The name of the header. Must not be null or an empty string.
    * @param value The value associated with the header. Must not be null or an empty string.
    */
   public BasicPskHeader(final String name, final String value) {
     if (name == null || name.isEmpty() || name.contains("\n")) {
       throw new IllegalArgumentException(
-        "Header name cannot be null or empty and must not contain line endings ('\n')");
+          "Header name cannot be null or empty and must not contain line endings ('\n')");
     }
 
     if (value == null || value.isEmpty() || value.contains("\n")) {
       throw new IllegalArgumentException(
-        "Header value cannot be null or empty and must not contain line endings ('\n')");
+          "Header value cannot be null or empty and must not contain line endings ('\n')");
     }
 
     /* leading and trailing whitespace is optional, remove it. */
@@ -41,15 +41,15 @@ public class BasicPskHeader implements PskMessageHeader {
   }
 
   @Override
-  public boolean equals(Object o) {
-    if (this == o) {
+  public boolean equals(Object obj) {
+    if (this == obj) {
       return true;
     }
-    if (o == null || getClass() != o.getClass()) {
+    if (obj == null || getClass() != obj.getClass()) {
       return false;
     }
 
-    BasicPskHeader that = (BasicPskHeader) o;
+    BasicPskHeader that = (BasicPskHeader) obj;
 
     if (!name.equals(that.name)) {
       return false;
@@ -66,9 +66,9 @@ public class BasicPskHeader implements PskMessageHeader {
 
   @Override
   public String toString() {
-    return "BasicPskHeader{" +
-      "name='" + name + '\'' +
-      ", value='" + value + '\'' +
-      '}';
+    return "BasicPskHeader{"
+        + "name='" + name + '\''
+        + ", value='" + value + '\''
+        + '}';
   }
 }
