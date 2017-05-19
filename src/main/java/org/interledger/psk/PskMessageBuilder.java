@@ -35,8 +35,8 @@ public class PskMessageBuilder {
     //internal writer implementation.
     if (header.getName().equalsIgnoreCase(PskMessageHeader.PublicHeaders.ENCRYPTION)) {
       throw new IllegalArgumentException(
-        "Encryption headers should not be added manually, "
-          + "the message writer will set the appropriate header");
+          "Encryption headers should not be added manually, "
+              + "the message writer will set the appropriate header");
     }
 
     message.addPublicHeader(header);
@@ -48,7 +48,7 @@ public class PskMessageBuilder {
    * Adds a header to the <b>public</b> portion of the PSK message. Note that public headers are
    * visible to all parties transmitting the message.
    *
-   * @param name The name of the header.
+   * @param name  The name of the header.
    * @param value The value associated with the header.
    */
   public PskMessageBuilder addPublicHeader(final String name, final String value) {
@@ -60,8 +60,8 @@ public class PskMessageBuilder {
     //internal writer implementation.
     if (name.equalsIgnoreCase(PskMessageHeader.PublicHeaders.ENCRYPTION)) {
       throw new IllegalArgumentException(
-        "Encryption headers should not be added manually, "
-          + "the message writer will set the appropriate header");
+          "Encryption headers should not be added manually, "
+              + "the message writer will set the appropriate header");
     }
 
     message.addPublicHeader(name, value);
@@ -85,7 +85,7 @@ public class PskMessageBuilder {
    * Adds a header to the <b>public</b> portion of the PSK message. Note that public headers are
    * visible to all parties transmitting the message. The method will replace
    *
-   * @param name The name of the header.
+   * @param name  The name of the header.
    * @param value The value associated with the header.
    */
   public PskMessageBuilder addPrivateHeader(final String name, final String value) {

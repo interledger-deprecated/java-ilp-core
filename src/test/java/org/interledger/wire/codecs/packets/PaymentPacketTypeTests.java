@@ -4,8 +4,6 @@ import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import java.util.Arrays;
-import java.util.Collection;
 import org.interledger.wire.InterledgerPacketType;
 import org.interledger.wire.codecs.Codec;
 import org.junit.Test;
@@ -13,6 +11,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * Unit tests to validate the {@link Codec} functionality for all Interledger packets.
@@ -27,9 +28,12 @@ public class PaymentPacketTypeTests {
   @Parameter(1)
   public InterledgerPacketType secondPacket;
 
+  /**
+   * The data for this test...
+   */
   @Parameters
   public static Collection<Object[]> data() {
-    return Arrays.asList(new Object[][]{
+    return Arrays.asList(new Object[][] {
         {new PaymentPacketType(), new PaymentPacketType()},
         {new QuoteByDestinationRequestPacketType(), new QuoteByDestinationRequestPacketType()},
         {new QuoteByDestinationResponsePacketType(), new QuoteByDestinationResponsePacketType()},

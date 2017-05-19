@@ -34,14 +34,16 @@ public class CodecContextTest {
 
     // TODO: Add ILQP!
     //    assertTrue(context.readable(InterledgerPacketType.ILQP_QUOTE_LIQUIDITY_REQUEST_TYPE));
-//    assertTrue(context.readable(InterledgerPacketType.ILQP_QUOTE_LIQUIDITY_RESPONSE_TYPE));
-//    assertTrue(context.readable(InterledgerPacketType.ILP_PAYMENT_TYPE));
-//    assertTrue(
-//        context.readable(InterledgerPacketType.ILQP_QUOTE_BY_DESTINATION_AMOUNT_REQUEST_TYPE));
-//    assertTrue(
-//        context.readable(InterledgerPacketType.ILQP_QUOTE_BY_DESTINATION_AMOUNT_RESPONSE_TYPE));
-//    assertTrue(context.readable(InterledgerPacketType.ILQP_QUOTE_BY_SOURCE_AMOUNT_REQUEST_TYPE));
-//    assertTrue(context.readable(InterledgerPacketType.ILQP_QUOTE_BY_SOURCE_AMOUNT_RESPONSE_TYPE));
+    //    assertTrue(context.readable(InterledgerPacketType.ILQP_QUOTE_LIQUIDITY_RESPONSE_TYPE));
+    //    assertTrue(context.readable(InterledgerPacketType.ILP_PAYMENT_TYPE));
+    //    assertTrue(
+    // context.readable(InterledgerPacketType.ILQP_QUOTE_BY_DESTINATION_AMOUNT_REQUEST_TYPE));
+    //    assertTrue(
+    // context.readable(InterledgerPacketType.ILQP_QUOTE_BY_DESTINATION_AMOUNT_RESPONSE_TYPE));
+    // assertTrue(context
+    // .readable(InterledgerPacketType.ILQP_QUOTE_BY_SOURCE_AMOUNT_REQUEST_TYPE));
+    // assertTrue(context
+    // .readable(InterledgerPacketType.ILQP_QUOTE_BY_SOURCE_AMOUNT_RESPONSE_TYPE));
   }
 
 }

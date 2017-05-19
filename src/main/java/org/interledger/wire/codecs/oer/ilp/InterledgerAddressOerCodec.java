@@ -1,15 +1,16 @@
 package org.interledger.wire.codecs.oer.ilp;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Objects;
 import org.interledger.InterledgerAddress;
 import org.interledger.InterledgerAddressBuilder;
 import org.interledger.wire.codecs.Codec;
 import org.interledger.wire.codecs.CodecContext;
 import org.interledger.wire.codecs.InterledgerAddressCodec;
 import org.interledger.wire.codecs.oer.OerIA5StringCodec.OerIA5String;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Objects;
 
 /**
  * An implementation of {@link Codec} that reads and writes instances of {@link InterledgerAddress}.
@@ -27,7 +28,7 @@ public class InterledgerAddressOerCodec implements InterledgerAddressCodec {
 
   @Override
   public void write(final CodecContext context, final InterledgerAddress instance,
-      final OutputStream outputStream) throws IOException {
+                    final OutputStream outputStream) throws IOException {
     Objects.requireNonNull(context);
     Objects.requireNonNull(instance);
     Objects.requireNonNull(outputStream);

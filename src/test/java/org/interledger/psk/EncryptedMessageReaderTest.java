@@ -29,7 +29,7 @@ public class EncryptedMessageReaderTest {
         + "binary data goes here";
     
     /* encrypted readers should be perfectly capable of reading unencrypted psk messages */
-    PskMessageReader reader = PskReaderFactory.getReader(new byte[256 / 8]);
+    PskMessageReader reader = PskReaderFactory.getEncryptedReader(new byte[256 / 8]);
     
     PskMessage message = reader.readMessage(testMessage.getBytes(StandardCharsets.UTF_8));
     
@@ -57,9 +57,9 @@ public class EncryptedMessageReaderTest {
         .setApplicationData("binary data".getBytes(StandardCharsets.UTF_8))
         .toMessage();
     
-    byte[] encrypted = PskWriterFactory.getWriter(key).writeMessage(clearMessage);
+    byte[] encrypted = PskWriterFactory.getEncryptedWriter(key).writeMessage(clearMessage);
     
-    PskMessageReader reader = PskReaderFactory.getReader(key);
+    PskMessageReader reader = PskReaderFactory.getEncryptedReader(key);
     
     PskMessage decryptedMessage = reader.readMessage(encrypted);
     

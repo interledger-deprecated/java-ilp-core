@@ -1,17 +1,17 @@
 package org.interledger.ilp;
 
-import java.util.Arrays;
-import java.util.Objects;
-import javax.money.MonetaryAmount;
 import org.interledger.InterledgerAddress;
 import org.interledger.wire.InterledgerPacket;
+
+import java.util.Arrays;
+import java.util.Objects;
+
+import javax.money.MonetaryAmount;
 
 /**
  * <p>Interledger Payments moves assets from one party to another that consists of one or more
  * ledger transfers, potentially across multiple ledgers.</p>
- *
- * <p>Interledger Payments have three major consumers:
- *
+ * Interledger Payments have three major consumers:
  * <ul>
  * <li>Connectors utilize the Interledger Address contained in the payment to route the
  * payment.</li>
@@ -20,13 +20,11 @@ import org.interledger.wire.InterledgerPacket;
  * <li>Interledger sub-protocols utilize custom data encoded in a payment to facilitate
  * sub-protocol operations.</li>
  * </ul>
- *
  * <p> When a sender prepares a transfer to start a payment, the sender attaches an ILP Payment to
  * the transfer, in the memo field if possible. If a ledger does not support attaching the entire
  * ILP Payment to a transfer as a memo, users of that ledger can transmit the ILP Payment using
  * another authenticated messaging channel, but MUST be able to correlate transfers and ILP
  * Payments.</p>
- *
  * <p> When a connector sees an incoming prepared transfer with an ILP Payment, the receiver reads
  * the ILP Payment to confirm the details of the packet.  For example, the connector reads the
  * InterledgerAddress of the payment's receiver, and if the connector has a route to the receiver's
@@ -80,7 +78,7 @@ public interface InterledgerPayment extends InterledgerPacket {
      * @param destinationAccount An instance of {@link InterledgerAddress}.
      */
     public Builder destinationAccount(
-      final InterledgerAddress destinationAccount) {
+        final InterledgerAddress destinationAccount) {
       this.destinationAccount = Objects.requireNonNull(destinationAccount);
       return this;
     }
@@ -91,7 +89,7 @@ public interface InterledgerPayment extends InterledgerPacket {
      * @param destinationAmount An instance of {@link MonetaryAmount}.
      */
     public Builder destinationAmount(
-      final Long destinationAmount) {
+        final Long destinationAmount) {
       this.destinationAmount = Objects.requireNonNull(destinationAmount);
       return this;
     }
@@ -134,9 +132,9 @@ public interface InterledgerPayment extends InterledgerPacket {
       private Impl(final Builder builder) {
         Objects.requireNonNull(builder);
         this.destinationAccount = Objects
-          .requireNonNull(builder.destinationAccount, "destinationAccount must not be null!");
+            .requireNonNull(builder.destinationAccount, "destinationAccount must not be null!");
         this.destinationAmount = Objects
-          .requireNonNull(builder.destinationAmount, "destinationAmount must not be null!");
+            .requireNonNull(builder.destinationAmount, "destinationAmount must not be null!");
         this.data = Objects.requireNonNull(builder.data, "data must not be null!");
       }
 
@@ -156,15 +154,15 @@ public interface InterledgerPayment extends InterledgerPacket {
       }
 
       @Override
-      public boolean equals(Object o) {
-        if (this == o) {
+      public boolean equals(Object obj) {
+        if (this == obj) {
           return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (obj == null || getClass() != obj.getClass()) {
           return false;
         }
 
-        Impl impl = (Impl) o;
+        Impl impl = (Impl) obj;
 
         if (!destinationAccount.equals(impl.destinationAccount)) {
           return false;

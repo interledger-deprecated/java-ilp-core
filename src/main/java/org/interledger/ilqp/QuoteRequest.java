@@ -1,10 +1,12 @@
 package org.interledger.ilqp;
 
 
+import org.interledger.InterledgerAddress;
+
+import org.interledger.wire.InterledgerPacket;
+
 import java.time.Duration;
 import java.util.UUID;
-import org.interledger.InterledgerAddress;
-import org.interledger.wire.InterledgerPacket;
 
 /**
  * A parent interface for all quote requests in ILQP.

@@ -12,7 +12,7 @@ public class PskReaderFactory {
    * Constructs a reader that will read PSK messages but will <b>not</b> decrypt the private portion
    * of the message if it is encrypted.
    */
-  public static PskMessageReader getReader() {
+  public static PskMessageReader getUnencryptedReader() {
     return new UnencryptedPskMessageReader();
   }
 
@@ -22,7 +22,7 @@ public class PskReaderFactory {
    * 
    * @param secretKey The secret key used to decrypt the private portion.
    */
-  public static PskMessageReader getReader(byte[] secretKey) {
+  public static PskMessageReader getEncryptedReader(byte[] secretKey) {
     return new EncryptedPskMessageReader(secretKey);
   }
 }

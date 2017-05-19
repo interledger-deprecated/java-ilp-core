@@ -27,7 +27,8 @@ public enum PskEncryptionType {
   /**
    * Convenience method to return the {@link PskEncryptionType} that matches the text description.
    *
-   * @param description The text description of the encryption type, typically found in PSK message headers.
+   * @param description The text description of the encryption type, typically found in PSK message
+   *                    headers.
    * @return The matching {@link PskEncryptionType} if one can be found, otherwise null.
    */
   public static PskEncryptionType fromString(final String description) {

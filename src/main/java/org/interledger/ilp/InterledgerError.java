@@ -1,10 +1,11 @@
 package org.interledger.ilp;
 
+import org.interledger.InterledgerAddress;
+import org.interledger.InterledgerAddressBuilder;
+
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
-import org.interledger.InterledgerAddress;
-import org.interledger.InterledgerAddressBuilder;
 
 /**
  * @REF: REF: https://interledger.org/rfcs/0003-interledger-protocol/#errors
@@ -91,13 +92,10 @@ public class InterledgerError {
     }
 
     /**
-     * Accessor for this ErrorCode's {@code code} property.
-     *
-     * <p>
-     * Per IL-RFC-3: "Implementations SHOULD NOT depend on the name instead of the code. The name is
-     * primarily provided as a convenience to facilitate debugging by humans. If the name does not
-     * match the code, the code is the definitive identifier of the error."
-     * </p>
+     * <p>Accessor for this ErrorCode's {@code code} property.</p>
+     * <p>Per IL-RFC-3: "Implementations SHOULD NOT depend on the name instead of the code. The
+     * name is primarily provided as a convenience to facilitate debugging by humans. If the name
+     * does not match the code, the code is the definitive identifier of the error." </p>
      */
     public String getCode() {
       return this.code;
@@ -128,8 +126,8 @@ public class InterledgerError {
    * Constructor used by ILP Connectors.
    */
   private InterledgerError(final ErrorCode errorCode, final InterledgerAddress triggeredBy,
-    final ZonedDateTime triggeredAt, List<InterledgerAddress> forwardedBy,
-    final InterledgerAddress selfAddress, final String data) {
+                           final ZonedDateTime triggeredAt, List<InterledgerAddress> forwardedBy,
+                           final InterledgerAddress selfAddress, final String data) {
 
     this.errorCode = Objects.requireNonNull(errorCode, "errorCode   can not be null");
     this.triggeredBy = Objects.requireNonNull(triggeredBy, "triggeredBy can not be null");
@@ -147,7 +145,7 @@ public class InterledgerError {
           // "running-in-circles" trying to reach the client. This must never happen.
           // launch a RuntimeException to break the loop.
           throw new RuntimeException("CRITICAL, InterledgerError: " + selfAddress.getValue()
-            + "was already found in the forwardedBy list");
+              + "was already found in the forwardedBy list");
         }
       }
       forwardedBy.add(selfAddress);
@@ -160,11 +158,8 @@ public class InterledgerError {
    * forwardedBy (Empty list) and triggeredAt (ZonedDateTime.now()). In most situations such values
    * match the default ones when triggering a new exception (vs an exception received from another
    * ILP node that is being forwarded back to originating request clients).
-   *
-   * <p>
-   * Check the RFC https://interledger.org/rfcs/0003-interledger-protocol/#errors for the newest
-   * updated doc.
-   * </p>
+   * <p>Check the RFC https://interledger.org/rfcs/0003-interledger-protocol/#errors for the newest
+   * updated doc.</p>
    */
   public InterledgerError(ErrorCode errorCode, InterledgerAddress triggeredBy, String data) {
     this(errorCode, triggeredBy, ZonedDateTime.now(), new java.util.ArrayList<InterledgerAddress>(),

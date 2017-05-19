@@ -16,8 +16,8 @@ public interface QuoteService<T extends QuoteRequest, R extends QuoteResponse> {
    *
    * @param quoteRequest      The quote requested.
    * @param selectionStrategy A strategy for selecting the best of a given set of quote responses.
-   * @return The best quote response according to the selection strategy, or null if no quote
-   * responses where received.
+   * @return An instance {@link R} which is the best quote response according to the selection
+   *     strategy, or null if no quote responses where received.
    */
   R requestQuote(T quoteRequest, QuoteSelectionStrategy selectionStrategy)
       throws InterledgerQuotingException;
@@ -27,7 +27,8 @@ public interface QuoteService<T extends QuoteRequest, R extends QuoteResponse> {
    *
    * @param quoteRequest The quote requested.
    * @param connector    The ILP address of the connector to get the quote from.
-   * @return The quote response from the connector, or null if no response is received.
+   * @return An instance {@link R} which is the quote response from the connector, or null if no
+   *     response is received.
    */
   R requestQuote(T quoteRequest, InterledgerAddress connector)
       throws InterledgerQuotingException;

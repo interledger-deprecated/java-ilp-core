@@ -1,16 +1,17 @@
 package org.interledger.wire.codecs.oer.ilp;
 
+import org.interledger.InterledgerAddress;
+import org.interledger.wire.InterledgerPacketType;
+import org.interledger.wire.InterledgerPacketType.InvalidPacketTypeException;
+import org.interledger.wire.codecs.Codec;
+import org.interledger.wire.codecs.CodecContext;
+import org.interledger.wire.codecs.oer.OerUint8Codec.OerUint8;
+import org.interledger.wire.codecs.packets.InterledgerPacketTypeCodec;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Objects;
-import org.interledger.InterledgerAddress;
-import org.interledger.wire.codecs.Codec;
-import org.interledger.wire.codecs.CodecContext;
-import org.interledger.wire.InterledgerPacketType;
-import org.interledger.wire.InterledgerPacketType.InvalidPacketTypeException;
-import org.interledger.wire.codecs.packets.InterledgerPacketTypeCodec;
-import org.interledger.wire.codecs.oer.OerUint8Codec.OerUint8;
 
 /**
  * An implementation of {@link Codec} that reads and writes instances of {@link InterledgerAddress}.
@@ -29,15 +30,16 @@ public class InterledgerPacketTypeOerCodec implements InterledgerPacketTypeCodec
       return InterledgerPacketType.fromTypeId(typeId);
     } catch (InvalidPacketTypeException e) {
       throw new RuntimeException(
-          "Encountered unsupported Interledger Packet Type.  Please extend InterledgerPacketTypeCodec"
-              + " and register it with the CodecContext to support this new type.",
+          "Encountered unsupported Interledger Packet Type.  Please extend "
+              + "InterledgerPacketTypeCodec and register it with the CodecContext to support this"
+              + "new type.",
           e);
     }
   }
 
   @Override
   public void write(final CodecContext context, final InterledgerPacketType instance,
-      final OutputStream outputStream) throws IOException {
+                    final OutputStream outputStream) throws IOException {
     Objects.requireNonNull(context);
     Objects.requireNonNull(instance);
     Objects.requireNonNull(outputStream);

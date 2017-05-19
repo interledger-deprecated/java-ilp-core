@@ -1,8 +1,9 @@
 package org.interledger.wire.codecs.packets;
 
-import java.net.URI;
 import org.interledger.wire.InterledgerPacketType;
 import org.interledger.wire.InterledgerPacketType.AbstractInterledgerPacketType;
+
+import java.net.URI;
 
 /**
  * An implementation of {@link InterledgerPacketType} for ILQP Liquidity responses.
