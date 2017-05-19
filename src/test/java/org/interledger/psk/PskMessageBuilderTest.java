@@ -4,6 +4,7 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import org.interledger.psk.model.BasicPskHeader;
 import org.interledger.psk.model.PskMessage;
 import org.interledger.psk.model.PskMessageHeader;
 import org.junit.Test;
@@ -17,17 +18,12 @@ public class PskMessageBuilderTest {
 
   @Test
   public void test_NonceValueProvided() {
-    PskMessage message = new PskMessageBuilder().withNonce(new byte[16]).toMessage();
-
-    assertNotNull(message);
-    assertEquals(1, message.getPublicHeaders(PskMessageHeader.PublicHeaders.NONCE).size());
-    assertEquals(Base64.getUrlEncoder().encodeToString(new byte[16]),
-        message.getPublicHeaders(PskMessageHeader.PublicHeaders.NONCE).get(0).getValue());
-  }
-
-  @Test
-  public void test_NonceValueGenerated() {
-    PskMessage message = new PskMessageBuilder().withNonce(new byte[16]).toMessage();
+    /* add our own nonce header, the builder should not try generate its own */
+    String nonce = Base64.getUrlEncoder().encodeToString(new byte[16]);
+    
+    PskMessage message = new PskMessageBuilder()
+        .addPublicHeader(new BasicPskHeader(PskMessageHeader.PublicHeaders.NONCE, nonce))
+        .toMessage();
 
     assertNotNull(message);
     assertEquals(1, message.getPublicHeaders(PskMessageHeader.PublicHeaders.NONCE).size());
@@ -35,8 +31,20 @@ public class PskMessageBuilderTest {
     PskMessageHeader nonceHeader =
         message.getPublicHeaders(PskMessageHeader.PublicHeaders.NONCE).get(0);
     
-    assertEquals(16, Base64.getUrlDecoder().decode(nonceHeader.getValue()).length);
+    assertEquals(nonce, nonceHeader.getValue());
   }
+
+  @Test
+  public void test_NonceValueGenerated() {
+    PskMessage message = new PskMessageBuilder().toMessage();
+
+    assertNotNull(message);
+    
+    /* check that a nonce header was automatically added by the builder with some sort of value */
+    assertEquals(1, message.getPublicHeaders(PskMessageHeader.PublicHeaders.NONCE).size());
+    assertNotNull(message.getPublicHeaders(PskMessageHeader.PublicHeaders.NONCE).get(0).getValue());
+  }
+
   
   @Test(expected = RuntimeException.class)
   public void test_addPublicHeaderEncryption() {
@@ -61,7 +69,6 @@ public class PskMessageBuilderTest {
     PskMessage message = new PskMessageBuilder()
         .addPublicHeader("public_header", "public_header_value")
         .addPrivateHeader("private_encryption_header", "3DES")
-        .withNonce()
         .setApplicationData("Application Data".getBytes()).toMessage();
     
     assertNotNull(message);

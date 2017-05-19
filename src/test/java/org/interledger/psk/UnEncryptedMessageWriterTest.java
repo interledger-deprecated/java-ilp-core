@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.interledger.psk.io.UnencryptedPskMessageReader;
 import org.interledger.psk.model.PskMessage;
+import org.interledger.psk.model.PskMessageHeader;
 import org.junit.Test;
 
 import java.nio.charset.StandardCharsets;
@@ -18,10 +19,13 @@ public class UnEncryptedMessageWriterTest {
   @Test
   public void test() {
     
-    byte[] nonce = new byte[16];
+    /* we manually add a known nonce into the message for predictability in tests. this should be
+     * frowned on anywhere else */
+    String nonce = Base64.getUrlEncoder().encodeToString(new byte[16]);
     
     PskMessage message = new PskMessageBuilder()
-        .addPrivateHeader("private header", "\tprivate\theader\tvalue\t").withNonce(nonce)
+        .addPrivateHeader("private header", "\tprivate\theader\tvalue\t")
+        .addPublicHeader(PskMessageHeader.PublicHeaders.NONCE, nonce)
         .setApplicationData("{some_application_data: 123}".getBytes(StandardCharsets.UTF_8))
         .toMessage();
     
@@ -37,7 +41,7 @@ public class UnEncryptedMessageWriterTest {
     /* hand-craft what we expect to see. a bit awkward, since the header order isn't terribly
      * predictable from the outside. */
     String expected = "PSK/1.0\n" 
-        + "Nonce: " + Base64.getUrlEncoder().encodeToString(nonce) + "\n"
+        + "Nonce: " + nonce + "\n"
         + "Encryption: none\n"
         + "\n"
         + "private header: private\theader\tvalue\n"

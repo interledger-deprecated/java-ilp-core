@@ -1,6 +1,7 @@
 package org.interledger.psk.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -120,7 +121,39 @@ public class PskMessageImpl implements PskMessage {
     // collection of some kind instead?
     return copyBytes(applicationData);
   }
+  
+  /**
+   * Removes all public headers with the given header name.
+   * 
+   * @param headerName The name of the header to remove.
+   */
+  public void removePublicHeaders(String headerName) {
+    Iterator<PskMessageHeader> itr = publicHeaders.iterator();
+    while (itr.hasNext()) {
+      PskMessageHeader header = (PskMessageHeader) itr.next();
 
+      if (header.getName().equals(headerName)) {
+        itr.remove();
+      }
+    }
+  }
+
+  /**
+   * Removes all private headers with the given header name.
+   * 
+   * @param headerName The name of the header to remove.
+   */
+  public void removePrivateHeaders(String headerName) {
+    Iterator<PskMessageHeader> itr = privateHeaders.iterator();
+    while (itr.hasNext()) {
+      PskMessageHeader header = (PskMessageHeader) itr.next();
+
+      if (header.getName().equals(headerName)) {
+        itr.remove();
+      }
+    }
+  }
+  
   /**
    * Convenience method to produce a copy of the given byte array.
    *
