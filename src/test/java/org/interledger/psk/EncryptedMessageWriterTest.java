@@ -6,13 +6,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-
 import org.interledger.psk.io.UnencryptedPskMessageReader;
 import org.interledger.psk.model.PskMessage;
 import org.interledger.psk.model.PskMessageHeader;
 import org.junit.Test;
+
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 
 /**
  * JUnit to exercise the {@link UnencryptedPskMessageReader} implementation.
@@ -36,6 +36,7 @@ public class EncryptedMessageWriterTest {
         .setApplicationData("{some_application_data: 123}".getBytes(StandardCharsets.UTF_8))
         .toMessage();
     
+    PskMessageWriter writer = PskWriterFactory.getEncryptedWriter(key);
     
     byte[] data = writer.writeMessage(message);
     
