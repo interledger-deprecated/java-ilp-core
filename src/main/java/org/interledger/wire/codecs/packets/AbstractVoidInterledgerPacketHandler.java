@@ -3,7 +3,7 @@ package org.interledger.wire.codecs.packets;
 import org.interledger.ilp.InterledgerPayment;
 import org.interledger.ilqp.QuoteLiquidityRequest;
 import org.interledger.ilqp.QuoteLiquidityResponse;
-import org.interledger.wire.InterledgerPacket;
+import org.interledger.InterledgerPacket;
 
 /**
  * A handler for allowing callers to specify logic based upon an unknown result type. This class can

@@ -13,7 +13,7 @@ import org.interledger.psk.PskWriterFactory;
 import org.interledger.psk.model.BasicPskHeader;
 import org.interledger.psk.model.PskMessage;
 import org.interledger.wire.CodecContextFactory;
-import org.interledger.wire.InterledgerPacket;
+import org.interledger.InterledgerPacket;
 import org.interledger.wire.codecs.Codec;
 import org.interledger.wire.codecs.CodecContext;
 import org.interledger.wire.codecs.packets.AbstractVoidInterledgerPacketHandler.Template;

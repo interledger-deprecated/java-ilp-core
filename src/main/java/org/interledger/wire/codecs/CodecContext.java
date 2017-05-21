@@ -1,6 +1,6 @@
 package org.interledger.wire.codecs;
 
-import org.interledger.wire.InterledgerPacket;
+import org.interledger.InterledgerPacket;
 import org.interledger.wire.InterledgerPacketType;
 import org.interledger.wire.codecs.packets.AbstractInterledgerPacketHandler;
 import org.interledger.wire.codecs.packets.InterledgerPacketCodec;

@@ -6,7 +6,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import org.interledger.InterledgerAddressBuilder;
 import org.interledger.ilp.InterledgerPayment;
 import org.interledger.wire.CodecContextFactory;
-import org.interledger.wire.InterledgerPacket;
+import org.interledger.InterledgerPacket;
 import org.interledger.wire.codecs.Codec;
 import org.interledger.wire.codecs.CodecContext;
 import org.junit.Test;

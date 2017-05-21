@@ -1,7 +1,7 @@
 package org.interledger.ilp;
 
 import org.interledger.InterledgerAddress;
-import org.interledger.wire.InterledgerPacket;
+import org.interledger.InterledgerPacket;
 
 import java.util.Arrays;
 import java.util.Objects;

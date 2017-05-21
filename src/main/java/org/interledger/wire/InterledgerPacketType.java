@@ -9,6 +9,7 @@ import org.interledger.wire.codecs.packets.QuoteLiquidityRequestPacketType;
 import org.interledger.wire.codecs.packets.QuoteLiquidityResponsePacketType;
 
 import java.net.URI;
+
 import java.util.Objects;
 
 /**
