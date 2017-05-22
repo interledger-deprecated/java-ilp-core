@@ -1,0 +1,19 @@
+package org.interledger.codecs;
+
+import org.interledger.InterledgerPacket;
+import org.interledger.codecs.packettypes.InterledgerPacketType;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+/**
+ * An implementation of {@link Codec} that reads and writes instances of {@link InterledgerPacket}
+ * having a discrete {@link InterledgerPacketType} and data payload.
+ */
+public interface InterledgerPacketCodec<T extends InterledgerPacket> extends Codec<T> {
+
+  /**
+   * Accessor for the {@link InterledgerPacketType} of this {@link Codec}.
+   */
+  InterledgerPacketType getTypeId();
+}
