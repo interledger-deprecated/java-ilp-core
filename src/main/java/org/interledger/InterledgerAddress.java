@@ -1,6 +1,8 @@
 package org.interledger;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Interledger Protocol (ILP) Addresses identify Ledger accounts (or groups of Ledger accounts) in
@@ -47,8 +49,8 @@ public interface InterledgerAddress {
    * Tests if this InterledgerAddress starts with the specified {@code addressSegment}.
    *
    * @param addressSegment An {@link String} prefix to compare against.
-   *     @return {@code true} if this InterledgerAddress begins with the specified prefix, {@code
-   *     false} otherwise.
+   * @return {@code true} if this InterledgerAddress begins with the specified prefix, {@code false}
+   *     otherwise.
    */
   default boolean startsWith(final String addressSegment) {
     Objects.requireNonNull(addressSegment, "addressSegment must not be null!");
@@ -68,7 +70,8 @@ public interface InterledgerAddress {
   }
 
   /**
-   * Return a new InterledgerAddress by postfixing the supplied {@code segment} to this address.
+   * <p>Return a new InterledgerAddress by postfixing the supplied {@code segment} to this address.
+   * </p>
    *
    * <p>This method can be used to construct both address prefixes and destination addresses. For
    * example, if the value of this address is '<code>us.usd.</code>', then calling this method with
@@ -78,7 +81,7 @@ public interface InterledgerAddress {
    * <p>Likewise, if the value of this address is '<code>us.usd.pacific.</code>', then calling this
    * method with an argument of '<code>creditunions.</code>' would result in a new Interledger
    * Address with a value of '<code>us.usd.pacific.creditunions.</code>', which is an address
-   * prefix. </p>
+   * prefix.</p>
    *
    * @param addressSegment A {@link String} to be appended to this address as an additional
    *     segment.
@@ -86,4 +89,32 @@ public interface InterledgerAddress {
    *     specified final segment.
    */
   InterledgerAddress with(String addressSegment);
+
+  /**
+   * <p>Compares the specified object with this <tt>InterledgerAddress</tt> for equality. The
+   * <tt>InterledgerAddress</tt> interface is essentially a type-safe wrapper around a String value,
+   * so implementations should take care to forward equality decisions to the {@link
+   * String#equals(Object)} method on the object returned from {@link #getValue()}.</p>
+   *
+   * @param obj object to be compared for equality with this collection
+   * @return <tt>true</tt> if the specified object is equal to this collection
+   * @see Object#equals(Object)
+   * @see Set#equals(Object)
+   * @see List#equals(Object)
+   */
+  @Override
+  boolean equals(Object obj);
+
+  /**
+   * <p> Returns the hash code value for this <tt>InterledgerAddress</tt>. The
+   * <tt>InterledgerAddress</tt> interface is essentially a type-safe wrapper around a String value,
+   * so implementations should take care to forward hashcode decisions to the
+   * {@link String#equals(Object)} method on the object returned from {@link #getValue()}.</p>
+   *
+   * @return the hash code value for this InterledgerAddress.
+   * @see Object#hashCode()
+   * @see Object#equals(Object)
+   */
+  @Override
+  int hashCode();
 }
