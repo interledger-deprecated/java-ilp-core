@@ -1,4 +1,4 @@
-package org.interledger.ilp;
+package org.interledger;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;

@@ -13,9 +13,10 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 /**
- * Unit tests for {@link InterledgerPacket}.
+ * Unit tests for {@link InterledgerPacket.Handler.AbstractHandler} and {@link
+ * InterledgerPacket.VoidHandler.AbstractVoidHandler}.
  */
-public class HelperHandlerTest {
+public class InterledgerPacketHandlerTest {
 
   /**
    * A private class used for testing...see below.
