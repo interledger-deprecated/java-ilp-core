@@ -1,7 +1,7 @@
 package org.interledger.ilqp;
 
 
-import org.interledger.wire.InterledgerPacket;
+import org.interledger.InterledgerPacket;
 
 import java.time.Duration;
 import java.util.UUID;
