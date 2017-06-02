@@ -7,6 +7,10 @@ import org.interledger.codecs.oer.OerLengthPrefixCodec;
 import org.interledger.codecs.oer.OerLengthPrefixCodec.OerLengthPrefix;
 import org.interledger.codecs.oer.OerOctetStringCodec;
 import org.interledger.codecs.oer.OerOctetStringCodec.OerOctetString;
+import org.interledger.codecs.oer.OerUint128Codec;
+import org.interledger.codecs.oer.OerUint128Codec.OerUint128;
+import org.interledger.codecs.oer.OerUint32Codec;
+import org.interledger.codecs.oer.OerUint32Codec.OerUint32;
 import org.interledger.codecs.oer.OerUint64Codec;
 import org.interledger.codecs.oer.OerUint64Codec.OerUint64;
 import org.interledger.codecs.oer.OerUint8Codec;
@@ -32,7 +36,9 @@ public class CodecContextFactory {
     // OER Base...
     return new CodecContext()
         .register(OerUint8.class, new OerUint8Codec())
+        .register(OerUint32.class, new OerUint32Codec())
         .register(OerUint64.class, new OerUint64Codec())
+        .register(OerUint128.class, new OerUint128Codec())
         .register(OerLengthPrefix.class, new OerLengthPrefixCodec())
         .register(OerIA5String.class, new OerIA5StringCodec())
         .register(OerOctetString.class, new OerOctetStringCodec())
