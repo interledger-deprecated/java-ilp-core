@@ -42,8 +42,10 @@ public class PaymentPacketTypeTests {
   public static Collection<Object[]> data() {
     return Arrays.asList(new Object[][] {
         {new PaymentPacketType(), new PaymentPacketType()},
-        {new QuoteByDestinationAmountRequestPacketType(), new QuoteByDestinationAmountRequestPacketType()},
-        {new QuoteByDestinationAmountResponsePacketType(), new QuoteByDestinationAmountResponsePacketType()},
+        {new QuoteByDestinationAmountRequestPacketType(),
+            new QuoteByDestinationAmountRequestPacketType()},
+        {new QuoteByDestinationAmountResponsePacketType(),
+            new QuoteByDestinationAmountResponsePacketType()},
         {new QuoteBySourceAmountRequestPacketType(), new QuoteBySourceAmountRequestPacketType()},
         {new QuoteBySourceAmountResponsePacketType(), new QuoteBySourceAmountResponsePacketType()},
         {new QuoteLiquidityRequestPacketType(), new QuoteLiquidityRequestPacketType()},

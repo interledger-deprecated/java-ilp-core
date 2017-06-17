@@ -37,17 +37,15 @@ public class IlqpCodecTests {
   @Parameters
   public static Collection<Object[]> data() {
 
-    return Arrays.asList(new Object[][]{
-        //        {new QuoteByDestinationAmountRequest.Builder()},
-        //        {new QuoteByDestinationAmountResponse.Builder()},
-                {new QuoteBySourceAmountRequest.Builder()
-                  .destinationAccount(InterledgerAddressBuilder.builder().value("test3.foo").build())
-                  .sourceAmount(100)
-                  .destinationHoldDuration(Duration.ofSeconds(30))
-                  .build()},
-        //        {new QuoteBySourceAmountResponse.Builder()},
-        //        {new QuoteLiquidityRequest.Builder()},
-        //        {new QuoteLiquidityResponse.Builder()},
+    return Arrays.asList(new Object[][] {
+      {new QuoteBySourceAmountRequest.Builder()
+        .destinationAccount(InterledgerAddressBuilder.builder().value("test3.foo").build())
+        .sourceAmount(100).destinationHoldDuration(Duration.ofSeconds(30)).build()},
+        // {new QuoteByDestinationAmountRequest.Builder()},
+        // {new QuoteByDestinationAmountResponse.Builder()},      
+        // {new QuoteBySourceAmountResponse.Builder()},
+        // {new QuoteLiquidityRequest.Builder()},
+        // {new QuoteLiquidityResponse.Builder()},
     });
   }
 
