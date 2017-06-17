@@ -3,11 +3,12 @@ package org.interledger.codecs.oer.ilqp;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import org.interledger.InterledgerAddressBuilder;
 import org.interledger.InterledgerPacket;
 import org.interledger.codecs.Codec;
 import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.CodecContextFactory;
-import org.junit.Ignore;
+import org.interledger.ilqp.QuoteBySourceAmountRequest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -16,6 +17,7 @@ import org.junit.runners.Parameterized.Parameters;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -38,7 +40,11 @@ public class IlqpCodecTests {
     return Arrays.asList(new Object[][]{
         //        {new QuoteByDestinationAmountRequest.Builder()},
         //        {new QuoteByDestinationAmountResponse.Builder()},
-        //        {new QuoteBySourceAmountRequest.Builder()},
+                {new QuoteBySourceAmountRequest.Builder()
+                  .destinationAccount(InterledgerAddressBuilder.builder().value("test3.foo").build())
+                  .sourceAmount(100)
+                  .destinationHoldDuration(Duration.ofSeconds(30))
+                  .build()},
         //        {new QuoteBySourceAmountResponse.Builder()},
         //        {new QuoteLiquidityRequest.Builder()},
         //        {new QuoteLiquidityResponse.Builder()},
@@ -46,7 +52,6 @@ public class IlqpCodecTests {
   }
 
   @Test
-  @Ignore
   public void testName() throws Exception {
     final CodecContext context = CodecContextFactory.interledger();
 

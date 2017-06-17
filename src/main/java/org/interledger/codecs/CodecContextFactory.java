@@ -7,8 +7,6 @@ import org.interledger.codecs.oer.OerLengthPrefixCodec;
 import org.interledger.codecs.oer.OerLengthPrefixCodec.OerLengthPrefix;
 import org.interledger.codecs.oer.OerOctetStringCodec;
 import org.interledger.codecs.oer.OerOctetStringCodec.OerOctetString;
-import org.interledger.codecs.oer.OerUint128Codec;
-import org.interledger.codecs.oer.OerUint128Codec.OerUint128;
 import org.interledger.codecs.oer.OerUint32Codec;
 import org.interledger.codecs.oer.OerUint32Codec.OerUint32;
 import org.interledger.codecs.oer.OerUint64Codec;
@@ -18,8 +16,10 @@ import org.interledger.codecs.oer.OerUint8Codec.OerUint8;
 import org.interledger.codecs.oer.ilp.InterledgerAddressOerCodec;
 import org.interledger.codecs.oer.ilp.InterledgerPacketTypeOerCodec;
 import org.interledger.codecs.oer.ilp.InterledgerPaymentOerCodec;
+import org.interledger.codecs.oer.ilqp.QuoteBySourceAmountRequestOerCodec;
 import org.interledger.codecs.packettypes.InterledgerPacketType;
 import org.interledger.ilp.InterledgerPayment;
+import org.interledger.ilqp.QuoteBySourceAmountRequest;
 
 /**
  * A factory class for constructing a CodecContext that can read and write Interledger objects using
@@ -38,7 +38,6 @@ public class CodecContextFactory {
         .register(OerUint8.class, new OerUint8Codec())
         .register(OerUint32.class, new OerUint32Codec())
         .register(OerUint64.class, new OerUint64Codec())
-        .register(OerUint128.class, new OerUint128Codec())
         .register(OerLengthPrefix.class, new OerLengthPrefixCodec())
         .register(OerIA5String.class, new OerIA5StringCodec())
         .register(OerOctetString.class, new OerOctetStringCodec())
@@ -51,7 +50,7 @@ public class CodecContextFactory {
         // ILQP
         //.register(QuoteByDestinationRequest.class, new QuoteByDestinationRequestOerCodec())
         //.register(QuoteByDestinationResponse.class, new QuoteByDestinationResponseOerCodec())
-        //.register(QuoteBySourceRequest.class, new QuoteBySourceRequestOerCodec())
+        .register(QuoteBySourceAmountRequest.class, new QuoteBySourceAmountRequestOerCodec())
         //.register(QuoteBySourceResponse.class, new QuoteBySourceResponseOerCodec())
         //.register(QuoteLiquidityRequest.class, new QuoteLiquidityRequestOerCodec())
         //.register(QuoteLiquidityResponse.class, new QuoteLiquidityResponseOerCodec())

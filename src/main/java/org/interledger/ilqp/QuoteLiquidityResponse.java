@@ -18,9 +18,6 @@ import javax.money.convert.ExchangeRate;
 public interface QuoteLiquidityResponse extends QuoteResponse {
 
   @Override
-  UUID getRequestId();
-
-  @Override
   Duration getSourceHoldDuration();
 
   /**

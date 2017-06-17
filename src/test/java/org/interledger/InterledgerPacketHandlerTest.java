@@ -31,13 +31,13 @@ public class InterledgerPacketHandlerTest {
 
     @Override
     protected String handle(QuoteLiquidityRequest quoteLiquidityRequest) {
-      quoteLiquidityRequest.getRequestId();
+      quoteLiquidityRequest.getDestinationAccount();
       return "b";
     }
 
     @Override
     protected String handle(QuoteLiquidityResponse quoteLiquidityResponse) {
-      quoteLiquidityResponse.getRequestId();
+      quoteLiquidityResponse.getSourceHoldDuration();
       return "c";
     }
   }
@@ -54,12 +54,12 @@ public class InterledgerPacketHandlerTest {
 
     @Override
     protected void handle(QuoteLiquidityRequest quoteLiquidityRequest) {
-      quoteLiquidityRequest.getRequestId();
+      quoteLiquidityRequest.getDestinationAccount();
     }
 
     @Override
     protected void handle(QuoteLiquidityResponse quoteLiquidityResponse) {
-      quoteLiquidityResponse.getRequestId();
+      quoteLiquidityResponse.getSourceHoldDuration();
     }
   }
 
@@ -100,7 +100,7 @@ public class InterledgerPacketHandlerTest {
 
     assertThat(actual, is("b"));
     Mockito.verifyNoMoreInteractions(interledgerPayment);
-    Mockito.verify(quoteLiquidityRequest).getRequestId();
+    Mockito.verify(quoteLiquidityRequest).getDestinationAccount();
     Mockito.verifyNoMoreInteractions(quoteLiquidityResponse);
   }
 
@@ -115,7 +115,7 @@ public class InterledgerPacketHandlerTest {
     assertThat(actual, is("c"));
     Mockito.verifyNoMoreInteractions(interledgerPayment);
     Mockito.verifyNoMoreInteractions(quoteLiquidityRequest);
-    Mockito.verify(quoteLiquidityResponse).getRequestId();
+    Mockito.verify(quoteLiquidityResponse).getSourceHoldDuration();
   }
 
   ////////////////////////////
@@ -153,7 +153,7 @@ public class InterledgerPacketHandlerTest {
     new TestAbstractHandler().execute(quoteLiquidityRequest);
 
     Mockito.verifyNoMoreInteractions(interledgerPayment);
-    Mockito.verify(quoteLiquidityRequest).getRequestId();
+    Mockito.verify(quoteLiquidityRequest).getDestinationAccount();
     Mockito.verifyNoMoreInteractions(quoteLiquidityResponse);
   }
 
@@ -167,7 +167,7 @@ public class InterledgerPacketHandlerTest {
 
     Mockito.verifyNoMoreInteractions(interledgerPayment);
     Mockito.verifyNoMoreInteractions(quoteLiquidityRequest);
-    Mockito.verify(quoteLiquidityResponse).getRequestId();
+    Mockito.verify(quoteLiquidityResponse).getSourceHoldDuration();
   }
 
 }

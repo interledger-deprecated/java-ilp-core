@@ -55,15 +55,15 @@ public interface InterledgerPacketType {
         return new QuoteLiquidityResponsePacketType();
       case 4:
         // ILQP_QUOTE_BY_SOURCE_AMOUNT_REQUEST_TYPE
-        return new QuoteBySourceRequestPacketType();
+        return new QuoteBySourceAmountRequestPacketType();
       case 5:
         // ILQP_QUOTE_BY_SOURCE_AMOUNT_RESPONSE_TYPE
-        return new QuoteBySourceResponsePacketType();
+        return new QuoteBySourceAmountResponsePacketType();
       case 6:
         // ILQP_QUOTE_BY_DESTINATION_AMOUNT_REQUEST_TYPE;
-        return new QuoteByDestinationRequestPacketType();
+        return new QuoteByDestinationAmountRequestPacketType();
       case 7:
-        return new QuoteByDestinationResponsePacketType();
+        return new QuoteByDestinationAmountResponsePacketType();
       case 0:
       default:
         throw new InvalidPacketTypeException(

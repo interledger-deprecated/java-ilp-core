@@ -13,12 +13,6 @@ import java.util.UUID;
 public interface QuoteLiquidityRequest extends QuoteRequest {
 
   @Override
-  UUID getRequestId();
-
-  @Override
   InterledgerAddress getDestinationAccount();
-
-  @Override
-  Duration getDestinationHoldDuration();
 
 }

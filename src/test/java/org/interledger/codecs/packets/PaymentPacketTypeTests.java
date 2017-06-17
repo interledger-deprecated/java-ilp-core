@@ -7,10 +7,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import org.interledger.codecs.Codec;
 import org.interledger.codecs.packettypes.InterledgerPacketType;
 import org.interledger.codecs.packettypes.PaymentPacketType;
-import org.interledger.codecs.packettypes.QuoteByDestinationRequestPacketType;
-import org.interledger.codecs.packettypes.QuoteByDestinationResponsePacketType;
-import org.interledger.codecs.packettypes.QuoteBySourceRequestPacketType;
-import org.interledger.codecs.packettypes.QuoteBySourceResponsePacketType;
+import org.interledger.codecs.packettypes.QuoteByDestinationAmountRequestPacketType;
+import org.interledger.codecs.packettypes.QuoteByDestinationAmountResponsePacketType;
+import org.interledger.codecs.packettypes.QuoteBySourceAmountRequestPacketType;
+import org.interledger.codecs.packettypes.QuoteBySourceAmountResponsePacketType;
 import org.interledger.codecs.packettypes.QuoteLiquidityRequestPacketType;
 import org.interledger.codecs.packettypes.QuoteLiquidityResponsePacketType;
 import org.junit.Test;
@@ -42,25 +42,25 @@ public class PaymentPacketTypeTests {
   public static Collection<Object[]> data() {
     return Arrays.asList(new Object[][] {
         {new PaymentPacketType(), new PaymentPacketType()},
-        {new QuoteByDestinationRequestPacketType(), new QuoteByDestinationRequestPacketType()},
-        {new QuoteByDestinationResponsePacketType(), new QuoteByDestinationResponsePacketType()},
-        {new QuoteBySourceRequestPacketType(), new QuoteBySourceRequestPacketType()},
-        {new QuoteBySourceResponsePacketType(), new QuoteBySourceResponsePacketType()},
+        {new QuoteByDestinationAmountRequestPacketType(), new QuoteByDestinationAmountRequestPacketType()},
+        {new QuoteByDestinationAmountResponsePacketType(), new QuoteByDestinationAmountResponsePacketType()},
+        {new QuoteBySourceAmountRequestPacketType(), new QuoteBySourceAmountRequestPacketType()},
+        {new QuoteBySourceAmountResponsePacketType(), new QuoteBySourceAmountResponsePacketType()},
         {new QuoteLiquidityRequestPacketType(), new QuoteLiquidityRequestPacketType()},
         {new QuoteLiquidityResponsePacketType(), new QuoteLiquidityResponsePacketType()},
 
         {new PaymentPacketType(),
             InterledgerPacketType.fromTypeId(InterledgerPacketType.ILP_PAYMENT_TYPE)},
-        {new QuoteByDestinationRequestPacketType(),
+        {new QuoteByDestinationAmountRequestPacketType(),
             InterledgerPacketType.fromTypeId(
                 InterledgerPacketType.ILQP_QUOTE_BY_DESTINATION_AMOUNT_REQUEST_TYPE)},
-        {new QuoteByDestinationResponsePacketType(),
+        {new QuoteByDestinationAmountResponsePacketType(),
             InterledgerPacketType.fromTypeId(
                 InterledgerPacketType.ILQP_QUOTE_BY_DESTINATION_AMOUNT_RESPONSE_TYPE)},
-        {new QuoteBySourceRequestPacketType(),
+        {new QuoteBySourceAmountRequestPacketType(),
             InterledgerPacketType.fromTypeId(
                 InterledgerPacketType.ILQP_QUOTE_BY_SOURCE_AMOUNT_REQUEST_TYPE)},
-        {new QuoteBySourceResponsePacketType(),
+        {new QuoteBySourceAmountResponsePacketType(),
             InterledgerPacketType.fromTypeId(
                 InterledgerPacketType.ILQP_QUOTE_BY_SOURCE_AMOUNT_RESPONSE_TYPE)},
         {new QuoteLiquidityRequestPacketType(),

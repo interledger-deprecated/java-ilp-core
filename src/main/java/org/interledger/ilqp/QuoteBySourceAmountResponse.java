@@ -6,12 +6,9 @@ import java.util.UUID;
 import javax.money.MonetaryAmount;
 
 /**
- * A quote sent in response to a request of type {@link QuoteBySourceRequest}.
+ * A quote sent in response to a request of type {@link QuoteBySourceAmountRequest}.
  */
-public interface QuoteBySourceResponse extends QuoteResponse {
-
-  @Override
-  UUID getRequestId();
+public interface QuoteBySourceAmountResponse extends QuoteResponse {
 
   @Override
   Duration getSourceHoldDuration();
