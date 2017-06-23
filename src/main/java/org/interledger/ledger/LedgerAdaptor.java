@@ -2,7 +2,7 @@ package org.interledger.ledger;
 
 import org.interledger.InterledgerAddress;
 import org.interledger.InterledgerException;
-import org.interledger.cryptoconditions.Fulfillment;
+import org.interledger.ilp.Fulfillment;
 import org.interledger.ledger.events.LedgerConnectEvent;
 import org.interledger.ledger.events.LedgerEvent;
 import org.interledger.ledger.events.LedgerEventHandler;

@@ -1,7 +1,7 @@
 package org.interledger.ledger.model;
 
 import org.interledger.InterledgerAddress;
-import org.interledger.cryptoconditions.Condition;
+import org.interledger.ilp.Condition;
 
 import java.time.ZonedDateTime;
 import java.util.UUID;
@@ -57,11 +57,6 @@ public interface LedgerTransfer {
    * Returns the condition under which the transfer will be executed.
    */
   Condition getExecutionCondition();
-
-  /**
-   * TODO:??.
-   */
-  Condition getCancellationCondition();
 
   /**
    * The date when the transfer expires and will be rejected by the ledger.

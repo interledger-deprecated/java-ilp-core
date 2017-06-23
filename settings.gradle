@@ -1,4 +1,1 @@
 rootProject.name = 'java-ilp-core'
-
-include ':java-crypto-conditions'
-project(':java-crypto-conditions').projectDir = new File(settingsDir, '../java-crypto-conditions')
