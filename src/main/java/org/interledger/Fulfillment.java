@@ -3,14 +3,20 @@ package org.interledger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * The fulfillment of a {@link Condition}.
+ * 
+ * <p>The standard for Interledger payments is for the fulfillment to be the pre-image of a SHA-256
+ * hash (the condition).
+ * 
+ * <p>The fulfillment (pre-image) must be exactly 32 bytes.
  */
 public class Fulfillment {
 
-  private byte[] preimage;
-  private Condition condition;
+  private final byte[] preimage;
+  private final Condition condition;
 
   /**
    * Create a new Fulfillment from the 32 byte pre-image that is hashed to get the condition.
@@ -19,12 +25,12 @@ public class Fulfillment {
    */
   public Fulfillment(byte[] preimage) {
 
-    if (preimage == null || preimage.length != 32) {
-      throw new IllegalArgumentException("Pre-image must be at least 32 bytes.");
+    Objects.requireNonNull(preimage, "Pre-image must not be null!");
+    if (preimage.length != 32) {
+      throw new IllegalArgumentException("Pre-image must be 32 bytes.");
     }
 
-    this.preimage = new byte[32];
-    System.arraycopy(preimage, 0, this.preimage, 0, 32);
+    this.preimage = Arrays.copyOf(preimage, 32);
 
     try {
       MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -42,9 +48,7 @@ public class Fulfillment {
    * @return 32 byte octet string
    */
   public byte[] getPreimage() {
-    byte[] preimage = new byte[this.preimage.length];
-    System.arraycopy(this.preimage, 0, preimage, 0, this.preimage.length);
-    return preimage;
+    return Arrays.copyOf(this.preimage, 32);
   }
 
   /**
@@ -87,7 +91,7 @@ public class Fulfillment {
     if (getClass() != obj.getClass()) {
       return false;
     }
-    
+
     Fulfillment other = (Fulfillment) obj;
     if (condition == null) {
       if (other.condition != null) {
@@ -99,7 +103,7 @@ public class Fulfillment {
     if (!Arrays.equals(preimage, other.preimage)) {
       return false;
     }
-    
+
     return true;
   }
 

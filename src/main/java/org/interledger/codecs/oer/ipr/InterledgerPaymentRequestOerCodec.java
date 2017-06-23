@@ -15,7 +15,8 @@ import java.io.OutputStream;
 import java.util.Objects;
 
 /**
- * An implementation of {@link Codec} that reads and writes instances of {@link InterledgerAddress}.
+ * An implementation of {@link Codec} that reads and writes instances of
+ * {@link InterledgerPaymentRequest}.
  */
 public class InterledgerPaymentRequestOerCodec implements InterledgerPaymentRequestCodec {
 
