@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 /**
- * Parameterized unit tests for encoding an instance of {@link OerUint8Codec}.
+ * Parameterized unit tests for encoding an instance of {@link OerUint64Codec}.
  */
 @RunWith(Parameterized.class)
 public class OerUint64CodecTest {
