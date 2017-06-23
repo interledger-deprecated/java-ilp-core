@@ -1,11 +1,11 @@
 package org.interledger.codecs.oer.ilp;
 
+import org.interledger.Condition;
 import org.interledger.InterledgerAddress;
 import org.interledger.codecs.Codec;
 import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.ConditionCodec;
 import org.interledger.codecs.oer.OerUint256Codec.OerUint256;
-import org.interledger.ilp.Condition;
 
 import java.io.IOException;
 import java.io.InputStream;

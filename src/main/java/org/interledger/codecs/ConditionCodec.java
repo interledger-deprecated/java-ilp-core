@@ -1,6 +1,6 @@
 package org.interledger.codecs;
 
-import org.interledger.ilp.Condition;
+import org.interledger.Condition;
 
 /**
  * An implementation of {@link Codec} that reads and writes instances of {@link Condition}.

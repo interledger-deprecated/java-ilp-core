@@ -1,7 +1,7 @@
 package org.interledger.ledger.model;
 
+import org.interledger.Condition;
 import org.interledger.InterledgerAddress;
-import org.interledger.ilp.Condition;
 
 import java.time.ZonedDateTime;
 import java.util.UUID;

@@ -1,6 +1,6 @@
 package org.interledger.ipr;
 
-import org.interledger.ilp.Condition;
+import org.interledger.Condition;
 import org.interledger.ilp.InterledgerPayment;
 
 /**

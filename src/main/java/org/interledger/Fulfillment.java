@@ -1,4 +1,4 @@
-package org.interledger.ilp;
+package org.interledger;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
