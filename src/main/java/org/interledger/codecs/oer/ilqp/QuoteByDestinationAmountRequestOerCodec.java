@@ -1,17 +1,20 @@
 package org.interledger.codecs.oer.ilqp;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.util.Objects;
+
 import org.interledger.InterledgerAddress;
 import org.interledger.codecs.Codec;
 import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.QuoteByDestinationAmountRequestCodec;
 import org.interledger.codecs.oer.OerUint32Codec.OerUint32;
 import org.interledger.codecs.oer.OerUint64Codec.OerUint64;
+import org.interledger.codecs.packettypes.InterledgerPacketType;
 import org.interledger.ilqp.QuoteByDestinationAmountRequest;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Objects;
 
 /**
  * An implementation of {@link Codec} that reads and writes instances of
@@ -19,7 +22,7 @@ import java.util.Objects;
  * 
  * @see https://github.com/interledger/rfcs/blob/master/asn1/InterledgerQuotingProtocol.asn
  */
-public class QuoteByDestinationRequestOerCodec implements QuoteByDestinationAmountRequestCodec {
+public class QuoteByDestinationAmountRequestOerCodec implements QuoteByDestinationAmountRequestCodec {
 
   @Override
   public QuoteByDestinationAmountRequest read(CodecContext context, InputStream inputStream)
@@ -28,13 +31,10 @@ public class QuoteByDestinationRequestOerCodec implements QuoteByDestinationAmou
     Objects.requireNonNull(context);
     Objects.requireNonNull(inputStream);
 
-    /* read the request id, which is a uint128 */
-    //long requestId = context.read(OerUint128.class, inputStream).getValue();
-    
     /* read the Interledger Address. */
     final InterledgerAddress destinationAccount =
         context.read(InterledgerAddress.class, inputStream);
-    
+
     /* read the destination amount, which is a uint64 */
     /* NOTE: we dont expect amounts to exceed 2^63 - 1, so we risk the down-cast */
     long destinationAmount = context.read(OerUint64.class, inputStream).getValue().longValue();
@@ -42,15 +42,32 @@ public class QuoteByDestinationRequestOerCodec implements QuoteByDestinationAmou
     /* read the destination hold duration which is a unit32 */
     long destinationHoldDuration = context.read(OerUint32.class, inputStream).getValue();
 
-    return null; //TODO:
+    return QuoteByDestinationAmountRequest.Builder.builder()
+        .destinationAccount(destinationAccount)
+        .destinationAmount(destinationAmount)
+        .destinationHoldDuration(Duration.of(destinationHoldDuration, ChronoUnit.MILLIS))
+        .build();
   }
 
   @Override
   public void write(CodecContext context, QuoteByDestinationAmountRequest instance,
       OutputStream outputStream) throws IOException {
-    // TODO Auto-generated method stub
+  
+    Objects.requireNonNull(context);
+    Objects.requireNonNull(instance);
+    Objects.requireNonNull(outputStream);
 
+    /* write the packet type. */
+    context.write(InterledgerPacketType.class, this.getTypeId(), outputStream);
+
+    /* destination account */
+    context.write(InterledgerAddress.class, instance.getDestinationAccount(), outputStream);
+    
+    /* destination amount */
+    context.write(OerUint64.class, new OerUint64(instance.getDestinationAmount()), outputStream);
+
+    /* destination hold duration, in milliseconds */
+    context.write(OerUint32.class, new OerUint32(instance.getDestinationHoldDuration().toMillis()),
+        outputStream);
   }
-
-
 }

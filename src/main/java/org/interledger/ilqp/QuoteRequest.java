@@ -1,6 +1,8 @@
 package org.interledger.ilqp;
 
 
+import java.time.Duration;
+
 import org.interledger.InterledgerAddress;
 
 import org.interledger.InterledgerPacket;
@@ -16,4 +18,9 @@ public interface QuoteRequest extends InterledgerPacket {
    * @return An instance of {@link InterledgerAddress}.
    */
   InterledgerAddress getDestinationAccount();
+  
+  /**
+   * Returns the amount of time the receiver needs to fulfill the payment.
+   */
+  Duration getDestinationHoldDuration();
 }

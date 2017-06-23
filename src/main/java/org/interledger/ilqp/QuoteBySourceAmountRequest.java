@@ -18,11 +18,7 @@ public interface QuoteBySourceAmountRequest extends QuoteRequest {
    */
   long getSourceAmount();
   
-  /**
-   * How much time the receiver needs to fulfill the payment.
-   * 
-   * @return An instance of {@link Duration}
-   */
+  @Override
   Duration getDestinationHoldDuration();
   
   /**
