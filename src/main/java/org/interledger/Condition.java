@@ -9,8 +9,8 @@ import java.util.Objects;
  * <p>Interledger relies on conditional payments where each transfer that is part of a payment is
  * conditional upon the presentation of a fulfillment.
  * 
- * <p>The standard for conditions is to use the SHA-256 hash of a pre-image. The pre-image is therefor
- * the fulfillment of the condition.
+ * <p>The standard for conditions is to use the SHA-256 hash of a pre-image. The pre-image is
+ * therefor the fulfillment of the condition.
  * 
  * @see Fulfillment
  */
