@@ -11,14 +11,10 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * <p>
- * An extension of {@link Codec} for reading and writing an ASN.1 OER 256-Bit integer type as
- * defined by the Interledger ASN.1 definitions.
- * </p>
- * <p>
- * All Interledger ASN.1 integer types are encoded as fixed-size, non-extensible numbers. Thus, for
- * a UInt256 type, the integer value is encoded as an unsigned binary integer in 32 octets.
- * </p>
+ * <p> An extension of {@link Codec} for reading and writing an ASN.1 OER 256-Bit integer type as
+ * defined by the Interledger ASN.1 definitions. </p> <p> All Interledger ASN.1 integer types are
+ * encoded as fixed-size, non-extensible numbers. Thus, for a UInt256 type, the integer value is
+ * encoded as an unsigned binary integer in 32 octets. </p>
  */
 public class OerUint256Codec implements Codec<OerUint256> {
 
@@ -37,7 +33,13 @@ public class OerUint256Codec implements Codec<OerUint256> {
     Objects.requireNonNull(inputStream);
 
     final byte[] returnable = new byte[32];
-    inputStream.read(returnable);
+    int bytesRead = inputStream.read(returnable);
+
+    if (bytesRead != 32) {
+      throw new RuntimeException(
+          String.format("Attempted to read a UInt256 and only got %s bytes.", bytesRead));
+    }
+
     return new OerUint256(returnable);
   }
 
