@@ -1,7 +1,12 @@
 package org.interledger;
 
+import java.net.URI;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 /**
  * The execution condition attached to all transfers in an Interledger payment.
@@ -15,6 +20,9 @@ import java.util.Objects;
  * @see Fulfillment
  */
 public class Condition {
+
+  public static final String CONDITION_REGEX_STRICT = "^ni://([A-Za-z0-9_-]?)/sha-256;([a-zA-Z0-9_-]{0,86})\\?(.+)$";
+
 
   private final byte[] hash;
 
@@ -70,4 +78,30 @@ public class Condition {
     return Arrays.copyOf(this.hash, 32);
   }
 
+  /**
+   * Parses a URI formatted crypto-condition
+   *
+   * @param uri
+   *  The crypto-condition formatted as a uri.
+   * @return
+   *  The crypto condition
+   */
+  public static Condition parse(URI uri) {
+    //based strongly on the five bells implementation at 
+    //https://github.com/interledgerjs/five-bells-condition (7b6a97990cd3a51ee41b276c290e4ae65feb7882)
+    
+    if (!"ni".equals(uri.getScheme())) {
+      throw new RuntimeException("Serialized condition must start with 'ni:'");
+    }
+    
+    //the regex covers the entire uri format including the 'ni:' scheme
+    Matcher m = Pattern.compile(CONDITION_REGEX_STRICT).matcher(uri.toString());
+    
+    if (!m.matches()) {
+      throw new RuntimeException("Invalid condition format");
+    }
+
+    byte[] fingerprint = Base64.getUrlDecoder().decode(m.group(2));
+    return new Condition(fingerprint);
+  }
 }

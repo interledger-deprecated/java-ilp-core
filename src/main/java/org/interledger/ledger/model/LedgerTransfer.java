@@ -1,6 +1,7 @@
 package org.interledger.ledger.model;
 
 import org.interledger.Condition;
+
 import org.interledger.InterledgerAddress;
 
 import java.time.ZonedDateTime;
@@ -34,7 +35,7 @@ public interface LedgerTransfer {
   MonetaryAmount getAmount();
 
   /**
-   * TODO:??.
+   * TODO:??. Doesn't look to be part of ILP protocol.
    */
   boolean isAuthorized();
 
