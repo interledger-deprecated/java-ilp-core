@@ -6,6 +6,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import org.interledger.psk.io.PskUtils;
 import org.interledger.psk.io.UnencryptedPskMessageReader;
 import org.interledger.psk.model.PskMessage;
 import org.interledger.psk.model.PskMessageHeader;
@@ -20,7 +21,7 @@ import java.util.Base64;
 public class EncryptedMessageWriterTest {
 
   /* to make testing easier, we set the sharedSecretKey as all 0's */
-  public static final byte[] key = new byte[256 / 8]; /* 256 bits long */
+  public static final byte[] key = new byte[PskUtils.SHARED_KEY_LENGTH];
 
   
   @Test
@@ -51,7 +52,7 @@ public class EncryptedMessageWriterTest {
     
     assertTrue(messageString.startsWith("PSK/1.0\n"));
     assertTrue(messageString.contains("Nonce: " + nonce + "\n"));
-    assertTrue(messageString.contains("Encryption: aes-256-gcm Zty9wEWIRu-saavYXiCtbQ=="));
+    assertTrue(messageString.contains("Encryption: aes-256-gcm 9vacn9tcRXUyBIl7alNaJg=="));
     
     /* the private header should be encrypted, so we shouldnt be able to see it */
     assertFalse(messageString.contains("private header"));

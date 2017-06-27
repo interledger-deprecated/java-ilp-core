@@ -7,7 +7,6 @@ import org.interledger.psk.model.PskMessageImpl;
 import java.io.ByteArrayInputStream;
 
 import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 
 /**
  * A PSK message reader that will decrypt the encrypted private data portion of the message using
@@ -21,15 +20,15 @@ public class EncryptedPskMessageReader extends UnencryptedPskMessageReader {
   /**
    * Constructs an {@link EncryptedPskMessageReader} instance with the key provided.
    * 
-   * @param key The clear content of the pre-shared key.
+   * @param sharedKey The clear content of the pre-shared key.
    */
-  public EncryptedPskMessageReader(byte[] key) {
-    if (key == null || key.length != PskUtils.AES_KEY_LEN_BYTES) {
+  public EncryptedPskMessageReader(byte[] sharedKey) {
+    if (sharedKey == null || sharedKey.length != PskUtils.SHARED_KEY_LENGTH) {
       throw new IllegalArgumentException(
-          "Invalid key - must be " + PskUtils.AES_KEY_LEN_BYTES + " bytes");
+          "Invalid key - must be " + PskUtils.SHARED_KEY_LENGTH + " bytes");
     }
 
-    this.key = new SecretKeySpec(key, "AES");
+    this.key = PskUtils.getEncryptionKey(sharedKey);
   }
 
   @Override
