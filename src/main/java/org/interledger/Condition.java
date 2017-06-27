@@ -7,7 +7,6 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.interledger.cryptoconditions.uri.URIEncodingException;
 
 /**
  * The execution condition attached to all transfers in an Interledger payment.
@@ -87,19 +86,19 @@ public class Condition {
    * @return
    *  The crypto condition
    */
-  public static Condition parse(URI uri) throws URIEncodingException {
+  public static Condition parse(URI uri) {
     //based strongly on the five bells implementation at 
     //https://github.com/interledgerjs/five-bells-condition (7b6a97990cd3a51ee41b276c290e4ae65feb7882)
     
     if (!"ni".equals(uri.getScheme())) {
-      throw new URIEncodingException("Serialized condition must start with 'ni:'");
+      throw new RuntimeException("Serialized condition must start with 'ni:'");
     }
     
     //the regex covers the entire uri format including the 'ni:' scheme
     Matcher m = Pattern.compile(CONDITION_REGEX_STRICT).matcher(uri.toString());
     
     if (!m.matches()) {
-      throw new URIEncodingException("Invalid condition format");
+      throw new RuntimeException("Invalid condition format");
     }
 
     byte[] fingerprint = Base64.getUrlDecoder().decode(m.group(2));
