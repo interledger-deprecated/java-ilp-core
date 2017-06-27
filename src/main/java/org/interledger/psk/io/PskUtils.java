@@ -1,6 +1,5 @@
 package org.interledger.psk.io;
 
-import org.interledger.Condition;
 import org.interledger.Fulfillment;
 import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.CodecContextFactory;
@@ -60,6 +59,12 @@ public class PskUtils {
   /* HMAC SHA-256 spec */
   public static final String HMAC_ALGORITHM = "HmacSHA256";
 
+  /**
+   * Generate PSK parameters from receiver secret.
+   * 
+   * @param receiverSecret The local secret used by the receiver
+   * @return PSK parameters derived from secret
+   */
   public static PskParams getPskParams(byte[] receiverSecret) {
     
     final byte[] token = getPskToken();
@@ -68,28 +73,28 @@ public class PskUtils {
         
     return new PskParams() {
       
-      final String _token = Base64.getUrlEncoder().encodeToString(token);
-      final String _receiverId = Base64.getUrlEncoder().encodeToString(receiverId);
-      final byte[] _sharedKey = sharedKey;
+      final String pskToken = Base64.getUrlEncoder().encodeToString(token);
+      final String pskReceiverId = Base64.getUrlEncoder().encodeToString(receiverId);
+      final byte[] pskSharedKey = sharedKey;
       
       @Override
       public String getToken() {
-        return _token;
+        return pskToken;
       }
       
       @Override
       public byte[] getSharedKey() {
-        return _sharedKey;
+        return pskSharedKey;
       }
       
       @Override
       public String getReceiverId() {
-        return _receiverId;
+        return pskReceiverId;
       }
     };    
   }
   
-  public static byte[] getPskToken() {
+  private static byte[] getPskToken() {
     try {
       SecureRandom sr = SecureRandom.getInstanceStrong();
       byte[] nonce = new byte[16];
@@ -100,11 +105,11 @@ public class PskUtils {
     }
   }
 
-  public static byte[] getReceiverId(byte[] receiverSecret) {
+  private static byte[] getReceiverId(byte[] receiverSecret) {
     return Arrays.copyOf(hmac(receiverSecret, IPR_RECEIVER_ID_STRING), RECEIVER_ID_LENGTH);
   }
 
-  public static byte[] getPskSharedSecret(byte[] receiverSecret, byte[] token) {
+  private static byte[] getPskSharedSecret(byte[] receiverSecret, byte[] token) {
     byte[] generator = hmac(receiverSecret, PSK_GENERATION_STRING);
     return Arrays.copyOf(hmac(generator, token), SHARED_SECRET_LENGTH);
   }
@@ -127,7 +132,15 @@ public class PskUtils {
     }
   }
 
-  public static byte[] packetToPreimage(InterledgerPayment packet, byte[] sharedKey) {
+  /**
+   * Generate a condition preimage (fulfillment) from the given ILP Packet and shared key.
+   * 
+   * @param packet An ILP Packet
+   * @param sharedKey The PSK
+   * 
+   * @return The 32 byte preimage to use for an Interledger condition
+   */
+  public static Fulfillment generateFulfillment(InterledgerPayment packet, byte[] sharedKey) {
     byte[] pskConditionKey = hmac(sharedKey, PSK_CONDITION_STRING);
     
     //Encode packet
@@ -140,19 +153,7 @@ public class PskUtils {
       throw new RuntimeException("Error encoding Interledger Packet.", e);
     }
     
-    return hmac(pskConditionKey, outputStream.toByteArray());
-  }
-  
-  public static Condition preimageToCondition (byte[] preimage) {
-    return new Fulfillment(preimage).getCondition();
-  }
-
-  public static Condition packetToCondition (InterledgerPayment packet, byte[] sharedKey) {
-    return preimageToCondition(packetToPreimage(packet, sharedKey));
-  }
-
-  public static Fulfillment preimageToFulfillment (byte[] preimage) {
-    return new Fulfillment(preimage);
+    return new Fulfillment(hmac(pskConditionKey, outputStream.toByteArray()));
   }
 
   /**
