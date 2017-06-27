@@ -9,7 +9,8 @@ import javax.money.format.MonetaryAmountFormat;
 
 public interface LedgerInfo {
 
-  // TODO Is this required?
+  // TODO Is this required? 
+  //      Answer: NO, getAddressPrefix is the real Id.
   String getId();
 
   /**
