@@ -20,9 +20,10 @@ public class PskWriterFactory {
    * Constructs a writer that outputs PSK messages with the private portion of the message
    * <b>encrypted</b>
    *
-   * @param secretKey The secret key used to encrypt the private portion.
+   * @param sharedKey The shared key used to derive the encryption key used to encrypt the private
+   *        portion.
    */
-  public static PskMessageWriter getEncryptedWriter(final byte[] secretKey) {
-    return new EncryptedPskMessageWriter(secretKey);
+  public static PskMessageWriter getEncryptedWriter(final byte[] sharedKey) {
+    return new EncryptedPskMessageWriter(sharedKey);
   }
 }

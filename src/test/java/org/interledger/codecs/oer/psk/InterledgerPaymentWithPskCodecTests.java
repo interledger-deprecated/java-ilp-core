@@ -44,7 +44,7 @@ public class InterledgerPaymentWithPskCodecTests {
   @Parameter(1)
   public PskMessage pskMessage;
 
-  private static final byte[] sharedSecretKey = "icantsaybecauseitsasecretsosorry".getBytes();
+  private static final byte[] sharedSecretKey = new byte[16];
   private static final BasicPskHeader publicHeader1
       = new BasicPskHeader("question", "What is the answer?");
   private static final BasicPskHeader publicHeader2

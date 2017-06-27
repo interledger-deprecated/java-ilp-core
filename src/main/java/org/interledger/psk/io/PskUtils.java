@@ -40,7 +40,7 @@ public class PskUtils {
   /* the expected length of the receiver id, in bytes */
   public static final int RECEIVER_ID_LENGTH = 8;
   /* the expected length of the shared secret, in bytes */
-  public static final int SHARED_SECRET_LENGTH = 16;
+  public static final int SHARED_KEY_LENGTH = 16;
 
   /* constant used to generate receiver id from secret */
   public static final String IPR_RECEIVER_ID_STRING = "ilp_psk_receiver_id";
@@ -66,34 +66,34 @@ public class PskUtils {
    * @return PSK parameters derived from secret
    */
   public static PskParams getPskParams(byte[] receiverSecret) {
-    
+
     final byte[] token = getPskToken();
     final byte[] receiverId = getReceiverId(receiverSecret);
-    final byte[] sharedKey = getPskSharedSecret(receiverSecret, token);
-        
+    final byte[] sharedKey = getPreSharedKey(receiverSecret, token);
+
     return new PskParams() {
-      
+
       final String pskToken = Base64.getUrlEncoder().encodeToString(token);
       final String pskReceiverId = Base64.getUrlEncoder().encodeToString(receiverId);
       final byte[] pskSharedKey = sharedKey;
-      
+
       @Override
       public String getToken() {
         return pskToken;
       }
-      
+
       @Override
       public byte[] getSharedKey() {
         return pskSharedKey;
       }
-      
+
       @Override
       public String getReceiverId() {
         return pskReceiverId;
       }
-    };    
+    };
   }
-  
+
   private static byte[] getPskToken() {
     try {
       SecureRandom sr = SecureRandom.getInstanceStrong();
@@ -109,9 +109,9 @@ public class PskUtils {
     return Arrays.copyOf(hmac(receiverSecret, IPR_RECEIVER_ID_STRING), RECEIVER_ID_LENGTH);
   }
 
-  private static byte[] getPskSharedSecret(byte[] receiverSecret, byte[] token) {
+  private static byte[] getPreSharedKey(byte[] receiverSecret, byte[] token) {
     byte[] generator = hmac(receiverSecret, PSK_GENERATION_STRING);
-    return Arrays.copyOf(hmac(generator, token), SHARED_SECRET_LENGTH);
+    return Arrays.copyOf(hmac(generator, token), SHARED_KEY_LENGTH);
   }
 
   private static byte[] hmac(byte[] key, byte[] message) {
@@ -132,6 +132,10 @@ public class PskUtils {
     }
   }
 
+  public static SecretKey getEncryptionKey(byte[] sharedKey) {
+    return new SecretKeySpec(hmac(sharedKey, PSK_ENCRYPTION_STRING), "AES");
+  }
+
   /**
    * Generate a condition preimage (fulfillment) from the given ILP Packet and shared key.
    * 
@@ -142,17 +146,17 @@ public class PskUtils {
    */
   public static Fulfillment generateFulfillment(InterledgerPayment packet, byte[] sharedKey) {
     byte[] pskConditionKey = hmac(sharedKey, PSK_CONDITION_STRING);
-    
-    //Encode packet
+
+    // Encode packet
     final CodecContext context = CodecContextFactory.interledger();
     final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    
+
     try {
       context.write(InterledgerPayment.class, packet, outputStream);
     } catch (IOException e) {
       throw new RuntimeException("Error encoding Interledger Packet.", e);
     }
-    
+
     return new Fulfillment(hmac(pskConditionKey, outputStream.toByteArray()));
   }
 
@@ -218,10 +222,16 @@ public class PskUtils {
   /**
    * Encrypts a block of data using the encryption scheme specific in the PSK RFC.
    * 
+   * <p>NOTE: May throw an InvalidKeyExcpetion if the Java Cryptography Extension (JCE) Unlimited
+   * Strength Jurisdiction Policy Files are not installed.
+   * 
+   * <p>{@link http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html}
+   * 
    * @param key The pre-shared key used to encrypt and decrypt the data.
    * @param nonce The nonce used in the PSK message.
    * @param data The data to encrypt.
    * @return The encrypted data and its accompanying GCM authentication tag.
+   * @throws Exception if there is an error encrypting the data
    */
   public static GcmEncryptedData encryptPskData(SecretKey key, byte[] nonce, byte[] data)
       throws Exception {

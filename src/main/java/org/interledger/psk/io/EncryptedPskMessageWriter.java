@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 
 /**
  * A writer for PSK messages that <b>encrypts</b> the private data portion of the PSK message using
@@ -24,16 +23,20 @@ public class EncryptedPskMessageWriter extends UnencryptedPskMessageWriter {
 
   /**
    * Constructs a new instance of the writer, using the given clear pre-shared key.
+   * 
+   * <p>The encryption key (32 bytes) is derived from the shared key (16 bytes) per the PSK spec.
    *
-   * @param key The clear value of the pre-shared key.
+   * @param sharedKey The clear value of the pre-shared key.
    */
-  public EncryptedPskMessageWriter(byte[] key) {
-    if (key == null || key.length != PskUtils.AES_KEY_LEN_BYTES) {
+  public EncryptedPskMessageWriter(byte[] sharedKey) {
+    
+    
+    if (sharedKey == null || sharedKey.length != PskUtils.SHARED_KEY_LENGTH) {
       throw new IllegalArgumentException(
-          "Invalid key - must be " + PskUtils.AES_KEY_LEN_BYTES + " bytes");
+          "Invalid key - must be " + PskUtils.SHARED_KEY_LENGTH + " bytes");
     }
-
-    this.key = new SecretKeySpec(key, "AES");
+    
+    this.key = PskUtils.getEncryptionKey(sharedKey);
   }
 
   @Override
