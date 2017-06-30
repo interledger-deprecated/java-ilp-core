@@ -55,14 +55,7 @@ public class IlqpCodecTests {
             .sourceHoldDuration(Duration.ofMinutes(1)).build(),
         new QuoteLiquidityRequest.Builder()
         .destinationAccount(InterledgerAddressBuilder.builder().value("test3.foo").build())
-        .destinationHoldDuration(Duration.ofMinutes(5)).build(),
-//        new QuoteLiquidityResponse.Builder()
-//          .appliesTo(InterledgerAddressBuilder.builder().value("test3.foo").build())
-//          .expiresAt(ZonedDateTime.now())
-//          .liquidityCurve(null)
-//          .sourceHoldDuration(Duration.ofMinutes(15))
-//          .build()
-    };
+        .destinationHoldDuration(Duration.ofMinutes(5)).build()};
   }
 
   @Test
