@@ -2,6 +2,8 @@ package org.interledger.psk;
 
 /**
  * The parameters derived from a receiver secret for use in the PSK protocol.
+ * 
+ * @see "https://github.com/interledger/rfcs/tree/master/0016-pre-shared-key"
  */
 public interface PskParams {
   

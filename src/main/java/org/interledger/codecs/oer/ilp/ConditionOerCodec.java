@@ -1,7 +1,6 @@
 package org.interledger.codecs.oer.ilp;
 
 import org.interledger.Condition;
-import org.interledger.InterledgerAddress;
 import org.interledger.codecs.Codec;
 import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.ConditionCodec;

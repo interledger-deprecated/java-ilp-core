@@ -24,19 +24,17 @@ public class InterledgerPaymentRequestBuilderTest {
 
   @Test
   public final void testSimpleInterledgerPaymentRequest() {
-    
-    InterledgerAddress destinationAddress = InterledgerAddressBuilder.builder().value("private.bob").build();
-    long destinationAmount = 100l;
+
+    InterledgerAddress destinationAddress =
+        InterledgerAddressBuilder.builder().value("private.bob").build();
+    long destinationAmount = 100L;
     ZonedDateTime expiresAt = ZonedDateTime.now().plusMinutes(1);
     byte[] receiverSecret = new byte[32];
     String paymentId = UUID.randomUUID().toString();
-    
+
     InterledgerPaymentRequestBuilder builder = new InterledgerPaymentRequestBuilder(
-        destinationAddress,
-        destinationAmount,
-        expiresAt,
-        receiverSecret);
-    
+        destinationAddress, destinationAmount, expiresAt, receiverSecret);
+
     builder.setEncrypted(false);
     builder.getPskMessageBuilder().addPublicHeader("Payment-Id", paymentId);
 
@@ -48,9 +46,9 @@ public class InterledgerPaymentRequestBuilderTest {
     } catch (IOException e) {
       throw new RuntimeException("Error encoding Interledger Packet.", e);
     }
-    
+
     Base64.getUrlEncoder().encodeToString(outputStream.toByteArray());
-    
+
   }
 
 }

@@ -14,10 +14,8 @@ import java.util.Objects;
 public class InterledgerPaymentRequestBuilder {
 
   private final PskParams pskParams;
-  private final PskMessageBuilder messageBuilder;
-
-  // ILP Packet headers
-  private final InterledgerPayment.Builder packetBuilder;
+  private final PskMessageBuilder pskMessageBuilder;
+  private final InterledgerPayment.Builder interledgerPaymentBuilder;
 
   private boolean encrypted = true;
 
@@ -34,23 +32,24 @@ public class InterledgerPaymentRequestBuilder {
    *        transport layer envelope).
    * @param receiverSecret The receiver secret as defined in the PSK specification.
    */
-  public InterledgerPaymentRequestBuilder(InterledgerAddress receiverAddressPrefix,
-      long receiveAmount, ZonedDateTime expiry, byte[] receiverSecret) {
+  public InterledgerPaymentRequestBuilder(final InterledgerAddress receiverAddressPrefix,
+      final long receiveAmount, final ZonedDateTime expiry, byte[] receiverSecret) {
 
-    // Generate keys (uses same algo as PSK although the keys are not shared)
+    Objects.requireNonNull(receiverAddressPrefix);
+    Objects.requireNonNull(expiry);
+    Objects.requireNonNull(receiverSecret);
+
+    // Generate keys (uses same algo as PSK although the key is not shared)
     this.pskParams = PskUtils.getPskParams(receiverSecret);
 
     // Append receiver id and token to address
     InterledgerAddress destinationAddress =
-        receiverAddressPrefix.with("." + pskParams.getReceiverId() + pskParams.getToken());
+        receiverAddressPrefix.with(pskParams.getReceiverId() + pskParams.getToken());
 
-    this.packetBuilder = InterledgerPayment.Builder.builder().destinationAccount(destinationAddress)
-        .destinationAmount(receiveAmount);
+    this.interledgerPaymentBuilder = InterledgerPayment.Builder.builder()
+        .destinationAccount(destinationAddress).destinationAmount(receiveAmount);
 
-    // Default expiry is 60 seconds from now
-    expiry = Objects.isNull(expiry) ? ZonedDateTime.now().plusSeconds(60) : expiry;
-
-    this.messageBuilder = new PskMessageBuilder().addPrivateHeader("Expires-At",
+    this.pskMessageBuilder = new PskMessageBuilder().addPrivateHeader("Expires-At",
         expiry.toOffsetDateTime().toString());
 
   }
@@ -61,7 +60,7 @@ public class InterledgerPaymentRequestBuilder {
    * @return a reference to the internal PSK message builder.
    */
   public PskMessageBuilder getPskMessageBuilder() {
-    return messageBuilder;
+    return pskMessageBuilder;
   }
 
   /**
@@ -84,14 +83,14 @@ public class InterledgerPaymentRequestBuilder {
    * 
    * @return an Interledger Payment Request.
    */
-  public InterledgerPaymentRequest getIpr() {
+  public InterledgerPaymentRequest build() {
 
     PskMessageWriter writer =
         (this.encrypted) ? PskWriterFactory.getEncryptedWriter(this.pskParams.getSharedKey())
             : PskWriterFactory.getUnencryptedWriter();
 
-    packetBuilder.data(writer.writeMessage(messageBuilder.toMessage()));
-    InterledgerPayment packet = packetBuilder.build();
+    interledgerPaymentBuilder.data(writer.writeMessage(pskMessageBuilder.toMessage()));
+    InterledgerPayment packet = interledgerPaymentBuilder.build();
 
     // TODO: It's a pity we have to encode the packet to get the condition here
     // would be better to do it during encoding of the IPR
