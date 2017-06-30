@@ -71,7 +71,13 @@ public class OerIA5StringCodec implements Codec<OerIA5String> {
 
     // Read lengthToRead bytes from the inputStream into the buffer...
     byte[] buffer = new byte[lengthToRead];
-    inputStream.read(buffer);
+    int read = inputStream.read(buffer);
+    
+    if (read != lengthToRead) {
+      throw new IOException(
+          "error reading " + lengthToRead + " bytes from stream, only read " + read);
+    }
+    
     result.write(buffer, 0, lengthToRead);
     return result.toString(StandardCharsets.US_ASCII.name());
   }
