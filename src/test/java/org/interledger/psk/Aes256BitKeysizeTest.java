@@ -6,7 +6,6 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.Arrays;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -22,21 +21,20 @@ import javax.crypto.spec.SecretKeySpec;
  * <p>To use 256-bit AES keys you must have Java Cryptography Extension (JCE) Unlimited Strength
  * Jurisdiction Policy Files installed.
  * 
- * <p>{@link http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html}
+ * <p>@see <a
+ * href="http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html">
+ * http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html</a>
  */
-public class AesEncryptionTest {
+public class Aes256BitKeysizeTest {
 
   @Test
-  public final void test()
+  public final void test256bitKey()
       throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
       InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 
     SecureRandom sr = SecureRandom.getInstanceStrong();
     byte[] nonce = new byte[16];
     sr.nextBytes(nonce);
-
-    // byte[] key = new byte[32];
-    // sr.nextBytes(key);
 
     KeyGenerator keygen = KeyGenerator.getInstance("AES");
     keygen.init(256);
@@ -47,10 +45,16 @@ public class AesEncryptionTest {
 
     Cipher cipher = Cipher.getInstance("AES/GCM/PKCS5Padding");
     GCMParameterSpec paramSpec = new GCMParameterSpec(128, nonce);
-    cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, "AES"), paramSpec);
-    byte[] encrypted = cipher.doFinal(data);
-    byte[] authBytes = Arrays.copyOfRange(encrypted, encrypted.length - 16, encrypted.length);
-    encrypted = Arrays.copyOf(encrypted, encrypted.length - 16);
+
+    try {
+      cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, "AES"), paramSpec);
+      cipher.doFinal(data);
+    } catch (InvalidKeyException e) {
+      throw new RuntimeException(
+          "Error loading 256bit key. "
+          + "Likey cause is missing Unlimited Strength Jurisdiction Policy Files.",
+          e);
+    }
 
   }
 

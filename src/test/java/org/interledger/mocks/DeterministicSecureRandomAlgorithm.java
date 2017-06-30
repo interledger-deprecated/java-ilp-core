@@ -9,16 +9,16 @@ public class DeterministicSecureRandomAlgorithm extends SecureRandomSpi {
   @Override
   protected void engineSetSeed(byte[] seed) {
     for (int i = 0; i < seed.length; i++) {
-      int j = i % DeterministicSecureRandomProvider.SEED.length;
-      seed[i] = DeterministicSecureRandomProvider.SEED[j];
+      seed[i] =
+          DeterministicSecureRandomProvider.SEED[i % DeterministicSecureRandomProvider.SEED.length];
     }
   }
 
   @Override
   protected void engineNextBytes(byte[] bytes) {
     for (int i = 0; i < bytes.length; i++) {
-      int j = i % DeterministicSecureRandomProvider.SEED.length;
-      bytes[i] = DeterministicSecureRandomProvider.SEED[j];
+      bytes[i] =
+          DeterministicSecureRandomProvider.SEED[i % DeterministicSecureRandomProvider.SEED.length];
     }
   }
 
@@ -26,8 +26,8 @@ public class DeterministicSecureRandomAlgorithm extends SecureRandomSpi {
   protected byte[] engineGenerateSeed(int numBytes) {
     byte[] bytes = new byte[numBytes];
     for (int i = 0; i < numBytes; i++) {
-      int j = i % DeterministicSecureRandomProvider.SEED.length;
-      bytes[i] = DeterministicSecureRandomProvider.SEED[j];
+      bytes[i] =
+          DeterministicSecureRandomProvider.SEED[i % DeterministicSecureRandomProvider.SEED.length];
     }
     return bytes;
   }

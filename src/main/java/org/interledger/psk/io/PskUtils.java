@@ -67,14 +67,17 @@ public class PskUtils {
    */
   public static PskParams getPskParams(byte[] receiverSecret) {
 
+    Objects.requireNonNull(receiverSecret);
+
     final byte[] token = getPskToken();
     final byte[] receiverId = getReceiverId(receiverSecret);
     final byte[] sharedKey = getPreSharedKey(receiverSecret, token);
 
     return new PskParams() {
 
-      final String pskToken = Base64.getUrlEncoder().encodeToString(token);
-      final String pskReceiverId = Base64.getUrlEncoder().encodeToString(receiverId);
+      final String pskToken = Base64.getUrlEncoder().withoutPadding().encodeToString(token);
+      final String pskReceiverId =
+          Base64.getUrlEncoder().withoutPadding().encodeToString(receiverId);
       final byte[] pskSharedKey = sharedKey;
 
       @Override
@@ -225,7 +228,9 @@ public class PskUtils {
    * <p>NOTE: May throw an InvalidKeyExcpetion if the Java Cryptography Extension (JCE) Unlimited
    * Strength Jurisdiction Policy Files are not installed.
    * 
-   * <p>{@link http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html}
+   * <p>@see <a
+   * href="http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html">
+   * http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html</a>
    * 
    * @param key The pre-shared key used to encrypt and decrypt the data.
    * @param nonce The nonce used in the PSK message.

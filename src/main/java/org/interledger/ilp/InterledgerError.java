@@ -42,7 +42,9 @@ public class InterledgerError {
      * code value.
      */
     enum ErrorType {
-      FINAL('F'), TEMPORARY('T'), RELATIVE('R');
+      FINAL('F'),
+      TEMPORARY('T'),
+      RELATIVE('R');
 
       private final String errorPrefix;
 
