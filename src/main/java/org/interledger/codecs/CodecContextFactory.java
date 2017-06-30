@@ -18,6 +18,7 @@ import org.interledger.codecs.oer.ilp.InterledgerPacketTypeOerCodec;
 import org.interledger.codecs.oer.ilp.InterledgerPaymentOerCodec;
 import org.interledger.codecs.oer.ilqp.QuoteByDestinationAmountRequestOerCodec;
 import org.interledger.codecs.oer.ilqp.QuoteByDestinationAmountResponseOerCodec;
+import org.interledger.codecs.oer.ilqp.QuoteLiquidityRequestOerCodec;
 import org.interledger.codecs.oer.ilqp.QuoteBySourceAmountRequestOerCodec;
 import org.interledger.codecs.oer.ilqp.QuoteBySourceAmountResponseOerCodec;
 import org.interledger.codecs.packettypes.InterledgerPacketType;
@@ -26,6 +27,7 @@ import org.interledger.ilqp.QuoteByDestinationAmountRequest;
 import org.interledger.ilqp.QuoteByDestinationAmountResponse;
 import org.interledger.ilqp.QuoteBySourceAmountRequest;
 import org.interledger.ilqp.QuoteBySourceAmountResponse;
+import org.interledger.ilqp.QuoteLiquidityRequest;
 
 /**
  * A factory class for constructing a CodecContext that can read and write Interledger objects using
@@ -60,10 +62,8 @@ public class CodecContextFactory {
             new QuoteByDestinationAmountResponseOerCodec())
         .register(QuoteBySourceAmountRequest.class, new QuoteBySourceAmountRequestOerCodec())
         .register(QuoteBySourceAmountResponse.class, new QuoteBySourceAmountResponseOerCodec())
-        //.register(QuoteLiquidityRequest.class, new QuoteLiquidityRequestOerCodec())
+        .register(QuoteLiquidityRequest.class, new QuoteLiquidityRequestOerCodec());
         //.register(QuoteLiquidityResponse.class, new QuoteLiquidityResponseOerCodec())
-
-        ;
   }
 
   public static CodecContext interledgerJson() {

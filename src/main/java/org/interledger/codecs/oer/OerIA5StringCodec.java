@@ -33,7 +33,9 @@ public class OerIA5StringCodec implements Codec<OerIA5String> {
 
     // Detect the length of the encoded IA5String, and move the buffer index to the correct spot.
     final int length = context.read(OerLengthPrefix.class, inputStream).getLength();
-    final String result = this.toString(inputStream, length);
+    
+    /* beware the 0-length string */
+    final String result = (length == 0 ? "" : this.toString(inputStream, length));
 
     return new OerIA5String(result);
   }
@@ -47,12 +49,13 @@ public class OerIA5StringCodec implements Codec<OerIA5String> {
     Objects.requireNonNull(instance);
     Objects.requireNonNull(outputStream);
 
+    final byte[] data = instance.getValue().getBytes();
+
     // Write the length-prefix, and move the buffer index to the correct spot.
-    final int numOctets = instance.getValue().getBytes().length;
-    context.write(OerLengthPrefix.class, new OerLengthPrefix(numOctets), outputStream);
+    context.write(OerLengthPrefix.class, new OerLengthPrefix(data.length), outputStream);
 
     // Write the String bytes to the buffer.
-    outputStream.write(instance.getValue().getBytes());
+    outputStream.write(data);
   }
 
   /**

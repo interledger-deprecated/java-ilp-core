@@ -8,7 +8,13 @@ import org.interledger.InterledgerPacket;
 import org.interledger.codecs.Codec;
 import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.CodecContextFactory;
+import org.interledger.ilqp.LiquidityCurve;
+import org.interledger.ilqp.QuoteByDestinationAmountRequest;
+import org.interledger.ilqp.QuoteByDestinationAmountResponse;
 import org.interledger.ilqp.QuoteBySourceAmountRequest;
+import org.interledger.ilqp.QuoteBySourceAmountResponse;
+import org.interledger.ilqp.QuoteLiquidityRequest;
+import org.interledger.ilqp.QuoteLiquidityResponse;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -18,6 +24,7 @@ import org.junit.runners.Parameterized.Parameters;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.time.Duration;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -35,18 +42,32 @@ public class IlqpCodecTests {
    * The data for this test...
    */
   @Parameters
-  public static Collection<Object[]> data() {
-
-    return Arrays.asList(new Object[][] {
-      {new QuoteBySourceAmountRequest.Builder()
+  public static Object[] data() {
+    return new Object[] {
+        new QuoteBySourceAmountRequest.Builder()
+            .destinationAccount(InterledgerAddressBuilder.builder().value("test1.foo").build())
+            .sourceAmount(100)
+            .destinationHoldDuration(Duration.ofSeconds(30)).build(),
+        new QuoteBySourceAmountResponse.Builder()
+            .destinationAmount(95)
+            .sourceHoldDuration(Duration.ofSeconds(30)).build(),
+        new QuoteByDestinationAmountRequest.Builder()
+            .destinationAccount(InterledgerAddressBuilder.builder().value("test2.foo").build())
+            .destinationAmount(100)
+            .destinationHoldDuration(Duration.ofSeconds(35)).build(),
+        new QuoteByDestinationAmountResponse.Builder()
+            .sourceAmount(105)
+            .sourceHoldDuration(Duration.ofMinutes(1)).build(),
+        new QuoteLiquidityRequest.Builder()
         .destinationAccount(InterledgerAddressBuilder.builder().value("test3.foo").build())
-        .sourceAmount(100).destinationHoldDuration(Duration.ofSeconds(30)).build()},
-        // {new QuoteByDestinationAmountRequest.Builder()},
-        // {new QuoteByDestinationAmountResponse.Builder()},      
-        // {new QuoteBySourceAmountResponse.Builder()},
-        // {new QuoteLiquidityRequest.Builder()},
-        // {new QuoteLiquidityResponse.Builder()},
-    });
+        .destinationHoldDuration(Duration.ofMinutes(5)).build(),
+//        new QuoteLiquidityResponse.Builder()
+//          .appliesTo(InterledgerAddressBuilder.builder().value("test3.foo").build())
+//          .expiresAt(ZonedDateTime.now())
+//          .liquidityCurve(null)
+//          .sourceHoldDuration(Duration.ofMinutes(15))
+//          .build()
+    };
   }
 
   @Test
@@ -56,8 +77,8 @@ public class IlqpCodecTests {
     final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     context.write(packet, outputStream);
 
-    final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(
-        outputStream.toByteArray());
+    final ByteArrayInputStream byteArrayInputStream =
+        new ByteArrayInputStream(outputStream.toByteArray());
 
     final InterledgerPacket decodedPacket = context.read(byteArrayInputStream);
     assertThat(decodedPacket.getClass().getName(), is(packet.getClass().getName()));
