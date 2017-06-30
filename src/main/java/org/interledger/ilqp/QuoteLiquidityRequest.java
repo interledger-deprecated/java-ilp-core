@@ -1,10 +1,9 @@
 package org.interledger.ilqp;
 
+import org.interledger.InterledgerAddress;
 
 import java.time.Duration;
 import java.util.Objects;
-
-import org.interledger.InterledgerAddress;
 
 /**
  * A request to receive liquidity information between the current ledger and the destination
@@ -19,7 +18,7 @@ public interface QuoteLiquidityRequest extends QuoteRequest {
   Duration getDestinationHoldDuration();
   
   /**
-   * A builder for instances of {@link QuoteLiquidityRequest} 
+   * A builder for instances of {@link QuoteLiquidityRequest}.
    */  
   class Builder {
     private InterledgerAddress destinationAccount;
@@ -67,8 +66,7 @@ public interface QuoteLiquidityRequest extends QuoteRequest {
       /**
        * Constructs an instance from the values held in the builder.
        * 
-       * @param builder A Builder used to construct {@link QuoteLiquidityRequest}
-       *        instances.
+       * @param builder A Builder used to construct {@link QuoteLiquidityRequest} instances.
        */
       private Impl(final Builder builder) {
         Objects.requireNonNull(builder);

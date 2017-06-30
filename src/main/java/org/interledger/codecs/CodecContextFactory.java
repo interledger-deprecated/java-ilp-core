@@ -18,9 +18,9 @@ import org.interledger.codecs.oer.ilp.InterledgerPacketTypeOerCodec;
 import org.interledger.codecs.oer.ilp.InterledgerPaymentOerCodec;
 import org.interledger.codecs.oer.ilqp.QuoteByDestinationAmountRequestOerCodec;
 import org.interledger.codecs.oer.ilqp.QuoteByDestinationAmountResponseOerCodec;
-import org.interledger.codecs.oer.ilqp.QuoteLiquidityRequestOerCodec;
 import org.interledger.codecs.oer.ilqp.QuoteBySourceAmountRequestOerCodec;
 import org.interledger.codecs.oer.ilqp.QuoteBySourceAmountResponseOerCodec;
+import org.interledger.codecs.oer.ilqp.QuoteLiquidityRequestOerCodec;
 import org.interledger.codecs.packettypes.InterledgerPacketType;
 import org.interledger.ilp.InterledgerPayment;
 import org.interledger.ilqp.QuoteByDestinationAmountRequest;
@@ -63,7 +63,7 @@ public class CodecContextFactory {
         .register(QuoteBySourceAmountRequest.class, new QuoteBySourceAmountRequestOerCodec())
         .register(QuoteBySourceAmountResponse.class, new QuoteBySourceAmountResponseOerCodec())
         .register(QuoteLiquidityRequest.class, new QuoteLiquidityRequestOerCodec());
-        //.register(QuoteLiquidityResponse.class, new QuoteLiquidityResponseOerCodec())
+    //.register(QuoteLiquidityResponse.class, new QuoteLiquidityResponseOerCodec())
   }
 
   public static CodecContext interledgerJson() {

@@ -1,12 +1,5 @@
 package org.interledger.codecs.oer.ilqp;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
-import java.util.Objects;
-
 import org.interledger.InterledgerAddress;
 import org.interledger.codecs.Codec;
 import org.interledger.codecs.CodecContext;
@@ -14,6 +7,13 @@ import org.interledger.codecs.QuoteLiquidityRequestCodec;
 import org.interledger.codecs.oer.OerUint32Codec.OerUint32;
 import org.interledger.codecs.packettypes.InterledgerPacketType;
 import org.interledger.ilqp.QuoteLiquidityRequest;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.util.Objects;
 
 /**
  * An implementation of {@link Codec} that reads and writes instances of

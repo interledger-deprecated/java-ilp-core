@@ -1,9 +1,9 @@
 package org.interledger.ilqp;
 
+import org.interledger.InterledgerAddress;
+
 import java.time.Duration;
 import java.util.Objects;
-
-import org.interledger.InterledgerAddress;
 
 /**
  * A request for a quote that specifies the amount to deliver at the destination address.
@@ -22,7 +22,7 @@ public interface QuoteByDestinationAmountRequest extends QuoteRequest {
   Duration getDestinationHoldDuration();
   
   /**
-   * A builder for instances of {@link QuoteByDestinationAmountRequest} 
+   * A builder for instances of {@link QuoteByDestinationAmountRequest}.
    */
   class Builder {
     
@@ -77,9 +77,8 @@ public interface QuoteByDestinationAmountRequest extends QuoteRequest {
       return new Builder();
     }
     
-    
     /**
-     * A private, immutable implementation of {@link QuoteByDestinationAmountRequest}
+     * A private, immutable implementation of {@link QuoteByDestinationAmountRequest}.
      */
     private static class Impl implements QuoteByDestinationAmountRequest {
 
