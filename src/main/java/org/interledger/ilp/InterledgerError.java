@@ -8,9 +8,10 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * @REF: REF: https://interledger.org/rfcs/0003-interledger-protocol/#errors
+ * @see"https://interledger.org/rfcs/0003-interledger-protocol/#errors"
  */
 public class InterledgerError {
+
   /**
    * Valid error codes that might be encountered during an Interledger payment.
    */
@@ -126,8 +127,8 @@ public class InterledgerError {
    * Constructor used by ILP Connectors.
    */
   private InterledgerError(final ErrorCode errorCode, final InterledgerAddress triggeredBy,
-                           final ZonedDateTime triggeredAt, List<InterledgerAddress> forwardedBy,
-                           final InterledgerAddress selfAddress, final String data) {
+      final ZonedDateTime triggeredAt, List<InterledgerAddress> forwardedBy,
+      final InterledgerAddress selfAddress, final String data) {
 
     this.errorCode = Objects.requireNonNull(errorCode, "errorCode   can not be null");
     this.triggeredBy = Objects.requireNonNull(triggeredBy, "triggeredBy can not be null");
