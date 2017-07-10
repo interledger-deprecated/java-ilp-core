@@ -7,13 +7,15 @@ import org.interledger.codecs.oer.OerUint64Codec.OerUint64;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigInteger;
 import java.util.Objects;
 
 /**
- * <p>An extension of {@link Codec} for reading and writing an ASN.1 OER 64-Bit integer type as
- * defined by the Interledger ASN.1 definitions.</p>
- * <p>All Interledger ASN.1 integer types are encoded as fixed-size, non-extensible numbers.  Thus,
- * for a UInt64 type, the integer value is encoded as an unsigned binary integer in 8 octets.</p>
+ * <p>An extension of {@link Codec} for reading and writing an ASN.1 OER 64-Bit unsigned integer 
+ * type as defined by the Interledger ASN.1 definitions.</p>
+ * <p>All Interledger ASN.1 integer types are encoded as fixed-size, non-extensible numbers. Thus,
+ * for a UInt64 type, the integer value is encoded as an unsigned binary integer in 8 octets, and
+ * supports values in the range (0..18446744073709551615). </p>
  */
 public class OerUint64Codec implements Codec<OerUint64> {
 
@@ -33,12 +35,14 @@ public class OerUint64Codec implements Codec<OerUint64> {
     Objects.requireNonNull(context);
     Objects.requireNonNull(inputStream);
 
-    long value = 0;
-    for (int i = 0; i < 8; i++) {
-      value <<= Byte.SIZE;
-      value |= (inputStream.read() & 0xFF);
+    byte[] value = new byte[8];
+    int read = inputStream.read(value);
+    
+    if (read != 8) {
+      throw new IOException("unexpected end of stream. expected 8 bytes, read " + read);
     }
-    return new OerUint64(value);
+    
+    return new OerUint64(new BigInteger(1, value));
   }
 
   /**
@@ -61,11 +65,22 @@ public class OerUint64Codec implements Codec<OerUint64> {
     Objects.requireNonNull(instance);
     Objects.requireNonNull(outputStream);
 
-    long value = instance.getValue();
-    for (int i = 7; i >= 0; i--) {
-      byte octet = ((byte) ((value >> (Byte.SIZE * i)) & 255));
-      outputStream.write(octet);
+    
+    byte[] value = instance.getValue().toByteArray();
+    
+    /* BigInteger's toByteArray writes data in two's complement, so positive values requiring 64
+     * bits will include a leading byte set to 0 which we don't want. */
+    if (value.length > 8) {
+      outputStream.write(value, value.length - 8, 8);
+      return;
     }
+    
+    /* BigInteger.toByteArray will return the smallest byte array possible. We are committed
+     * to a fixed number of bytes, so we might need to pad the value out. */
+    for (int i = 0; i < 8 - value.length; i++) {
+      outputStream.write(0);
+    }
+    outputStream.write(value);
   }
 
   /**
@@ -73,13 +88,24 @@ public class OerUint64Codec implements Codec<OerUint64> {
    */
   public static class OerUint64 {
 
-    private final long value;
+    private final BigInteger value;
 
+    /**
+     * Constructs an OerUint64 instance.
+     * 
+     * @param value The value to read or write as an OER 64-bit int value.
+     * @deprecated OER Uint64 supports values beyond the range of Java long primitives
+     */
+    @Deprecated 
     public OerUint64(final long value) {
+      this.value = new BigInteger(Long.toString(value));
+    }
+    
+    public OerUint64(final BigInteger value) {
       this.value = value;
     }
 
-    public long getValue() {
+    public BigInteger getValue() {
       return value;
     }
 
@@ -94,12 +120,12 @@ public class OerUint64Codec implements Codec<OerUint64> {
 
       OerUint64 oerUint64 = (OerUint64) obj;
 
-      return value == oerUint64.value;
+      return value.equals(oerUint64.value);
     }
 
     @Override
     public int hashCode() {
-      return (int) (value ^ (value >>> 32));
+      return value.hashCode();
     }
 
     @Override

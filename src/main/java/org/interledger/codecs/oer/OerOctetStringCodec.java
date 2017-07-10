@@ -56,7 +56,7 @@ public class OerOctetStringCodec implements Codec<OerOctetString> {
 
   /**
    * A typing mechanism for registering multiple codecs that operate on the same type (in this case,
-   * byet[]).
+   * byte[]).
    */
   public static class OerOctetString {
 
