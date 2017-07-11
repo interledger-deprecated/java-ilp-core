@@ -80,12 +80,70 @@ uploadArchives {
         mavenDeployer {
             beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2") {
                 authentication(userName: ossrhUsername, password: ossrhPassword)
             }
 
-            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots") {
                 authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom {
+                project {
+                    name 'ILP Core (Java)'
+                    packaging 'jar'
+                    description 'Core libraries for implementing software that uses the Interledger suite of protocols.'
+                    url 'https://github.com/interledger/java-ilp-core'
+
+                    inceptionYear '2016'
+
+                    properties {
+                        "project.build.sourceEncoding" "UTF-8"
+                        "maven.compiler.source" "1.8"
+                        "maven.compiler.target" "1.8"
+                        "checkstyle.config.location" "google_checks.xml"
+                        "checkstyle.consoleOutput" "true"
+                    }
+                    licenses {
+                        license {
+                            name 'The Apache Software License, Version 2.0'
+                            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                            distribution 'repo'
+                        }
+                    }
+                    developers {
+                        developer {
+                            name 'Adrian Hope-Bailie'
+                            organizationUrl 'https://github.com/adrianhopebailie'
+                        }
+                        developer {
+                            name 'Andrew Gates'
+                            organizationUrl 'https://github.com/andrew-g-za'
+                        }
+                        developer {
+                            name 'Enrique Benito'
+                            organizationUrl 'https://github.com/earizon'
+                        }
+                        developer {
+                            name 'David Fuelling'
+                            organizationUrl 'https://github.com/sappenin'
+                        }
+                    }
+                    scm {
+                        connection 'scm:git:git://github.com/interledger/java-ilp-core.git'
+                        developerConnection 'scm:git:git@github.com:interledger/java-ilp-core.git'
+                        url 'https://github.com/sappenin/objectify-utils'
+                    }
+                    reporting {
+                        plugins {
+                            plugin {
+                                groupId "org.apache.maven.plugins"
+                                artifactId "maven-checkstyle-plugin"
+                                version "2.17"
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -99,7 +157,7 @@ task writePom {
                 name 'ILP Core (Java)'
                 packaging 'jar'
                 description 'Core libraries for implementing software that uses the Interledger suite of protocols.'
-                url 'http://github.com/interledger/java-ilp-core'
+                url 'https://github.com/interledger/java-ilp-core'
 
                 inceptionYear '2016'
 
