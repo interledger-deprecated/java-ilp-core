@@ -47,7 +47,7 @@ repositories {
 }
 
 dependencies {
-    
+
     //JSR-354 (http://javamoney.org): Better money and currency support in the JDK
     compile('javax.money:money-api:1.0.1')
 
