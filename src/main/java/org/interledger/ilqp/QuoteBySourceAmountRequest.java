@@ -6,24 +6,30 @@ import java.time.Duration;
 import java.util.Objects;
 
 /**
- * A request to receive liquidity information between the current ledger and the destination
- * account. This information is sufficient to locally quote any amount until the curve expires.
+ * A request for a quote with a fixed source amount to determine the destination amount.
  */
-public interface QuoteLiquidityRequest extends QuoteRequest {
+public interface QuoteBySourceAmountRequest extends QuoteRequest {
 
   @Override
   InterledgerAddress getDestinationAccount();
+
+  /**
+   * Returns the amount the sender wishes to send, denominated in the asset of the source ledger.
+   */
+  long getSourceAmount();
   
   @Override
   Duration getDestinationHoldDuration();
   
   /**
-   * A builder for instances of {@link QuoteLiquidityRequest}.
-   */  
+   * A builder for instances of {@link QuoteBySourceAmountRequest}.
+   */
   class Builder {
+
     private InterledgerAddress destinationAccount;
+    private long sourceAmount;
     private Duration destinationHoldDuration;
-    
+
     /**
      * Set the destination account address into this builder.
      *
@@ -34,7 +40,20 @@ public interface QuoteLiquidityRequest extends QuoteRequest {
       this.destinationAccount = Objects.requireNonNull(destinationAccount);
       return this;
     }
-    
+
+    /**
+     * Set the source amount into this builder.
+     *
+     * @param sourceAmount The source amount value.
+     */
+    public Builder sourceAmount(long sourceAmount) {
+      if (sourceAmount < 0) {
+        throw new IllegalArgumentException("Source amount must be at least 0");
+      }
+      this.sourceAmount = sourceAmount;
+      return this;
+    }
+
     /**
      * Set the destination hold duration into this builder.
      *
@@ -46,36 +65,45 @@ public interface QuoteLiquidityRequest extends QuoteRequest {
     }
 
     /**
-     * The method that actually constructs a QuoteByLiquidityRequest.
-     * 
-     * @return An instance of {@link QuoteLiquidityRequest}
+     * The method that actually constructs a QuoteBySourceAmountRequest.
+     *
+     * @return An instance of {@link QuoteBySourceAmountRequest}.
      */
-    public QuoteLiquidityRequest build() {
+    public QuoteBySourceAmountRequest build() {
       return new Builder.Impl(this);
     }
-    
+
     public static Builder builder() {
       return new Builder();
     }
-    
-    private static class Impl implements QuoteLiquidityRequest {
+
+    /**
+     * A private, immutable implementation of {@link QuoteBySourceAmountRequest}.
+     */
+    private static class Impl implements QuoteBySourceAmountRequest {
 
       private final InterledgerAddress destinationAccount;
+      private final long sourceAmount;
       private final Duration destinationHoldDuration;
-      
+
       /**
-       * Constructs an instance from the values held in the builder.
-       * 
-       * @param builder A Builder used to construct {@link QuoteLiquidityRequest} instances.
+       * No-args Constructor.
        */
       private Impl(final Builder builder) {
         Objects.requireNonNull(builder);
-        
+
         this.destinationAccount = Objects.requireNonNull(builder.destinationAccount,
             "destinationAccount must not be null!");
         
+        if (builder.sourceAmount < 0) {
+          throw new IllegalArgumentException("Source amount must be at least 0");
+        }
+
+        this.sourceAmount = builder.sourceAmount;
+        
         this.destinationHoldDuration = Objects.requireNonNull(builder.destinationHoldDuration,
             "destinationHoldDuration must not be null!");
+        
       }
       
       @Override
@@ -84,10 +112,15 @@ public interface QuoteLiquidityRequest extends QuoteRequest {
       }
 
       @Override
+      public long getSourceAmount() {
+        return this.sourceAmount;
+      }
+      
+      @Override
       public Duration getDestinationHoldDuration() {
         return this.destinationHoldDuration;
       }
-      
+
       @Override
       public boolean equals(Object obj) {
         if (this == obj) {
@@ -103,6 +136,10 @@ public interface QuoteLiquidityRequest extends QuoteRequest {
           return false;
         }
         
+        if (sourceAmount != impl.sourceAmount) {
+          return false;
+        }
+        
         if (!destinationHoldDuration.equals(impl.destinationHoldDuration)) {
           return false;
         }
@@ -113,6 +150,7 @@ public interface QuoteLiquidityRequest extends QuoteRequest {
       @Override
       public int hashCode() {
         int result = destinationAccount.hashCode();
+        result = 31 * result + Long.hashCode(sourceAmount);
         result = 31 * result + destinationHoldDuration.hashCode();
         return result;
       }
@@ -121,10 +159,12 @@ public interface QuoteLiquidityRequest extends QuoteRequest {
       public String toString() {
         final StringBuilder sb = new StringBuilder("Impl{");
         sb.append("destinationAccount=").append(destinationAccount);
+        sb.append(", sourceAmount=").append(sourceAmount);
         sb.append(", destinationHoldDuration=").append(destinationHoldDuration);
         sb.append('}');
         return sb.toString();
-      }      
+      }
     }
-  }
+  }  
+
 }

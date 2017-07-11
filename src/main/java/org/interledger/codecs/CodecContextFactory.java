@@ -7,6 +7,8 @@ import org.interledger.codecs.oer.OerLengthPrefixCodec;
 import org.interledger.codecs.oer.OerLengthPrefixCodec.OerLengthPrefix;
 import org.interledger.codecs.oer.OerOctetStringCodec;
 import org.interledger.codecs.oer.OerOctetStringCodec.OerOctetString;
+import org.interledger.codecs.oer.OerUint32Codec;
+import org.interledger.codecs.oer.OerUint32Codec.OerUint32;
 import org.interledger.codecs.oer.OerUint64Codec;
 import org.interledger.codecs.oer.OerUint64Codec.OerUint64;
 import org.interledger.codecs.oer.OerUint8Codec;
@@ -14,8 +16,18 @@ import org.interledger.codecs.oer.OerUint8Codec.OerUint8;
 import org.interledger.codecs.oer.ilp.InterledgerAddressOerCodec;
 import org.interledger.codecs.oer.ilp.InterledgerPacketTypeOerCodec;
 import org.interledger.codecs.oer.ilp.InterledgerPaymentOerCodec;
+import org.interledger.codecs.oer.ilqp.QuoteByDestinationAmountRequestOerCodec;
+import org.interledger.codecs.oer.ilqp.QuoteByDestinationAmountResponseOerCodec;
+import org.interledger.codecs.oer.ilqp.QuoteBySourceAmountRequestOerCodec;
+import org.interledger.codecs.oer.ilqp.QuoteBySourceAmountResponseOerCodec;
+import org.interledger.codecs.oer.ilqp.QuoteLiquidityRequestOerCodec;
 import org.interledger.codecs.packettypes.InterledgerPacketType;
 import org.interledger.ilp.InterledgerPayment;
+import org.interledger.ilqp.QuoteByDestinationAmountRequest;
+import org.interledger.ilqp.QuoteByDestinationAmountResponse;
+import org.interledger.ilqp.QuoteBySourceAmountRequest;
+import org.interledger.ilqp.QuoteBySourceAmountResponse;
+import org.interledger.ilqp.QuoteLiquidityRequest;
 
 /**
  * A factory class for constructing a CodecContext that can read and write Interledger objects using
@@ -32,6 +44,7 @@ public class CodecContextFactory {
     // OER Base...
     return new CodecContext()
         .register(OerUint8.class, new OerUint8Codec())
+        .register(OerUint32.class, new OerUint32Codec())
         .register(OerUint64.class, new OerUint64Codec())
         .register(OerLengthPrefix.class, new OerLengthPrefixCodec())
         .register(OerIA5String.class, new OerIA5StringCodec())
@@ -43,14 +56,14 @@ public class CodecContextFactory {
         .register(InterledgerPayment.class, new InterledgerPaymentOerCodec())
 
         // ILQP
-        //.register(QuoteByDestinationRequest.class, new QuoteByDestinationRequestOerCodec())
-        //.register(QuoteByDestinationResponse.class, new QuoteByDestinationResponseOerCodec())
-        //.register(QuoteBySourceRequest.class, new QuoteBySourceRequestOerCodec())
-        //.register(QuoteBySourceResponse.class, new QuoteBySourceResponseOerCodec())
-        //.register(QuoteLiquidityRequest.class, new QuoteLiquidityRequestOerCodec())
-        //.register(QuoteLiquidityResponse.class, new QuoteLiquidityResponseOerCodec())
-
-        ;
+        .register(QuoteByDestinationAmountRequest.class,
+            new QuoteByDestinationAmountRequestOerCodec())
+        .register(QuoteByDestinationAmountResponse.class,
+            new QuoteByDestinationAmountResponseOerCodec())
+        .register(QuoteBySourceAmountRequest.class, new QuoteBySourceAmountRequestOerCodec())
+        .register(QuoteBySourceAmountResponse.class, new QuoteBySourceAmountResponseOerCodec())
+        .register(QuoteLiquidityRequest.class, new QuoteLiquidityRequestOerCodec());
+    //.register(QuoteLiquidityResponse.class, new QuoteLiquidityResponseOerCodec())
   }
 
   public static CodecContext interledgerJson() {
