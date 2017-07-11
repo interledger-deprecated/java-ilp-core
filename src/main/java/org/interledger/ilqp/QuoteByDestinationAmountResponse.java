@@ -4,7 +4,7 @@ import java.time.Duration;
 import java.util.Objects;
 
 /**
- * A quote sent in response to a request of type {@link QuoteByDestinationAmountresRequest}.
+ * A quote sent in response to a request of type {@link QuoteByDestinationAmountResponse}.
  */
 public interface QuoteByDestinationAmountResponse extends QuoteResponse {
 
@@ -69,6 +69,7 @@ public interface QuoteByDestinationAmountResponse extends QuoteResponse {
      * A private, immutable implementation of {@link QuoteByDestinationAmountResponse}.
      */
     public static class Impl implements QuoteByDestinationAmountResponse {
+
       private final Duration sourceHoldDuration;
       private long sourceAmount;
 
