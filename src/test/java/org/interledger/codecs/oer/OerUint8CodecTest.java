@@ -3,8 +3,6 @@ package org.interledger.codecs.oer;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import com.google.common.io.BaseEncoding;
-
 import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.oer.OerUint8Codec.OerUint8;
 import org.junit.Before;
@@ -12,6 +10,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
+
+import com.google.common.io.BaseEncoding;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -33,25 +33,22 @@ public class OerUint8CodecTest {
    */
   @Parameters
   public static Collection<Object[]> data() {
-    return Arrays.asList(new Object[][]
-        {
-            // Input Value as a int; Expected byte[] in ASN.1
-            // 0
-            {0, BaseEncoding.base16().decode("00")},
-            // 1
-            {1, BaseEncoding.base16().decode("01")},
-            // 2
-            {2, BaseEncoding.base16().decode("02")},
-            // 3
-            {127, BaseEncoding.base16().decode("7F")},
-            // 4
-            {128, BaseEncoding.base16().decode("80")},
-            // 5
-            {254, BaseEncoding.base16().decode("FE")},
-            // 6
-            {255, BaseEncoding.base16().decode("FF")},
-        }
-    );
+    return Arrays.asList(new Object[][] {
+        // Input Value as a int; Expected byte[] in ASN.1
+        // 0
+        {0, BaseEncoding.base16().decode("00")},
+        // 1
+        {1, BaseEncoding.base16().decode("01")},
+        // 2
+        {2, BaseEncoding.base16().decode("02")},
+        // 3
+        {127, BaseEncoding.base16().decode("7F")},
+        // 4
+        {128, BaseEncoding.base16().decode("80")},
+        // 5
+        {254, BaseEncoding.base16().decode("FE")},
+        // 6
+        {255, BaseEncoding.base16().decode("FF")},});
   }
 
   private int inputValue;
@@ -61,8 +58,8 @@ public class OerUint8CodecTest {
   /**
    * Construct an instance of this parameterized test with the supplied inputs.
    *
-   * @param inputValue   A {@code int} representing the unsigned 8bit integer to write in OER
-   *                     encoding.
+   * @param inputValue A {@code int} representing the unsigned 8bit integer to write in OER
+   *        encoding.
    * @param asn1OerBytes The expected value, in binary, of the supplied {@code intValue}.
    */
   public OerUint8CodecTest(final int inputValue, final byte[] asn1OerBytes) {
@@ -102,8 +99,8 @@ public class OerUint8CodecTest {
     assertThat(byteArrayOutputStream.toByteArray(), is(asn1OerBytes));
 
     // Read...
-    final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(
-        byteArrayOutputStream.toByteArray());
+    final ByteArrayInputStream byteArrayInputStream =
+        new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
     final OerUint8 decodedValue = oerUint8Codec.read(codecContext, byteArrayInputStream);
 
     // Write...
@@ -121,8 +118,7 @@ public class OerUint8CodecTest {
       final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
       oerUint8Codec.write(codecContext, new OerUint8(256), byteArrayOutputStream);
     } catch (IllegalArgumentException e) {
-      assertThat(e.getMessage(),
-          is("Interledger UInt8 values may only contain up to 8 bits!"));
+      assertThat(e.getMessage(), is("Interledger UInt8 values may only contain up to 8 bits!"));
       throw e;
     }
   }

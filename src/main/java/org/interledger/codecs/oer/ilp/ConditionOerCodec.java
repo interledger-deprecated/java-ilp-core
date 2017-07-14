@@ -22,7 +22,7 @@ public class ConditionOerCodec implements ConditionCodec {
     Objects.requireNonNull(context);
     Objects.requireNonNull(inputStream);
     final byte[] value = context.read(OerUint256.class, inputStream).getValue();
-    return new Condition(value);
+    return Condition.builder().hash(value).build();
   }
 
   @Override

@@ -21,12 +21,12 @@ public class OerUint64Codec implements Codec<OerUint64> {
 
   /**
    * ASN.1 64BitUInt: If the lower bound of the value range constraint is not less than 0 and the
-   * upper bound is not greater than 18446744073709551615 and the constraint is not extensible,
-   * the integer value is encoded as an unsigned binary integer in eight octets.
+   * upper bound is not greater than 18446744073709551615 and the constraint is not extensible, the
+   * integer value is encoded as an unsigned binary integer in eight octets.
    *
-   * @param context     An instance of {@link CodecContext}.
+   * @param context An instance of {@link CodecContext}.
    * @param inputStream An instance of @link InputStream}.
-   * @throws IOException              If there is a problem writing to the {@code stream}.
+   * @throws IOException If there is a problem writing to the {@code stream}.
    * @throws IllegalArgumentException If the input has a value greater than 18446744073709551615.
    */
   @Override
@@ -47,19 +47,18 @@ public class OerUint64Codec implements Codec<OerUint64> {
 
   /**
    * ASN.1 64BitUInt: If the lower bound of the value range constraint is not less than 0 and the
-   * upper bound is not greater than 18446744073709551615 and the constraint is not extensible,
-   * the integer value is encoded as an unsigned binary integer in eight octets.
+   * upper bound is not greater than 18446744073709551615 and the constraint is not extensible, the
+   * integer value is encoded as an unsigned binary integer in eight octets.
    *
-   * @param context      An instance of {@link CodecContext}.
-   * @param instance     An instance of {@link OerUint64}.
+   * @param context An instance of {@link CodecContext}.
+   * @param instance An instance of {@link OerUint64}.
    * @param outputStream An instance of {@link OutputStream}.
-   * @throws IOException              If there is a problem writing to the {@code stream}.
+   * @throws IOException If there is a problem writing to the {@code stream}.
    * @throws IllegalArgumentException If the input has a value greater than 18446744073709551615.
    */
   @Override
-  public void write(
-      final CodecContext context, final OerUint64 instance, final OutputStream outputStream
-  ) throws IOException, IllegalArgumentException {
+  public void write(final CodecContext context, final OerUint64 instance,
+      final OutputStream outputStream) throws IOException, IllegalArgumentException {
 
     Objects.requireNonNull(context);
     Objects.requireNonNull(instance);

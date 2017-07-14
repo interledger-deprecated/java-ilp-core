@@ -1,7 +1,6 @@
 package org.interledger.codecs.packettypes;
 
 import java.net.URI;
-
 import java.util.Objects;
 
 /**
@@ -34,9 +33,9 @@ public interface InterledgerPacketType {
   URI getTypeUri();
 
   /**
-   * A helper method that will translate an integer into an instance of {@link
-   * InterledgerPacketType}.  Note that this method only handled standard Interledger packets types.
-   * To operate upon non-standard packets, a different method should be used.
+   * A helper method that will translate an integer into an instance of
+   * {@link InterledgerPacketType}. Note that this method only handled standard Interledger packets
+   * types. To operate upon non-standard packets, a different method should be used.
    *
    * @param type The integer type.
    * @return An instance of {@link InterledgerPacketType}.
@@ -75,6 +74,8 @@ public interface InterledgerPacketType {
    * An exception that indicates if a packet type is invalid for the current implementation.
    */
   class InvalidPacketTypeException extends RuntimeException {
+
+    private static final long serialVersionUID = 6086784345849001539L;
 
     public InvalidPacketTypeException(String message) {
       super(message);

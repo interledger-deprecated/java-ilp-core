@@ -50,7 +50,6 @@ public class PaymentPacketTypeTests {
         {new QuoteBySourceAmountResponsePacketType(), new QuoteBySourceAmountResponsePacketType()},
         {new QuoteLiquidityRequestPacketType(), new QuoteLiquidityRequestPacketType()},
         {new QuoteLiquidityResponsePacketType(), new QuoteLiquidityResponsePacketType()},
-
         {new PaymentPacketType(),
             InterledgerPacketType.fromTypeId(InterledgerPacketType.ILP_PAYMENT_TYPE)},
         {new QuoteByDestinationAmountRequestPacketType(),
@@ -65,13 +64,12 @@ public class PaymentPacketTypeTests {
         {new QuoteBySourceAmountResponsePacketType(),
             InterledgerPacketType.fromTypeId(
                 InterledgerPacketType.ILQP_QUOTE_BY_SOURCE_AMOUNT_RESPONSE_TYPE)},
+
         {new QuoteLiquidityRequestPacketType(),
-            InterledgerPacketType.fromTypeId(
-                InterledgerPacketType.ILQP_QUOTE_LIQUIDITY_REQUEST_TYPE)},
-        {new QuoteLiquidityResponsePacketType(),
-            InterledgerPacketType.fromTypeId(
-                InterledgerPacketType.ILQP_QUOTE_LIQUIDITY_RESPONSE_TYPE)},
-    });
+            InterledgerPacketType
+                .fromTypeId(InterledgerPacketType.ILQP_QUOTE_LIQUIDITY_REQUEST_TYPE)},
+        {new QuoteLiquidityResponsePacketType(), InterledgerPacketType
+            .fromTypeId(InterledgerPacketType.ILQP_QUOTE_LIQUIDITY_RESPONSE_TYPE)},});
   }
 
   @Test

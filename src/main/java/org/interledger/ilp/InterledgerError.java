@@ -1,7 +1,6 @@
 package org.interledger.ilp;
 
 import org.interledger.InterledgerAddress;
-import org.interledger.InterledgerAddressBuilder;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -123,7 +122,7 @@ public class InterledgerError {
   // (developer sent a null by mistake) and the real intention of not
   // sending selfAddress.
   static final InterledgerAddress TRIGGERING_ILP_NODE =
-      new InterledgerAddressBuilder().value("g.selfAddressNONE").build();
+      InterledgerAddress.builder().value("g.selfAddressNONE").build();
 
   /**
    * Constructor used by ILP Connectors.

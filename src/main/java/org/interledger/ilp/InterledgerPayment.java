@@ -10,32 +10,26 @@ import javax.money.MonetaryAmount;
 
 /**
  * <p>Interledger Payments moves assets from one party to another that consists of one or more
- * ledger transfers, potentially across multiple ledgers.</p>
- * Interledger Payments have three major consumers:
- * <ul>
- * <li>Connectors utilize the Interledger Address contained in the payment to route the
- * payment.</li>
- * <li>The receiver of a payment uses it to identify the recipient and which condition to
- * fulfill.</li>
- * <li>Interledger sub-protocols utilize custom data encoded in a payment to facilitate
- * sub-protocol operations.</li>
- * </ul>
- * <p> When a sender prepares a transfer to start a payment, the sender attaches an ILP Payment to
- * the transfer, in the memo field if possible. If a ledger does not support attaching the entire
- * ILP Payment to a transfer as a memo, users of that ledger can transmit the ILP Payment using
- * another authenticated messaging channel, but MUST be able to correlate transfers and ILP
- * Payments.</p>
- * <p> When a connector sees an incoming prepared transfer with an ILP Payment, the receiver reads
- * the ILP Payment to confirm the details of the packet.  For example, the connector reads the
- * InterledgerAddress of the payment's receiver, and if the connector has a route to the receiver's
- * account, the connector prepares a transfer to continue the payment, and attaches the same ILP
- * Payment to the new transfer.  Likewise, the receiver confirms that the amount from the ILP
- * Payment Packet matches the amount actually delivered by the transfer. And finally, the receiver
- * decodes the data portion of the Payment and matches the condition to the payment. The receiver
- * MUST confirm the integrity of the ILP Payment, for example with a hash-based message
- * authentication code (HMAC). If the receiver finds the transfer acceptable, the receiver releases
- * the fulfillment for the transfer, which can be used to execute all prepared transfers that were
- * established prior to the receiver accepting the payment.</p>
+ * ledger transfers, potentially across multiple ledgers.</p> Interledger Payments have three major
+ * consumers: <ul> <li>Connectors utilize the Interledger Address contained in the payment to route
+ * the payment.</li> <li>The receiver of a payment uses it to identify the recipient and which
+ * condition to fulfill.</li> <li>Interledger sub-protocols utilize custom data encoded in a payment
+ * to facilitate sub-protocol operations.</li> </ul> <p> When a sender prepares a transfer to start
+ * a payment, the sender attaches an ILP Payment to the transfer, in the memo field if possible. If
+ * a ledger does not support attaching the entire ILP Payment to a transfer as a memo, users of that
+ * ledger can transmit the ILP Payment using another authenticated messaging channel, but MUST be
+ * able to correlate transfers and ILP Payments.</p> <p> When a connector sees an incoming prepared
+ * transfer with an ILP Payment, the receiver reads the ILP Payment to confirm the details of the
+ * packet. For example, the connector reads the InterledgerAddress of the payment's receiver, and if
+ * the connector has a route to the receiver's account, the connector prepares a transfer to
+ * continue the payment, and attaches the same ILP Payment to the new transfer. Likewise, the
+ * receiver confirms that the amount from the ILP Payment Packet matches the amount actually
+ * delivered by the transfer. And finally, the receiver decodes the data portion of the Payment and
+ * matches the condition to the payment. The receiver MUST confirm the integrity of the ILP Payment,
+ * for example with a hash-based message authentication code (HMAC). If the receiver finds the
+ * transfer acceptable, the receiver releases the fulfillment for the transfer, which can be used to
+ * execute all prepared transfers that were established prior to the receiver accepting the
+ * payment.</p>
  */
 public interface InterledgerPayment extends InterledgerPacket {
 
@@ -64,21 +58,29 @@ public interface InterledgerPayment extends InterledgerPacket {
   byte[] getData();
 
   /**
+   * Get the default builder.
+   * 
+   * @return a {@link Builder} instance.
+   */
+  public static Builder builder() {
+    return new Builder();
+  }
+
+  /**
    * A builder for instances of {@link InterledgerPayment}.
    */
   class Builder {
 
-    private InterledgerAddress destinationAccount;
-    private Long destinationAmount;
-    private byte[] data;
+    protected InterledgerAddress destinationAccount;
+    protected Long destinationAmount;
+    protected byte[] data;
 
     /**
      * Set the destination account address into this builder.
      *
      * @param destinationAccount An instance of {@link InterledgerAddress}.
      */
-    public Builder destinationAccount(
-        final InterledgerAddress destinationAccount) {
+    public Builder destinationAccount(final InterledgerAddress destinationAccount) {
       this.destinationAccount = Objects.requireNonNull(destinationAccount);
       return this;
     }
@@ -88,8 +90,7 @@ public interface InterledgerPayment extends InterledgerPacket {
      *
      * @param destinationAmount An instance of {@link MonetaryAmount}.
      */
-    public Builder destinationAmount(
-        final Long destinationAmount) {
+    public Builder destinationAmount(final Long destinationAmount) {
       this.destinationAmount = Objects.requireNonNull(destinationAmount);
       return this;
     }
@@ -97,7 +98,7 @@ public interface InterledgerPayment extends InterledgerPacket {
     /**
      * Set the data payload for this payment.
      *
-     * @param data An instance of {@link byte[]}.
+     * @param data An instance of {@link byte[]}. May be empty but may not be null.
      */
     public Builder data(final byte[] data) {
       this.data = Objects.requireNonNull(data);
@@ -110,11 +111,7 @@ public interface InterledgerPayment extends InterledgerPacket {
      * @return An instance of {@link InterledgerPayment}.
      */
     public InterledgerPayment build() {
-      return new Builder.Impl(this);
-    }
-
-    public static Builder builder() {
-      return new Builder();
+      return new Impl(this);
     }
 
     /**
@@ -131,10 +128,10 @@ public interface InterledgerPayment extends InterledgerPacket {
        */
       private Impl(final Builder builder) {
         Objects.requireNonNull(builder);
-        this.destinationAccount = Objects
-            .requireNonNull(builder.destinationAccount, "destinationAccount must not be null!");
-        this.destinationAmount = Objects
-            .requireNonNull(builder.destinationAmount, "destinationAmount must not be null!");
+        this.destinationAccount = Objects.requireNonNull(builder.destinationAccount,
+            "destinationAccount must not be null!");
+        this.destinationAmount = Objects.requireNonNull(builder.destinationAmount,
+            "destinationAmount must not be null!");
         this.data = Objects.requireNonNull(builder.data, "data must not be null!");
       }
 
@@ -150,7 +147,7 @@ public interface InterledgerPayment extends InterledgerPacket {
 
       @Override
       public byte[] getData() {
-        return this.data;
+        return Arrays.copyOf(this.data, this.data.length);
       }
 
       @Override

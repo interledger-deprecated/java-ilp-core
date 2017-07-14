@@ -34,7 +34,7 @@ public class InterledgerPaymentRequestOerCodec implements InterledgerPaymentRequ
     final InterledgerPayment packet = context.read(InterledgerPayment.class, inputStream);
     final Condition condition = context.read(Condition.class, inputStream);
 
-    return new InterledgerPaymentRequest(packet, condition);
+    return InterledgerPaymentRequest.builder().payment(packet).condition(condition).build();
   }
 
   @Override
@@ -45,7 +45,7 @@ public class InterledgerPaymentRequestOerCodec implements InterledgerPaymentRequ
     Objects.requireNonNull(outputStream);
 
     context.write(OerUint8.class, new OerUint8(instance.getVersion()), outputStream);
-    context.write(InterledgerPayment.class, instance.getPacket(), outputStream);
+    context.write(InterledgerPayment.class, instance.getInterledgerPayment(), outputStream);
     context.write(Condition.class, instance.getCondition(), outputStream);
   }
 
