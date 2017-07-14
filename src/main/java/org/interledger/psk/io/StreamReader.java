@@ -8,21 +8,21 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 /**
- * Custom reader that reads both UTF-8 encoded strings and raw bytes from an input stream.
- * NOTE: this is a convenience class, it does *not* manage the state of the stream - closing it
- * remains the responsibility of the caller.
+ * Custom reader that reads both UTF-8 encoded strings and raw bytes from an input stream. NOTE:
+ * this is a convenience class, it does *not* manage the state of the stream - closing it remains
+ * the responsibility of the caller.
  */
 public class StreamReader {
 
   /* Line feed '\n' character */
-  private static final int LF = 10; 
-  
+  private static final int LF = 10;
+
   private InputStream in;
 
   /**
    * Constructs a new instance of the reader.
    * 
-   * @param in  The input stream to read data from.
+   * @param in The input stream to read data from.
    */
   public StreamReader(InputStream in) {
     Objects.requireNonNull(in);
@@ -47,14 +47,14 @@ public class StreamReader {
       }
 
       String line = bos.toString(StandardCharsets.UTF_8.name());
-      
+
       /*
        * we stopped reading at \n, which could have been by itself (*nix line endings) or part of
        * the windows '\r\n' line ending. check to see if that is the case and if so, strip the
        * trailing \r. NOTE: we do not trim the string, since we have no idea of the significance of
        * other whitespace characters
        */
-      
+
       if (line.endsWith("\r")) {
         line = line.substring(0, line.length());
       }
@@ -73,14 +73,15 @@ public class StreamReader {
       return bos.toByteArray();
     }
   }
-  
+
   /**
    * Consumes the remaining data in the input stream, writing it to the output stream.
+   * 
    * @param out The output stream to write to.
    */
   public void readRemainingBytes(OutputStream out) throws IOException {
     Objects.requireNonNull(out, "cant write to null output stream");
-    
+
     /* copy the remaining data from the input stream to the output stream in blocks of 256 bytes */
     byte[] buffer = new byte[256];
     int length;

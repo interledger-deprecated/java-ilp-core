@@ -21,7 +21,7 @@ public abstract class AbstractCodec<T> implements Codec<T> {
   /**
    * Read an object from the buffer according to the rules defined in the {@link CodecContext}.
    *
-   * @param context     An instance of {@link CodecContext}.
+   * @param context An instance of {@link CodecContext}.
    * @param inputStream An instance of {@link InputStream} to read data from.
    * @return An instance of {@link T} as decoded from {@code inputStream}.
    */
@@ -50,7 +50,7 @@ public abstract class AbstractCodec<T> implements Codec<T> {
   /**
    * Read an object of type {@link T} from the supplied {@code inputStream}.
    *
-   * @param context     An instance of {@link CodecContext}.
+   * @param context An instance of {@link CodecContext}.
    * @param inputStream An instance of {@link InputStream}.
    * @return An instance of {@link T}.
    */

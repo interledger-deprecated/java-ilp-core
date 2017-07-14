@@ -4,8 +4,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertArrayEquals;
 
-import com.google.common.io.BaseEncoding;
-
 import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.oer.OerIA5StringCodec.OerIA5String;
 import org.interledger.codecs.oer.OerLengthPrefixCodec.OerLengthPrefix;
@@ -14,6 +12,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
+
+import com.google.common.io.BaseEncoding;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -34,35 +34,35 @@ public class OerIA5StringCodecTest {
    */
   @Parameters
   public static Collection<Object[]> data() {
-    return Arrays.asList(new Object[][]
-        {
-            // [input_value][num_octets_written][byte_values]
-            // 0
-            {"", BaseEncoding.base16().decode("00")},
-            // 1
-            {"a", BaseEncoding.base16().decode("0161")},
-            // 2
-            {"abc", BaseEncoding.base16().decode("03616263")},
-            // 3
-            {"hello world", BaseEncoding.base16().decode("0B68656C6C6F20776F726C64")},
-            // 4
-            {"g.test.foo", BaseEncoding.base16().decode("0A672E746573742E666F6F")},
-            // 4
-            {"g.test.1024.AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-                + "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-                + "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-                + "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-                + "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-                + "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-                + "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-                + "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-                + "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-                + "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-                + "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-                + "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-                + "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-                + "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-                BaseEncoding.base16().decode("8203FF672E746573742E313032342E4141414141414141414"
+    return Arrays.asList(new Object[][] {
+        // [input_value][num_octets_written][byte_values]
+        // 0
+        {"", BaseEncoding.base16().decode("00")},
+        // 1
+        {"a", BaseEncoding.base16().decode("0161")},
+        // 2
+        {"abc", BaseEncoding.base16().decode("03616263")},
+        // 3
+        {"hello world", BaseEncoding.base16().decode("0B68656C6C6F20776F726C64")},
+        // 4
+        {"g.test.foo", BaseEncoding.base16().decode("0A672E746573742E666F6F")},
+        // 4
+        {"g.test.1024.AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            + "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            + "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            + "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            + "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            + "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            + "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            + "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            + "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            + "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            + "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            + "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            + "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            + "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+            BaseEncoding.base16()
+                .decode("8203FF672E746573742E313032342E4141414141414141414"
                     + "1414141414141414141414141414141414141414141414141414141414141414141414141"
                     + "4141414141414141414141414141414141414141414141414141414141414141414141414"
                     + "1414141414141414141414141414141414141414141414141414141414141414141414141"
@@ -90,9 +90,7 @@ public class OerIA5StringCodecTest {
                     + "1414141414141414141414141414141414141414141414141414141414141414141414141"
                     + "4141414141414141414141414141414141414141414141414141414141414141414141414"
                     + "1414141414141414141414141414141414141414141414141414141414141414141414141"
-                    + "41414141414141414141414141414141")},
-        }
-    );
+                    + "41414141414141414141414141414141")},});
   }
 
   private String stringValue;
@@ -103,12 +101,9 @@ public class OerIA5StringCodecTest {
    * Construct an instance of this parameterized test with the supplied inputs.
    *
    * @param stringValue The expected value, as a {@link String}, of the supplied {@code asn1Bytes}.
-   * @param asn1Bytes   A byte array representing octets to be encoded.
+   * @param asn1Bytes A byte array representing octets to be encoded.
    */
-  public OerIA5StringCodecTest(
-      final String stringValue,
-      final byte[] asn1Bytes
-  ) {
+  public OerIA5StringCodecTest(final String stringValue, final byte[] asn1Bytes) {
     this.stringValue = stringValue;
     this.asn1ByteValue = asn1Bytes;
   }
@@ -121,8 +116,7 @@ public class OerIA5StringCodecTest {
     // Register the codec to be tested...
     final OerLengthPrefixCodec oerLengthPrefixCode = new OerLengthPrefixCodec();
     oerIA5StringCodec = new OerIA5StringCodec();
-    codecContext = new CodecContext()
-        .register(OerLengthPrefix.class, oerLengthPrefixCode)
+    codecContext = new CodecContext().register(OerLengthPrefix.class, oerLengthPrefixCode)
         .register(OerIA5String.class, oerIA5StringCodec);
   }
 

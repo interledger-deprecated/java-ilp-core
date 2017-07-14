@@ -13,8 +13,8 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 /**
- * Unit tests for {@link InterledgerPacket.Handler.AbstractHandler} and {@link
- * InterledgerPacket.VoidHandler.AbstractVoidHandler}.
+ * Unit tests for {@link InterledgerPacket.Handler.AbstractHandler} and
+ * {@link InterledgerPacket.VoidHandler.AbstractVoidHandler}.
  */
 public class InterledgerPacketHandlerTest {
 

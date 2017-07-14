@@ -11,9 +11,9 @@ import java.util.Objects;
 
 /**
  * <p>An extension of {@link Codec} for reading and writing an ASN.1 OER 8-Bit integer type as
- * defined by the Interledger ASN.1 definitions.</p>
- * <p>All Interledger ASN.1 integer types are encoded as fixed-size, non-extensible numbers.  Thus,
- * for a UInt8 type, the integer value is encoded as an unsigned binary integer in one octet.</p>
+ * defined by the Interledger ASN.1 definitions.</p> <p>All Interledger ASN.1 integer types are
+ * encoded as fixed-size, non-extensible numbers. Thus, for a UInt8 type, the integer value is
+ * encoded as an unsigned binary integer in one octet.</p>
  */
 public class OerUint8Codec implements Codec<OerUint8> {
 
@@ -31,8 +31,7 @@ public class OerUint8Codec implements Codec<OerUint8> {
       throws IOException {
 
     if (instance.getValue() > 255) {
-      throw new IllegalArgumentException(
-          "Interledger UInt8 values may only contain up to 8 bits!");
+      throw new IllegalArgumentException("Interledger UInt8 values may only contain up to 8 bits!");
     }
 
     outputStream.write(instance.getValue());

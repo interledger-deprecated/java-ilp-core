@@ -50,10 +50,8 @@ public class Aes256BitKeysizeTest {
       cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, "AES"), paramSpec);
       cipher.doFinal(data);
     } catch (InvalidKeyException e) {
-      throw new RuntimeException(
-          "Error loading 256bit key. "
-          + "Likey cause is missing Unlimited Strength Jurisdiction Policy Files.",
-          e);
+      throw new RuntimeException("Error loading 256bit key. "
+          + "Likey cause is missing Unlimited Strength Jurisdiction Policy Files.", e);
     }
 
   }

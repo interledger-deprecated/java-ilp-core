@@ -14,60 +14,90 @@ import java.util.Objects;
  * 
  * @see Fulfillment
  */
-public class Condition {
-
-  private final byte[] hash;
-
-  /**
-   * Create a new {@code Condition} from a SHA-256 hash.
-   * 
-   * @param hash The SHA-256 hash of a pre-image that is used as the fulfillment of this condition
-   */
-  public Condition(byte[] hash) {
-
-    Objects.requireNonNull(hash, "Hash must not be null!");
-    if (hash.length != 32) {
-      throw new IllegalArgumentException("Hash must be 32 bytes.");
-    }
-
-    this.hash = Arrays.copyOf(hash, 32);
-  }
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + Arrays.hashCode(hash);
-    return result;
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-
-    Condition other = (Condition) obj;
-    if (!Arrays.equals(hash, other.hash)) {
-      return false;
-    }
-
-    return true;
-  }
+public interface Condition {
 
   /**
    * Get the SHA-256 hash of this condition.
    * 
    * @return a {@code byte[]} of exactly 32 bytes
    */
-  public byte[] getHash() {
-    return Arrays.copyOf(this.hash, 32);
+  public byte[] getHash();
+
+  /**
+   * Get the default builder.
+   * 
+   * @return a {@link Builder} instance.
+   */
+  public static Builder builder() {
+    return new Builder();
+  }
+
+  class Builder {
+
+    private byte[] hash;
+
+    public Builder hash(byte[] hash) {
+      Objects.requireNonNull(hash, "Hash must not be null!");
+      if (hash.length != 32) {
+        throw new IllegalArgumentException("Hash must be 32 bytes.");
+      }
+      this.hash = Arrays.copyOf(hash, 32);
+      return this;
+
+    }
+
+    public Condition build() {
+      return new Impl(this);
+    }
+
+
+    private static class Impl implements Condition {
+
+      private final byte[] hash;
+
+      public Impl(Builder builder) {
+
+        Objects.requireNonNull(builder.hash, "Hash must not be null!");
+        if (builder.hash.length != 32) {
+          throw new IllegalArgumentException("Hash must be 32 bytes.");
+        }
+
+        this.hash = Arrays.copyOf(builder.hash, 32);
+      }
+
+      @Override
+      public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + Arrays.hashCode(hash);
+        return result;
+      }
+
+      @Override
+      public boolean equals(Object obj) {
+        if (this == obj) {
+          return true;
+        }
+        if (obj == null) {
+          return false;
+        }
+        if (getClass() != obj.getClass()) {
+          return false;
+        }
+
+        Condition other = (Condition) obj;
+        if (!Arrays.equals(hash, other.getHash())) {
+          return false;
+        }
+
+        return true;
+      }
+
+      public byte[] getHash() {
+        return Arrays.copyOf(this.hash, 32);
+      }
+    }
+
   }
 
 }

@@ -4,7 +4,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.interledger.InterledgerAddress;
-import org.interledger.InterledgerAddressBuilder;
 import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.CodecContextFactory;
 import org.junit.Test;
@@ -45,18 +44,16 @@ public class InterledgerAddressOerCodecTests {
    */
   @Parameters
   public static Collection<Object[]> data() {
-    return Arrays.asList(new Object[][]{
-        {InterledgerAddressBuilder.builder().value("test1.").build()},
-        {InterledgerAddressBuilder.builder().value("test3.foo").build()},
-        {InterledgerAddressBuilder.builder().value("test2.foo").build()},
-        {InterledgerAddressBuilder.builder().value("test1.foo").build()},
-        {InterledgerAddressBuilder.builder().value("test1.foo.bar.baz").build()},
-        {InterledgerAddressBuilder.builder().value("private.secret.account").build()},
-        {InterledgerAddressBuilder.builder().value("example.foo").build()},
-        {InterledgerAddressBuilder.builder().value("peer.foo").build()},
-        {InterledgerAddressBuilder.builder().value("self.foo").build()},
-        {InterledgerAddressBuilder.builder().value(JUST_RIGHT).build()},
-    });
+    return Arrays.asList(new Object[][] {{InterledgerAddress.builder().value("test1.").build()},
+        {InterledgerAddress.builder().value("test3.foo").build()},
+        {InterledgerAddress.builder().value("test2.foo").build()},
+        {InterledgerAddress.builder().value("test1.foo").build()},
+        {InterledgerAddress.builder().value("test1.foo.bar.baz").build()},
+        {InterledgerAddress.builder().value("private.secret.account").build()},
+        {InterledgerAddress.builder().value("example.foo").build()},
+        {InterledgerAddress.builder().value("peer.foo").build()},
+        {InterledgerAddress.builder().value("self.foo").build()},
+        {InterledgerAddress.builder().value(JUST_RIGHT).build()},});
   }
 
   @Test
@@ -66,11 +63,11 @@ public class InterledgerAddressOerCodecTests {
     final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     context.write(interledgerAddress, outputStream);
 
-    final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(
-        outputStream.toByteArray());
+    final ByteArrayInputStream byteArrayInputStream =
+        new ByteArrayInputStream(outputStream.toByteArray());
 
-    final InterledgerAddress decodedInterledgerAddress = context
-        .read(InterledgerAddress.class, byteArrayInputStream);
+    final InterledgerAddress decodedInterledgerAddress =
+        context.read(InterledgerAddress.class, byteArrayInputStream);
     assertThat(decodedInterledgerAddress.getClass().getName(),
         is(interledgerAddress.getClass().getName()));
     assertThat(decodedInterledgerAddress, is(interledgerAddress));

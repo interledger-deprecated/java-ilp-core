@@ -58,12 +58,9 @@ public class LedgerSpecificDecimalMonetaryAmountFormat implements MonetaryAmount
   /**
    * Constructs a monetary amount format for the given currency unit, precision and scale.
    * 
-   * @param currencyUnit
-   *    The unit of currency.
-   * @param precision
-   *    Indicates the total number of digits used to represent an amount.
-   * @param scale
-   *    Indicates the number of digits after the decimal place.
+   * @param currencyUnit The unit of currency.
+   * @param precision Indicates the total number of digits used to represent an amount.
+   * @param scale Indicates the number of digits after the decimal place.
    */
   public LedgerSpecificDecimalMonetaryAmountFormat(CurrencyUnit currencyUnit, int precision,
       int scale) {
@@ -72,14 +69,12 @@ public class LedgerSpecificDecimalMonetaryAmountFormat implements MonetaryAmount
     this.currencyUnit = currencyUnit;
     this.format = new DecimalFormat(PATTERN, SYMBOLS);
     // Cause an exception to be thrown if parsing a number that will lose data
-    this.format.setRoundingMode(RoundingMode.UNNECESSARY); 
+    this.format.setRoundingMode(RoundingMode.UNNECESSARY);
     this.format.setMaximumIntegerDigits(precision);
     this.format.setMinimumFractionDigits(scale);
     this.format.setMaximumFractionDigits(scale);
 
-    this.context = AmountFormatContextBuilder
-        .of(STYLE)
-        .set(KEY_SCALE, scale)
+    this.context = AmountFormatContextBuilder.of(STYLE).set(KEY_SCALE, scale)
         .set(KEY_PRECISION, precision).build();
   }
 

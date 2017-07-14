@@ -1,7 +1,6 @@
 package org.interledger.psk;
 
 import org.interledger.mocks.DeterministicSecureRandomProvider;
-import org.interledger.psk.io.PskUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -19,20 +18,23 @@ public class PskUtilsTest {
   @Test
   public final void testGetPskParams() {
 
-    final String token = "PE7rnGiULIrfu655nwSYew";
-    final String receiverId = "ebKWcAEB9_A";
-    final String sharedKeyString = "66iH2jKo-lMSs55jU8fH3Tm-G_rf9aDi-Q3bu6gddGM";
+    /* Known good test values */
+    final byte[] token = Base64.getUrlDecoder().decode("PE7rnGiULIrfu655nwSYew");
+    final byte[] receiverId = Base64.getUrlDecoder().decode("ebKWcAEB9_A");
+    final byte[] sharedKey =
+        Base64.getUrlDecoder().decode("66iH2jKo-lMSs55jU8fH3Tm-G_rf9aDi-Q3bu6gddGM");
 
-    DeterministicSecureRandomProvider.setAsDefault(Base64.getUrlDecoder().decode(token));
+    DeterministicSecureRandomProvider.setAsDefault(token);
 
-    PskParams params = PskUtils.getPskParams(receiverSecret);
+    PskContext context = PskContext.seed(receiverSecret);
 
-    Assert.assertEquals("Invalid token", token, params.getToken());
+    Assert.assertArrayEquals("Invalid token", Arrays.copyOf(token, 16), context.getToken());
 
-    Assert.assertEquals("Invalid Receiver ID.", receiverId, params.getReceiverId());
+    Assert.assertArrayEquals("Invalid Receiver ID.", Arrays.copyOf(receiverId, 8),
+        context.getReceiverId());
 
-    Assert.assertArrayEquals("Invalid shared key",
-        Arrays.copyOf(Base64.getUrlDecoder().decode(sharedKeyString), 16), params.getSharedKey());
+    Assert.assertArrayEquals("Invalid shared key", Arrays.copyOf(sharedKey, 16),
+        context.getSharedKey());
 
     DeterministicSecureRandomProvider.remove();
 

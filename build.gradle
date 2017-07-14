@@ -11,7 +11,6 @@ apply plugin: 'jacoco'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-
 /* 
  custom checkstyle properties for the build.
  see https://docs.gradle.org/current/dsl/org.gradle.api.plugins.quality.CheckstyleExtension.html
@@ -25,6 +24,7 @@ checkstyle {
        pass/fail reporting, so tell the plugin to break the build on the first error 
     */
 	maxWarnings = 0 
+	
 }
 
 jacocoTestReport {
@@ -35,6 +35,10 @@ jacocoTestReport {
 }
 
 jar {
+
+	//Include source in JAR
+    from sourceSets.main.allSource
+
     manifest {
         attributes 'Implementation-Title': description,
                 'Implementation-Version': version
