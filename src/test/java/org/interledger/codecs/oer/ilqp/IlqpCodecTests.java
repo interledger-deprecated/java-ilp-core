@@ -3,7 +3,7 @@ package org.interledger.codecs.oer.ilqp;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import org.interledger.InterledgerAddressBuilder;
+import org.interledger.InterledgerAddress;
 import org.interledger.InterledgerPacket;
 import org.interledger.codecs.Codec;
 import org.interledger.codecs.CodecContext;
@@ -40,21 +40,21 @@ public class IlqpCodecTests {
   public static Object[] data() {
     return new Object[] {
         new QuoteBySourceAmountRequest.Builder()
-            .destinationAccount(InterledgerAddressBuilder.builder().value("test1.foo").build())
+            .destinationAccount(InterledgerAddress.from("test1.foo"))
             .sourceAmount(100)
             .destinationHoldDuration(Duration.ofSeconds(30)).build(),
         new QuoteBySourceAmountResponse.Builder()
             .destinationAmount(95)
             .sourceHoldDuration(Duration.ofSeconds(30)).build(),
         new QuoteByDestinationAmountRequest.Builder()
-            .destinationAccount(InterledgerAddressBuilder.builder().value("test2.foo").build())
+            .destinationAccount(InterledgerAddress.from("test2.foo"))
             .destinationAmount(100)
             .destinationHoldDuration(Duration.ofSeconds(35)).build(),
         new QuoteByDestinationAmountResponse.Builder()
             .sourceAmount(105)
             .sourceHoldDuration(Duration.ofMinutes(1)).build(),
         new QuoteLiquidityRequest.Builder()
-        .destinationAccount(InterledgerAddressBuilder.builder().value("test3.foo").build())
+        .destinationAccount(InterledgerAddress.from("test3.foo"))
         .destinationHoldDuration(Duration.ofMinutes(5)).build()};
   }
 
