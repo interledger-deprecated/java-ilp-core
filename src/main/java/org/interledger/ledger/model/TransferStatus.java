@@ -4,18 +4,16 @@ package org.interledger.ledger.model;
  * Enumerates the status of a transfer.
  */
 public enum TransferStatus {
-  PROPOSED, PREPARED, EXECUTED, REJECTED;
+  PROPOSED,
+  PREPARED,
+  EXECUTED,
+  REJECTED;
 
   /**
    * Returns the {@link TransferStatus} associated with the given integer representation as listed
    * below.
    * 
-   * <ol>
-   * <li>Proposed</li>
-   * <li>Prepared</li>
-   * <li>Executed</li>
-   * <li>Rejected</li>
-   * </ol>
+   * <ol> <li>Proposed</li> <li>Prepared</li> <li>Executed</li> <li>Rejected</li> </ol>
    */
   public static TransferStatus valueOf(int status) {
     switch (status) {

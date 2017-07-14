@@ -13,21 +13,18 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 /**
- * An extension of {@link Codec} for reading and writing an ASN.1 OER IA5String.
- * <p>The encoding of IA5String types depends on the size constraint present in the type, if any.
- * Interledger's usage of IA5String always uses a dynamic size constraint, so the encoding of the
- * string value consists of a length prefix followed by the encodings of each character.</p>
- * <p>After encoding a length-prefix using an instance of {@link OerLengthPrefixCodec}, each
- * character
- * in the supplied {@link String} will be encoded in one octet with the highest-order bit set to
- * zero.</p>
+ * An extension of {@link Codec} for reading and writing an ASN.1 OER IA5String. <p>The encoding of
+ * IA5String types depends on the size constraint present in the type, if any. Interledger's usage
+ * of IA5String always uses a dynamic size constraint, so the encoding of the string value consists
+ * of a length prefix followed by the encodings of each character.</p> <p>After encoding a
+ * length-prefix using an instance of {@link OerLengthPrefixCodec}, each character in the supplied
+ * {@link String} will be encoded in one octet with the highest-order bit set to zero.</p>
  */
 public class OerIA5StringCodec implements Codec<OerIA5String> {
 
   @Override
-  public OerIA5String read(
-      final CodecContext context, final InputStream inputStream
-  ) throws IOException {
+  public OerIA5String read(final CodecContext context, final InputStream inputStream)
+      throws IOException {
     Objects.requireNonNull(context);
     Objects.requireNonNull(inputStream);
 
@@ -41,9 +38,8 @@ public class OerIA5StringCodec implements Codec<OerIA5String> {
   }
 
   @Override
-  public void write(
-      final CodecContext context, final OerIA5String instance, final OutputStream outputStream
-  ) throws IOException {
+  public void write(final CodecContext context, final OerIA5String instance,
+      final OutputStream outputStream) throws IOException {
 
     Objects.requireNonNull(context);
     Objects.requireNonNull(instance);
@@ -59,8 +55,8 @@ public class OerIA5StringCodec implements Codec<OerIA5String> {
   }
 
   /**
-   * Convert an {@link InputStream} into a {@link String}.  Reference the SO below for an
-   * interesting performance comparison of various InputStream to String methodologies.
+   * Convert an {@link InputStream} into a {@link String}. Reference the SO below for an interesting
+   * performance comparison of various InputStream to String methodologies.
    *
    * @param inputStream An instance of {@link InputStream}.
    * @return A {@link String}

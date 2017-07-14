@@ -14,10 +14,10 @@ public interface SpspReceiver extends Receiver {
    * Returns the endpoint of the receiver.
    */
   URI getEndpoint();
-  
+
   /**
    * Returns the type of receiver.
    */
   ReceiverType getType();
-  
+
 }

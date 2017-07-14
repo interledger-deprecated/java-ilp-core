@@ -6,6 +6,8 @@ package org.interledger.codecs;
  */
 public class CodecException extends RuntimeException {
 
+  private static final long serialVersionUID = 6647367875148981736L;
+
   public CodecException() {
     super();
   }

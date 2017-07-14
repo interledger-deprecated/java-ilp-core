@@ -12,13 +12,12 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * <p>An extension of {@link Codec} for reading and writing an ASN.1 OER OctetString.</p>
- * <p>The encoding of OctetString types depends on the size constraint present in the type, if any.
+ * <p>An extension of {@link Codec} for reading and writing an ASN.1 OER OctetString.</p> <p>The
+ * encoding of OctetString types depends on the size constraint present in the type, if any.
  * Interledger's usage of OctetString always uses a dynamic size constraint, so the encoding of the
- * string value consists of a length prefix followed by the encodings of each octet.</p>
- * <p>After encoding a length-prefix using an instance of {@link OerLengthPrefixCodec}, each byte
- * in the supplied byte array will be encoded in one octet with the highest-order bit set to
- * zero.</p>
+ * string value consists of a length prefix followed by the encodings of each octet.</p> <p>After
+ * encoding a length-prefix using an instance of {@link OerLengthPrefixCodec}, each byte in the
+ * supplied byte array will be encoded in one octet with the highest-order bit set to zero.</p>
  */
 public class OerOctetStringCodec implements Codec<OerOctetString> {
 
@@ -37,9 +36,8 @@ public class OerOctetStringCodec implements Codec<OerOctetString> {
   }
 
   @Override
-  public void write(
-      final CodecContext context, final OerOctetString instance, final OutputStream outputStream
-  ) throws IOException {
+  public void write(final CodecContext context, final OerOctetString instance,
+      final OutputStream outputStream) throws IOException {
     Objects.requireNonNull(context);
     Objects.requireNonNull(instance);
     Objects.requireNonNull(outputStream);

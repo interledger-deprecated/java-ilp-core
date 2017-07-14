@@ -64,7 +64,7 @@ public interface LedgerAdaptor {
    * receiver.
    *
    * @param transfer The transfer being proposed.
-   * @param reason   The reason (InterledgerException) why the transfer should be rejected.
+   * @param reason The reason (InterledgerException) why the transfer should be rejected.
    */
   void rejectTransfer(LedgerTransfer transfer, InterledgerException reason);
 
@@ -93,7 +93,7 @@ public interface LedgerAdaptor {
   /**
    * Fulfill a condition for a transfer that has been prepared on a ledger.
    *
-   * @param transferId  The unique transfer identifier.
+   * @param transferId The unique transfer identifier.
    * @param fulfillment The fulfillment for the transfer.
    */
   void fulfillTransfer(UUID transferId, Fulfillment fulfillment);

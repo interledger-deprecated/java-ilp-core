@@ -1,14 +1,14 @@
 package org.interledger.ilp;
 
 import org.interledger.InterledgerAddress;
-import org.interledger.InterledgerAddressBuilder;
 
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
 
 /**
- * @REF: REF: https://interledger.org/rfcs/0003-interledger-protocol/#errors
+ * @see <a href="https://interledger.org/rfcs/0003-interledger-protocol/#errors">Interledger
+ *      Protocol Errors</a>
  */
 public class InterledgerError {
   /**
@@ -41,7 +41,9 @@ public class InterledgerError {
      * code value.
      */
     enum ErrorType {
-      FINAL('F'), TEMPORARY('T'), RELATIVE('R');
+      FINAL('F'),
+      TEMPORARY('T'),
+      RELATIVE('R');
 
       private final String errorPrefix;
 
@@ -92,10 +94,10 @@ public class InterledgerError {
     }
 
     /**
-     * <p>Accessor for this ErrorCode's {@code code} property.</p>
-     * <p>Per IL-RFC-3: "Implementations SHOULD NOT depend on the name instead of the code. The
-     * name is primarily provided as a convenience to facilitate debugging by humans. If the name
-     * does not match the code, the code is the definitive identifier of the error." </p>
+     * <p>Accessor for this ErrorCode's {@code code} property.</p> <p>Per IL-RFC-3: "Implementations
+     * SHOULD NOT depend on the name instead of the code. The name is primarily provided as a
+     * convenience to facilitate debugging by humans. If the name does not match the code, the code
+     * is the definitive identifier of the error." </p>
      */
     public String getCode() {
       return this.code;
@@ -120,14 +122,14 @@ public class InterledgerError {
   // (developer sent a null by mistake) and the real intention of not
   // sending selfAddress.
   static final InterledgerAddress TRIGGERING_ILP_NODE =
-      new InterledgerAddressBuilder().value("g.selfAddressNONE").build();
+      InterledgerAddress.builder().value("g.selfAddressNONE").build();
 
   /**
    * Constructor used by ILP Connectors.
    */
   private InterledgerError(final ErrorCode errorCode, final InterledgerAddress triggeredBy,
-                           final ZonedDateTime triggeredAt, List<InterledgerAddress> forwardedBy,
-                           final InterledgerAddress selfAddress, final String data) {
+      final ZonedDateTime triggeredAt, List<InterledgerAddress> forwardedBy,
+      final InterledgerAddress selfAddress, final String data) {
 
     this.errorCode = Objects.requireNonNull(errorCode, "errorCode   can not be null");
     this.triggeredBy = Objects.requireNonNull(triggeredBy, "triggeredBy can not be null");
@@ -157,9 +159,8 @@ public class InterledgerError {
    * Constructs an instance of <code>InterledgerException</code> with default parameters for
    * forwardedBy (Empty list) and triggeredAt (ZonedDateTime.now()). In most situations such values
    * match the default ones when triggering a new exception (vs an exception received from another
-   * ILP node that is being forwarded back to originating request clients).
-   * <p>Check the RFC https://interledger.org/rfcs/0003-interledger-protocol/#errors for the newest
-   * updated doc.</p>
+   * ILP node that is being forwarded back to originating request clients). <p>Check the RFC
+   * https://interledger.org/rfcs/0003-interledger-protocol/#errors for the newest updated doc.</p>
    */
   public InterledgerError(ErrorCode errorCode, InterledgerAddress triggeredBy, String data) {
     this(errorCode, triggeredBy, ZonedDateTime.now(), new java.util.ArrayList<InterledgerAddress>(),
