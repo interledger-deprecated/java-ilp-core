@@ -192,7 +192,7 @@ task writePom {
                         name 'David Fuelling'
                         organizationUrl 'https://github.com/sappenin'
                     }
-                } 
+                }
                 scm {
                     connection 'scm:git:git://github.com/interledger/java-ilp-core.git'
                     developerConnection 'scm:git:git@github.com:interledger/java-ilp-core.git'
