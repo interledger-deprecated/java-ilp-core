@@ -5,8 +5,8 @@
   <groupId>org.interledger</groupId>
   <artifactId>java-ilp-core</artifactId>
   <version>0.5.0-SNAPSHOT</version>
-  <name>ILP Core (Java)</name>
-  <description>Core libraries for implementing software that uses the Interledger suite of protocols.</description>
+  <name>Interledger Core</name>
+  <description>Core libraries for implementing the Interledger suite of protocols.</description>
   <url>https://github.com/interledger/java-ilp-core</url>
   <inceptionYear>2016</inceptionYear>
   <licenses>
