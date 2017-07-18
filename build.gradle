@@ -1,5 +1,5 @@
 group = 'org.interledger'
-description = 'Interledger Protocol Core'
+description = 'Interledger Core'
 version = '0.5.0-SNAPSHOT'
 
 apply plugin: 'java'
@@ -122,7 +122,7 @@ uploadArchives {
 
             pom {
                 project {
-                    name 'ILP Core (Java)'
+                    name 'Interledger Core'
                     packaging 'jar'
                     description 'Core libraries for implementing software that uses the Interledger suite of protocols.'
                     url 'https://github.com/interledger/java-ilp-core'
@@ -186,7 +186,7 @@ task writePom {
     doLast {
         pom {
             project {
-                name 'ILP Core (Java)'
+                name 'Interledger Core'
                 packaging 'jar'
                 description 'Core libraries for implementing software that uses the Interledger suite of protocols.'
                 url 'https://github.com/interledger/java-ilp-core'
