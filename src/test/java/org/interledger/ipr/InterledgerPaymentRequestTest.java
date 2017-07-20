@@ -8,6 +8,7 @@ import org.interledger.InterledgerAddress;
 import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.CodecContextFactory;
 import org.interledger.ilp.InterledgerPayment;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -35,14 +36,12 @@ public class InterledgerPaymentRequestTest {
 
   /**
    * The data for this test...
-   * 
-   * @throws IOException
    */
   @Parameters
   public static Collection<Object[]> data() throws IOException {
 
     InterledgerPayment payment1 =
-        new InterledgerPayment.Builder().destinationAccount(InterledgerAddress.from("test1.foo"))
+        new InterledgerPayment.Builder().destinationAccount(InterledgerAddress.of("test1.foo"))
             .destinationAmount(100L).data("test data".getBytes()).build();
 
     Condition condition1 = Condition.builder().hash(new byte[32]).build();
@@ -51,17 +50,17 @@ public class InterledgerPaymentRequestTest {
         InterledgerPaymentRequest.builder().payment(payment1).condition(condition1).build();
 
     InterledgerPayment payment2 =
-        new InterledgerPayment.Builder().destinationAccount(InterledgerAddress.from("test2.bar"))
+        new InterledgerPayment.Builder().destinationAccount(InterledgerAddress.of("test2.bar"))
             .destinationAmount(0L).data("other data".getBytes()).build();
 
-    Condition condition2 = Condition.builder().hash(new byte[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2,
+    Condition condition2 = Condition.builder().hash(new byte[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2,
         3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2}).build();
 
     InterledgerPaymentRequest ipr2 =
         InterledgerPaymentRequest.builder().payment(payment2).condition(condition2).build();
 
     return Arrays
-        .asList(new Object[][] {{ipr1, payment1, condition1}, {ipr2, payment2, condition2},});
+        .asList(new Object[][]{{ipr1, payment1, condition1}, {ipr2, payment2, condition2},});
   }
 
   @Test

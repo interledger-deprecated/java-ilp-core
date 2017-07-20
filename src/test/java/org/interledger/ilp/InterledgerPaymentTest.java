@@ -10,6 +10,7 @@ import static org.mockito.Mockito.mock;
 
 import org.interledger.InterledgerAddress;
 import org.interledger.ilp.InterledgerPayment.Builder;
+
 import org.junit.Test;
 
 /**
@@ -21,7 +22,7 @@ public class InterledgerPaymentTest {
   public void testBuild() throws Exception {
     final InterledgerAddress destinationAccount = mock(InterledgerAddress.class);
     final Long destinationAmount = 25L;
-    byte[] data = new byte[] {127};
+    byte[] data = new byte[]{127};
 
     final InterledgerPayment interledgerPayment =
         InterledgerPayment.builder().destinationAccount(destinationAccount)
@@ -62,7 +63,7 @@ public class InterledgerPaymentTest {
 
     final InterledgerPayment interledgerPayment =
         new Builder().destinationAccount(mock(InterledgerAddress.class)).destinationAmount(100L)
-            .data(new byte[] {}).build();
+            .data(new byte[]{}).build();
     assertThat(interledgerPayment, is(not(nullValue())));
   }
 
@@ -70,7 +71,7 @@ public class InterledgerPaymentTest {
   public void testEqualsHashCode() throws Exception {
     final InterledgerAddress destinationAccount = mock(InterledgerAddress.class);
     final Long destinationAmount = 25L;
-    byte[] data = new byte[] {127};
+    byte[] data = new byte[]{127};
 
     final InterledgerPayment interledgerPayment1 =
         new Builder().destinationAccount(destinationAccount).destinationAmount(destinationAmount)

@@ -24,7 +24,8 @@ public class InterledgerPacketTypeOerCodec implements InterledgerPacketTypeCodec
     Objects.requireNonNull(context);
     Objects.requireNonNull(inputStream);
 
-    final int typeId = context.read(OerUint8.class, inputStream).getValue();
+    final int typeId = context.read(OerUint8.class, inputStream)
+        .getValue();
 
     try {
       return InterledgerPacketType.fromTypeId(typeId);

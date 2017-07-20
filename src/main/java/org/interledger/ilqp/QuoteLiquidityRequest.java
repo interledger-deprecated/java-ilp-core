@@ -13,17 +13,22 @@ public interface QuoteLiquidityRequest extends QuoteRequest {
 
   @Override
   InterledgerAddress getDestinationAccount();
-  
+
   @Override
   Duration getDestinationHoldDuration();
-  
+
   /**
    * A builder for instances of {@link QuoteLiquidityRequest}.
-   */  
+   */
   class Builder {
+
     private InterledgerAddress destinationAccount;
     private Duration destinationHoldDuration;
-    
+
+    public static Builder builder() {
+      return new Builder();
+    }
+
     /**
      * Set the destination account address into this builder.
      *
@@ -34,7 +39,7 @@ public interface QuoteLiquidityRequest extends QuoteRequest {
       this.destinationAccount = Objects.requireNonNull(destinationAccount);
       return this;
     }
-    
+
     /**
      * Set the destination hold duration into this builder.
      *
@@ -47,37 +52,33 @@ public interface QuoteLiquidityRequest extends QuoteRequest {
 
     /**
      * The method that actually constructs a QuoteByLiquidityRequest.
-     * 
+     *
      * @return An instance of {@link QuoteLiquidityRequest}
      */
     public QuoteLiquidityRequest build() {
       return new Builder.Impl(this);
     }
-    
-    public static Builder builder() {
-      return new Builder();
-    }
-    
+
     private static class Impl implements QuoteLiquidityRequest {
 
       private final InterledgerAddress destinationAccount;
       private final Duration destinationHoldDuration;
-      
+
       /**
        * Constructs an instance from the values held in the builder.
-       * 
+       *
        * @param builder A Builder used to construct {@link QuoteLiquidityRequest} instances.
        */
       private Impl(final Builder builder) {
         Objects.requireNonNull(builder);
-        
+
         this.destinationAccount = Objects.requireNonNull(builder.destinationAccount,
             "destinationAccount must not be null!");
-        
+
         this.destinationHoldDuration = Objects.requireNonNull(builder.destinationHoldDuration,
             "destinationHoldDuration must not be null!");
       }
-      
+
       @Override
       public InterledgerAddress getDestinationAccount() {
         return this.destinationAccount;
@@ -87,7 +88,7 @@ public interface QuoteLiquidityRequest extends QuoteRequest {
       public Duration getDestinationHoldDuration() {
         return this.destinationHoldDuration;
       }
-      
+
       @Override
       public boolean equals(Object obj) {
         if (this == obj) {
@@ -102,11 +103,11 @@ public interface QuoteLiquidityRequest extends QuoteRequest {
         if (!destinationAccount.equals(impl.destinationAccount)) {
           return false;
         }
-        
+
         if (!destinationHoldDuration.equals(impl.destinationHoldDuration)) {
           return false;
         }
-        
+
         return true;
       }
 
@@ -120,11 +121,13 @@ public interface QuoteLiquidityRequest extends QuoteRequest {
       @Override
       public String toString() {
         final StringBuilder sb = new StringBuilder("Impl{");
-        sb.append("destinationAccount=").append(destinationAccount);
-        sb.append(", destinationHoldDuration=").append(destinationHoldDuration);
+        sb.append("destinationAccount=")
+            .append(destinationAccount);
+        sb.append(", destinationHoldDuration=")
+            .append(destinationHoldDuration);
         sb.append('}');
         return sb.toString();
-      }      
+      }
     }
   }
 }

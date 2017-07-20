@@ -13,7 +13,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 
-/* 
+/*
  custom checkstyle properties for the build.
  see https://docs.gradle.org/current/dsl/org.gradle.api.plugins.quality.CheckstyleExtension.html
 */
@@ -37,7 +37,7 @@ jacocoTestReport {
 
 jar {
 
-	//Include source in JAR
+    //Include source in JAR
     from sourceSets.main.allSource
 
     manifest {

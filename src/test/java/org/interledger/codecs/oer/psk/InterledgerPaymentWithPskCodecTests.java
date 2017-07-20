@@ -14,6 +14,7 @@ import org.interledger.ilp.InterledgerPayment;
 import org.interledger.psk.PskEncryptionType;
 import org.interledger.psk.PskMessage;
 import org.interledger.psk.PskMessage.Header;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -36,13 +37,6 @@ import java.util.Collection;
 @RunWith(Parameterized.class)
 public class InterledgerPaymentWithPskCodecTests {
 
-  // first data value (0) is default
-  @Parameter
-  public InterledgerPayment interledgerPayment;
-
-  @Parameter(1)
-  public PskMessage pskMessage;
-
   private static final PskMessage.Header publicHeader1 =
       new Header("question", "What is the answer?");
   private static final PskMessage.Header publicHeader2 =
@@ -53,11 +47,14 @@ public class InterledgerPaymentWithPskCodecTests {
       new Header("answer", "But we control these machines; they don't control us!");
   private static final byte[] applicationData =
       "{\"oracle\":\"candy\", \"forseen\":true}".getBytes();
+  // first data value (0) is default
+  @Parameter
+  public InterledgerPayment interledgerPayment;
+  @Parameter(1)
+  public PskMessage pskMessage;
 
   /**
    * The data for this test...
-   * 
-   * @throws IOException
    */
   @Parameters
   public static Collection<Object[]> data() throws IOException {
@@ -77,14 +74,14 @@ public class InterledgerPaymentWithPskCodecTests {
 
     final byte[] pskMessageBytes = CodecContextFactory.interledger().write(pskMessage);
 
-    return Arrays.asList(new Object[][] {
-        {new InterledgerPayment.Builder().destinationAccount(InterledgerAddress.from("test1.foo"))
+    return Arrays.asList(new Object[][]{
+        {new InterledgerPayment.Builder().destinationAccount(InterledgerAddress.of("test1.foo"))
             .destinationAmount(100L).data(pskMessageBytes).build(), pskMessage},
 
-        {new InterledgerPayment.Builder().destinationAccount(InterledgerAddress.from("test2.bar"))
+        {new InterledgerPayment.Builder().destinationAccount(InterledgerAddress.of("test2.bar"))
             .destinationAmount(1L).data(pskMessageBytes).build(), pskMessage},
 
-        {new InterledgerPayment.Builder().destinationAccount(InterledgerAddress.from("test3.bar"))
+        {new InterledgerPayment.Builder().destinationAccount(InterledgerAddress.of("test3.bar"))
             .destinationAmount(0L).data(pskMessageBytes).build(), pskMessage},
 
     });

@@ -1,13 +1,10 @@
 package org.interledger.ilqp;
 
-
 import org.interledger.InterledgerAddress;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.UUID;
-
 import javax.money.convert.ExchangeRate;
 
 /**

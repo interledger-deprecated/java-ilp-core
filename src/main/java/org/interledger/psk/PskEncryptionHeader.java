@@ -20,15 +20,18 @@ public class PskEncryptionHeader extends PskMessage.Header {
 
   private PskEncryptionHeader(byte[] authTag) {
     super(WellKnown.ENCRYPTION,
-        new StringBuilder().append(PskEncryptionType.AES_256_GCM.toString()).append(" ")
-            .append(Base64.getUrlEncoder().withoutPadding().encodeToString(authTag)).toString());
+        new StringBuilder().append(PskEncryptionType.AES_256_GCM.toString())
+            .append(" ")
+            .append(Base64.getUrlEncoder()
+                .withoutPadding()
+                .encodeToString(authTag))
+            .toString());
     this.type = PskEncryptionType.AES_256_GCM;
     this.authTag = Arrays.copyOf(authTag, authTag.length);
   }
 
   /**
    * Constructs an instance of the header with the encryption type NONE.
-   *
    */
   public static PskEncryptionHeader none() {
     return new PskEncryptionHeader();
@@ -46,17 +49,18 @@ public class PskEncryptionHeader extends PskMessage.Header {
   }
 
   /**
-   * Constructs an instance of the header from an existing header with the appropriate values.
-   * 
+   * Constructs an instance of the header of an existing header with the appropriate values.
+   *
    * @param header An existing header
-   * 
+   *
    * @return An encryption header
-   * 
-   * @throws a RuntimeException if an encryption header can't be constructed from the given header
+   *
+   * @throws a RuntimeException if an encryption header can't be constructed of the given header
    */
   public static PskEncryptionHeader fromHeader(PskMessage.Header header) {
 
-    String value = header.getValue().trim();
+    String value = header.getValue()
+        .trim();
 
     if (value.equalsIgnoreCase(PskEncryptionType.NONE.toString())) {
       return none();
@@ -67,7 +71,8 @@ public class PskEncryptionHeader extends PskMessage.Header {
       if (tokens.length == 1) {
         throw new RuntimeException("Invalid AES GCM encryption header. No auth tag.");
       }
-      return aesGcm(Base64.getUrlDecoder().decode(tokens[1]));
+      return aesGcm(Base64.getUrlDecoder()
+          .decode(tokens[1]));
     }
 
     throw new RuntimeException("Invalid encryption header value.");
@@ -102,7 +107,9 @@ public class PskEncryptionHeader extends PskMessage.Header {
     }
 
     return PskEncryptionType.AES_256_GCM.toString() + " "
-        + Base64.getUrlEncoder().withoutPadding().encodeToString(this.authTag);
+        + Base64.getUrlEncoder()
+        .withoutPadding()
+        .encodeToString(this.authTag);
   }
 
 }

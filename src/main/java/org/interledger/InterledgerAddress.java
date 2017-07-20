@@ -30,6 +30,33 @@ import java.util.regex.Pattern;
 public interface InterledgerAddress {
 
   /**
+   * Constructor to allow quick create of String.
+   *
+   * @param value String representation of an Interledger Address
+   */
+  public static InterledgerAddress of(final String value) {
+    return new Builder().value(value)
+        .build();
+  }
+
+  /**
+   * Get the default builder.
+   *
+   * @return a {@link Builder} instance.
+   */
+  public static Builder builder() {
+    return new Builder();
+  }
+
+  /**
+   * Get builder initialized with the value of another address to enable copy-functionality.
+   */
+  public static Builder builder(final InterledgerAddress interledgerAddress) {
+    Objects.requireNonNull(interledgerAddress, "InterledgerAddress must not be null!");
+    return new Builder().value(interledgerAddress.getValue());
+  }
+
+  /**
    * Return this address's value as a non-null {@link String}. For example:
    * <code>us.usd.bank.account</code>
    *
@@ -50,20 +77,21 @@ public interface InterledgerAddress {
    * Tests if this InterledgerAddress starts with the specified {@code addressSegment}.
    *
    * @param addressSegment An {@link String} prefix to compare against.
-   * @return {@code true} if this InterledgerAddress begins with the specified prefix, {@code false}
-   *         otherwise.
+   *
+   * @return {@code true} if this InterledgerAddress begins with the specified prefix.
    */
   default boolean startsWith(final String addressSegment) {
     Objects.requireNonNull(addressSegment, "addressSegment must not be null!");
-    return this.getValue().startsWith(addressSegment);
+    return this.getValue()
+        .startsWith(addressSegment);
   }
 
   /**
    * Tests if this InterledgerAddress starts with the specified {@code interledgerAddress}.
    *
    * @param interledgerAddress An {@link InterledgerAddress} prefix to compare against.
-   * @return {@code true} if this InterledgerAddress begins with the specified prefix, {@code false}
-   *         otherwise.
+   *
+   * @return {@code true} if this InterledgerAddress begins with the specified prefix.
    */
   default boolean startsWith(final InterledgerAddress interledgerAddress) {
     Objects.requireNonNull(interledgerAddress, "interledgerAddress must not be null!");
@@ -84,9 +112,10 @@ public interface InterledgerAddress {
    * Address with a value of '<code>us.usd.pacific.creditunions.</code>', which is an address
    * prefix.</p>
    *
-   * @param addressSegment A {@link String} to be appended to this address as an additional segment.
-   * @return A new instance of InterledgerAddress representing the original address with a newly
-   *         specified final segment.
+   * @param addressSegment A {@link String} to be appended to this address as an additional
+   *                       segment.
+   *
+   * @return A new instance representing the original address with a newly specified final segment.
    */
   InterledgerAddress with(String addressSegment);
 
@@ -94,10 +123,12 @@ public interface InterledgerAddress {
    * <p>Compares the specified object with this <tt>InterledgerAddress</tt> for equality. The
    * <tt>InterledgerAddress</tt> interface is essentially a type-safe wrapper around a String value,
    * so implementations should take care to forward equality decisions to the
-   * {@link String#equals(Object)} method on the object returned from {@link #getValue()}.</p>
+   * {@link String#equals(Object)} method on the object returned of {@link #getValue()}.</p>
    *
    * @param obj object to be compared for equality with this collection
+   *
    * @return <tt>true</tt> if the specified object is equal to this collection
+   *
    * @see Object#equals(Object)
    * @see Set#equals(Object)
    * @see List#equals(Object)
@@ -109,40 +140,15 @@ public interface InterledgerAddress {
    * <p> Returns the hash code value for this <tt>InterledgerAddress</tt>. The
    * <tt>InterledgerAddress</tt> interface is essentially a type-safe wrapper around a String value,
    * so implementations should take care to forward hashcode decisions to the
-   * {@link String#equals(Object)} method on the object returned from {@link #getValue()}.</p>
+   * {@link String#equals(Object)} method on the object returned of {@link #getValue()}.</p>
    *
    * @return the hash code value for this InterledgerAddress.
+   *
    * @see Object#hashCode()
    * @see Object#equals(Object)
    */
   @Override
   int hashCode();
-
-  /**
-   * Constructor to allow quick create from String.
-   * 
-   * @param value String representation of an Interledger Address
-   */
-  public static InterledgerAddress from(final String value) {
-    return new Builder().value(value).build();
-  }
-
-  /**
-   * Get the default builder.
-   * 
-   * @return a {@link Builder} instance.
-   */
-  public static Builder builder() {
-    return new Builder();
-  }
-
-  /**
-   * Get builder initialized with the value of another address to enable copy-functionality.
-   */
-  public static Builder builder(final InterledgerAddress interledgerAddress) {
-    Objects.requireNonNull(interledgerAddress, "InterledgerAddress must not be null!");
-    return new Builder().value(interledgerAddress.getValue());
-  }
 
   /**
    * A builder for immutable instances of {@link InterledgerAddress}.
@@ -157,10 +163,11 @@ public interface InterledgerAddress {
     /**
      * No-args Constructor.
      */
-    private Builder() {}
+    private Builder() {
+    }
 
     /**
-     * Builder method to actually construct an instance of {@link InterledgerAddress} from the data
+     * Builder method to actually construct an instance of {@link InterledgerAddress} of the data
      * in this builder.
      */
     public InterledgerAddress build() {
@@ -171,7 +178,7 @@ public interface InterledgerAddress {
      * Assign a new value to this builder.
      *
      * @param value A {@link String} representing this builder's "value", which is the string
-     *        version of an Interledger Address.
+     *              version of an Interledger Address.
      */
     public Builder value(final String value) {
       this.value = Objects.requireNonNull(value, "value must not be null!");
@@ -194,7 +201,7 @@ public interface InterledgerAddress {
       /**
        * Required-args Constructor.
        *
-       * @param builder An non-null instance of {@link Builder} to construct a new instance from.
+       * @param builder An non-null instance of {@link Builder} to construct a new instance of.
        */
       private Impl(final Builder builder) {
         Objects.requireNonNull(builder, "Builder must not be null!");
@@ -213,17 +220,20 @@ public interface InterledgerAddress {
        * outlined in Interledger RFC #15.
        *
        * @param value A {@link String} representing a potential Interledger Address value.
+       *
        * @return {@code true} if the supplied {@code value} conforms to the requirements of RFC 15;
-       *         {@code false} otherwise.
+       * {@code false} otherwise.
+       *
        * @see "https://github.com/interledger/rfcs/tree/master/0015-ilp-addresses"
        */
       private boolean isValidInterledgerAddress(final String value) {
         Objects.requireNonNull(value);
-        return PATTERN.matcher(value).matches();
+        return PATTERN.matcher(value)
+            .matches();
       }
 
       /**
-       * Accessor method for this address's {@link String} value. <p> NOTE: This is distinct from
+       * Accessor method for this address's {@link String} value. <p> NOTE: This is distinct of
        * {@link#toString()} to allow for the two values to diverge, e.g., for debugging or logging
        * purposes. </p>
        *
@@ -243,7 +253,8 @@ public interface InterledgerAddress {
         }
         sb.append(segment);
 
-        return new Builder().value(sb.toString()).build();
+        return new Builder().value(sb.toString())
+            .build();
       }
 
       @Override
@@ -268,7 +279,9 @@ public interface InterledgerAddress {
       @Override
       public String toString() {
         final StringBuilder sb = new StringBuilder("Impl{");
-        sb.append("value='").append(value).append('\'');
+        sb.append("value='")
+            .append(value)
+            .append('\'');
         sb.append('}');
         return sb.toString();
       }

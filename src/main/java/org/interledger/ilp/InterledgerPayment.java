@@ -5,11 +5,10 @@ import org.interledger.InterledgerPacket;
 
 import java.util.Arrays;
 import java.util.Objects;
-
 import javax.money.MonetaryAmount;
 
 /**
- * <p>Interledger Payments moves assets from one party to another that consists of one or more
+ * <p>Interledger Payments moves assets of one party to another that consists of one or more
  * ledger transfers, potentially across multiple ledgers.</p> Interledger Payments have three major
  * consumers: <ul> <li>Connectors utilize the Interledger Address contained in the payment to route
  * the payment.</li> <li>The receiver of a payment uses it to identify the recipient and which
@@ -23,7 +22,7 @@ import javax.money.MonetaryAmount;
  * packet. For example, the connector reads the InterledgerAddress of the payment's receiver, and if
  * the connector has a route to the receiver's account, the connector prepares a transfer to
  * continue the payment, and attaches the same ILP Payment to the new transfer. Likewise, the
- * receiver confirms that the amount from the ILP Payment Packet matches the amount actually
+ * receiver confirms that the amount of the ILP Payment Packet matches the amount actually
  * delivered by the transfer. And finally, the receiver decodes the data portion of the Payment and
  * matches the condition to the payment. The receiver MUST confirm the integrity of the ILP Payment,
  * for example with a hash-based message authentication code (HMAC). If the receiver finds the
@@ -32,6 +31,15 @@ import javax.money.MonetaryAmount;
  * payment.</p>
  */
 public interface InterledgerPayment extends InterledgerPacket {
+
+  /**
+   * Get the default builder.
+   *
+   * @return a {@link Builder} instance.
+   */
+  static Builder builder() {
+    return new Builder();
+  }
 
   /**
    * The Interledger address of the account where the receiver should ultimately receive the
@@ -58,22 +66,13 @@ public interface InterledgerPayment extends InterledgerPacket {
   byte[] getData();
 
   /**
-   * Get the default builder.
-   * 
-   * @return a {@link Builder} instance.
-   */
-  public static Builder builder() {
-    return new Builder();
-  }
-
-  /**
    * A builder for instances of {@link InterledgerPayment}.
    */
   class Builder {
 
-    protected InterledgerAddress destinationAccount;
-    protected Long destinationAmount;
-    protected byte[] data;
+    private InterledgerAddress destinationAccount;
+    private Long destinationAmount;
+    private byte[] data;
 
     /**
      * Set the destination account address into this builder.
@@ -117,7 +116,7 @@ public interface InterledgerPayment extends InterledgerPacket {
     /**
      * A private, immutable implementation of {@link InterledgerPayment}.
      */
-    private static class Impl implements InterledgerPayment {
+    private static final class Impl implements InterledgerPayment {
 
       private final InterledgerAddress destinationAccount;
       private final Long destinationAmount;
@@ -181,9 +180,12 @@ public interface InterledgerPayment extends InterledgerPacket {
       @Override
       public String toString() {
         final StringBuilder sb = new StringBuilder("Impl{");
-        sb.append("destinationAccount=").append(destinationAccount);
-        sb.append(", destinationAmount=").append(destinationAmount);
-        sb.append(", data=").append(Arrays.toString(data));
+        sb.append("destinationAccount=")
+            .append(destinationAccount);
+        sb.append(", destinationAmount=")
+            .append(destinationAmount);
+        sb.append(", data=")
+            .append(Arrays.toString(data));
         sb.append('}');
         return sb.toString();
       }

@@ -28,6 +28,62 @@ public class PskMessageBinaryCodec implements PskMessageCodec {
   private static final char CR = '\r';
   private static final char LF = '\n';
 
+  /**
+   * Reads data of the input stream until a line feed character ('\n') is found or the input
+   * stream is exhausted. Returns the data interpreted as a *UTF-8* string. Note that lines ending
+   * with '\n' or '\r\n' are treated the same, the trailing '\r' will be removed if present.
+   *
+   * @return A UTF-8 encoded string read of the input stream.
+   */
+  private static String readLine(InputStream in) throws IOException {
+
+    boolean readCarriageReturn = false;
+
+    try (ByteArrayOutputStream bos = new ByteArrayOutputStream(256)) {
+      int byteValue = 0;
+      while ((byteValue = in.read()) != -1) {
+
+        if (byteValue == CR) {
+          // Found CR, don't write it unless the next char is NOT a LF
+          readCarriageReturn = true;
+          continue;
+        }
+
+        if (byteValue == LF) {
+          break;
+        } else {
+          if (readCarriageReturn) {
+            // Not end of the line but we read a CR previously so write it before the current byte
+            bos.write(CR);
+            readCarriageReturn = false;
+          }
+        }
+        bos.write(byteValue);
+      }
+
+      String line = bos.toString(StandardCharsets.UTF_8.name());
+
+      return line;
+    }
+  }
+
+  /**
+   * Consumes the remaining data in the stream, returning it as a byte array.
+   */
+  private static byte[] readRemainingBytes(InputStream in) throws IOException {
+    try (ByteArrayOutputStream out = new ByteArrayOutputStream(256)) {
+      /*
+       * copy the remaining data of the input stream to the output stream in blocks of 256 bytes
+       */
+      byte[] buffer = new byte[256];
+      int length;
+      while ((length = in.read(buffer)) != -1) {
+        out.write(buffer, 0, length);
+      }
+      return out.toByteArray();
+    }
+  }
+
   @Override
   public PskMessage read(final CodecContext context, final InputStream inputStream)
       throws IOException {
@@ -89,7 +145,7 @@ public class PskMessageBinaryCodec implements PskMessageCodec {
     return builder.build();
 
   }
-  
+
   @Override
   public void write(final CodecContext context, final PskMessage instance,
       final OutputStream outputStream) throws IOException {
@@ -110,7 +166,8 @@ public class PskMessageBinaryCodec implements PskMessageCodec {
     }
     writer.write(LF);
 
-    if (instance.getEncryptionHeader().getEncryptionType() == PskEncryptionType.NONE) {
+    if (instance.getEncryptionHeader()
+        .getEncryptionType() == PskEncryptionType.NONE) {
 
       // Write Private Headers
       for (PskMessage.Header header : instance.getPrivateHeaders()) {
@@ -128,10 +185,11 @@ public class PskMessageBinaryCodec implements PskMessageCodec {
 
   /**
    * Parse the private data portion of a PSK Message.
-   * 
+   *
    * <p>This uses the standard read method but starts in the private headers state.
-   * 
-   * @param data The private data from a PSK message (headers and data separated by an empty line).
+   *
+   * @param data The private data of a PSK message (headers and data separated by an empty line).
+   *
    * @return A new PSK Message with only private headers and data.
    */
   public PskMessage parsePrivateData(byte[] data) {
@@ -144,62 +202,6 @@ public class PskMessageBinaryCodec implements PskMessageCodec {
 
   }
 
-  /**
-   * Reads data from the input stream until a line feed character ('\n') is found or the input
-   * stream is exhausted. Returns the data interpreted as a *UTF-8* string. Note that lines ending
-   * with '\n' or '\r\n' are treated the same, the trailing '\r' will be removed if present.
-   * 
-   * @return A UTF-8 encoded string read from the input stream.
-   */
-  private static String readLine(InputStream in) throws IOException {
-
-    boolean readCarriageReturn = false;
-
-    try (ByteArrayOutputStream bos = new ByteArrayOutputStream(256)) {
-      int byteValue = 0;
-      while ((byteValue = in.read()) != -1) {
-
-        if (byteValue == CR) {
-          // Found CR, don't write it unless the next char is NOT a LF
-          readCarriageReturn = true;
-          continue;
-        }
-
-        if (byteValue == LF) {
-          break;
-        } else {
-          if (readCarriageReturn) {
-            // Not end of the line but we read a CR previously so write it before the current byte
-            bos.write(CR);
-            readCarriageReturn = false;
-          }
-        }
-        bos.write(byteValue);
-      }
-
-      String line = bos.toString(StandardCharsets.UTF_8.name());
-
-      return line;
-    }
-  }
-
-  /**
-   * Consumes the remaining data in the stream, returning it as a byte array.
-   */
-  private static byte[] readRemainingBytes(InputStream in) throws IOException {
-    try (ByteArrayOutputStream out = new ByteArrayOutputStream(256)) {
-      /*
-       * copy the remaining data from the input stream to the output stream in blocks of 256 bytes
-       */
-      byte[] buffer = new byte[256];
-      int length;
-      while ((length = in.read(buffer)) != -1) {
-        out.write(buffer, 0, length);
-      }
-      return out.toByteArray();
-    }
-  }
-
   private PskMessage.Header parseHeader(String line) {
 
     int split = line.indexOf(":");
@@ -207,8 +209,10 @@ public class PskMessageBinaryCodec implements PskMessageCodec {
       throw new CodecException("Invalid Public Header [" + line + "]. Expected ':' separator.");
     }
 
-    final String name = line.substring(0, split).trim();
-    final String value = line.substring(split + 1).trim();
+    final String name = line.substring(0, split)
+        .trim();
+    final String value = line.substring(split + 1)
+        .trim();
 
     return new Header(name, value);
   }
@@ -224,9 +228,10 @@ public class PskMessageBinaryCodec implements PskMessageCodec {
   }
 
   /**
-   * Write the private headers and data from the message to a stream and return as a byte array.
-   * 
+   * Write the private headers and data of the message to a stream and return as a byte array.
+   *
    * @param message The decrypted PSK message
+   *
    * @return private headers and data encoded to bytes
    */
   public byte[] writePrivateData(PskMessage message) {

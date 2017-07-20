@@ -14,7 +14,16 @@ import java.util.stream.Collectors;
  */
 public interface PskMessage {
 
-  public static final String STATUS_LINE = "PSK/1.0";
+  String STATUS_LINE = "PSK/1.0";
+
+  /**
+   * Get the default builder.
+   *
+   * @return a {@link Builder} instance.
+   */
+  static Builder builder() {
+    return new Builder();
+  }
 
   /**
    * Returns a list of all public headers in the message. Note that all parties may view the public
@@ -26,6 +35,7 @@ public interface PskMessage {
    * Returns the all the <b>public</b> headers with the specified name.
    *
    * @param headerName The name of the header(s) to return
+   *
    * @return the <b>public</b> headers whose name matches the parameter, or an empty list.
    */
   List<Header> getPublicHeaders(String headerName);
@@ -43,20 +53,21 @@ public interface PskMessage {
    * the message has already been decrypted by the receiver.
    *
    * @param headerName The name of the header(s) to return
+   *
    * @return the <b>private</b> headers whose name matches the parameter, or an empty list.
    */
   List<Header> getPrivateHeaders(String headerName);
 
   /**
    * Get the encryption header.
-   * 
+   *
    * @return the type of encryption used
    */
   PskEncryptionHeader getEncryptionHeader();
 
   /**
    * Get the nonce header.
-   * 
+   *
    * @return the nonce header (or null if no nonce header is set)
    */
   PskNonceHeader getNonceHeader();
@@ -66,15 +77,6 @@ public interface PskMessage {
    * either the message is not encrypted, or has already been decrypted by the receiver.
    */
   byte[] getData();
-
-  /**
-   * Get the default builder.
-   * 
-   * @return a {@link Builder} instance.
-   */
-  public static Builder builder() {
-    return new Builder();
-  }
 
   public class Header {
 
@@ -102,7 +104,10 @@ public interface PskMessage {
 
     @Override
     public String toString() {
-      return new StringBuilder().append(name).append(":").append(value).toString();
+      return new StringBuilder().append(name)
+          .append(":")
+          .append(value)
+          .toString();
     }
 
     @Override
@@ -112,8 +117,10 @@ public interface PskMessage {
       }
 
       if (header instanceof Header) {
-        return ((Header) header).getName().equals(name)
-            && ((Header) header).getValue().equals(value);
+        return ((Header) header).getName()
+            .equals(name)
+            && ((Header) header).getValue()
+            .equals(value);
       }
 
       return false;
@@ -179,12 +186,14 @@ public interface PskMessage {
     public Builder addPublicHeader(final Header header) {
       Objects.requireNonNull(header, "Cannot add null header");
 
-      if (header.getName().equalsIgnoreCase(PskMessage.Header.WellKnown.NONCE)) {
+      if (header.getName()
+          .equalsIgnoreCase(PskMessage.Header.WellKnown.NONCE)) {
         if (this.nonceHeader != null) {
           throw new RuntimeException("Unable to add nonce header. Nonce is already defined.");
         }
         this.nonceHeader = PskNonceHeader.fromHeader(header);
-      } else if (header.getName().equalsIgnoreCase(PskMessage.Header.WellKnown.ENCRYPTION)) {
+      } else if (header.getName()
+          .equalsIgnoreCase(PskMessage.Header.WellKnown.ENCRYPTION)) {
         if (this.encryptionHeader != null) {
           throw new RuntimeException(
               "Unable to add encryption header. Encryption is already defined.");
@@ -201,7 +210,7 @@ public interface PskMessage {
      * Adds a header to the <b>public</b> portion of the PSK message. Note that public headers are
      * visible to all parties transmitting the message.
      *
-     * @param name The name of the header.
+     * @param name  The name of the header.
      * @param value The value associated with the header.
      */
     public Builder addPublicHeader(final String name, final String value) {
@@ -229,7 +238,7 @@ public interface PskMessage {
      * Adds a header to the <b>public</b> portion of the PSK message. Note that public headers are
      * visible to all parties transmitting the message. The method will replace
      *
-     * @param name The name of the header.
+     * @param name  The name of the header.
      * @param value The value associated with the header.
      */
     public Builder addPrivateHeader(final String name, final String value) {
@@ -244,21 +253,24 @@ public interface PskMessage {
     /**
      * Adds a public "Expires-At" header with the timestamp set to the current time plus the expiry
      * duration
-     * 
-     * @param expiry The amount of time from now to set the expiry
+     *
+     * @param expiry The amount of time of now to set the expiry
+     *
      * @return this.
      */
     public Builder expiry(TemporalAmount expiry) {
       Objects.requireNonNull(expiry);
-      addPrivateHeader(Header.WellKnown.EXPIRES_AT, OffsetDateTime.now().plus(expiry).toString());
+      addPrivateHeader(Header.WellKnown.EXPIRES_AT, OffsetDateTime.now()
+          .plus(expiry)
+          .toString());
       return this;
     }
 
     /**
-     * Adds a public "Expires-At" header with the timestamp set to the current time plus the expiry
-     * duration
-     * 
-     * @param expiry The amount of time from now to set the expiry
+     * Adds a public "Payment-Id" header with the given value.
+     *
+     * @param id The payment id to add asa public header
+     *
      * @return this.
      */
     public Builder paymentId(UUID id) {
@@ -281,11 +293,12 @@ public interface PskMessage {
     /**
      * Convenience method looks at the encryption header that has been added and determines if the
      * message uses encryption or not.
-     * 
+     *
      * <p>This is useful when using the builder during parsing of messages to determine if private
      * headers must be parsed or not.
-     * 
+     *
      * @return true if the message uses encryption
+     *
      * @throws a NullPointerException if the builder has had no encryption header added.
      */
     public boolean usesEncryption() {
@@ -342,7 +355,7 @@ public interface PskMessage {
           throw new RuntimeException("Can't build an encrypted message with private headers");
         }
         if (builder.data == null) {
-          data = new byte[] {};
+          data = new byte[]{};
         } else {
           data = Arrays.copyOf(builder.data, builder.data.length);
         }
@@ -356,7 +369,9 @@ public interface PskMessage {
 
       @Override
       public List<Header> getPublicHeaders(final String headerName) {
-        return publicHeaders.stream().filter(h -> h.getName().equalsIgnoreCase(headerName))
+        return publicHeaders.stream()
+            .filter(h -> h.getName()
+                .equalsIgnoreCase(headerName))
             .collect(Collectors.toList());
       }
 
@@ -367,7 +382,9 @@ public interface PskMessage {
 
       @Override
       public List<Header> getPrivateHeaders(String headerName) {
-        return privateHeaders.stream().filter(h -> h.getName().equalsIgnoreCase(headerName))
+        return privateHeaders.stream()
+            .filter(h -> h.getName()
+                .equalsIgnoreCase(headerName))
             .collect(Collectors.toList());
       }
 

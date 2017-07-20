@@ -13,6 +13,7 @@ import org.interledger.codecs.packettypes.QuoteBySourceAmountRequestPacketType;
 import org.interledger.codecs.packettypes.QuoteBySourceAmountResponsePacketType;
 import org.interledger.codecs.packettypes.QuoteLiquidityRequestPacketType;
 import org.interledger.codecs.packettypes.QuoteLiquidityResponsePacketType;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -40,7 +41,7 @@ public class PaymentPacketTypeTests {
    */
   @Parameters
   public static Collection<Object[]> data() {
-    return Arrays.asList(new Object[][] {
+    return Arrays.asList(new Object[][]{
         {new PaymentPacketType(), new PaymentPacketType()},
         {new QuoteByDestinationAmountRequestPacketType(),
             new QuoteByDestinationAmountRequestPacketType()},

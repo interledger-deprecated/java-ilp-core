@@ -34,6 +34,7 @@ import org.interledger.ilqp.QuoteByDestinationAmountResponse;
 import org.interledger.ilqp.QuoteBySourceAmountRequest;
 import org.interledger.ilqp.QuoteBySourceAmountResponse;
 import org.interledger.ilqp.QuoteLiquidityRequest;
+import org.interledger.ilqp.QuoteLiquidityResponse;
 import org.interledger.ipr.InterledgerPaymentRequest;
 import org.interledger.psk.PskMessage;
 

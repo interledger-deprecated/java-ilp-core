@@ -13,6 +13,7 @@ import org.interledger.ilp.InterledgerPayment;
 import org.interledger.psk.PskContext;
 import org.interledger.psk.PskEncryptionType;
 import org.interledger.psk.PskMessage;
+
 import org.junit.Test;
 
 import java.time.Duration;
@@ -20,25 +21,24 @@ import java.time.temporal.TemporalAmount;
 import java.util.UUID;
 
 /**
- * A test case that simulates the full payment flow
- *
+ * A test case that simulates the full payment flow.
  */
 public class InterledgerPaymentRequestEndToEndTest {
 
-  private static final byte[] SECRET = new byte[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5,
+  private static final byte[] SECRET = new byte[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5,
       6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1};
 
   @Test
   public final void test() {
 
-    /**** Step 1 - Build IPR at receiver ****/
+    /**** Step 1 - Build IPR at receiver. ****/
 
-    InterledgerAddress destinationAddress = InterledgerAddress.from("private.bob");
+    InterledgerAddress destinationAddress = InterledgerAddress.of("private.bob");
     long destinationAmount = 100L;
     TemporalAmount expiry = Duration.ofSeconds(60);
     UUID paymentId = UUID.randomUUID();
     String secretStuff = "SECRET";
-    byte[] data = new byte[] {0x01, 0x02, 0x03};
+    byte[] data = new byte[]{0x01, 0x02, 0x03};
 
     // Load codecs
     CodecContext receiverCodecContextBuildingIpr = CodecContextFactory.interledger();
@@ -55,8 +55,6 @@ public class InterledgerPaymentRequestEndToEndTest {
     byte[] encryptedPskMessageData =
         receiverCodecContextBuildingIpr.write(PskMessage.class, encryptedPskMessage);
 
-
-
     // Build ILP Payment Packet
     InterledgerPayment payment = InterledgerPayment.builder()
         .destinationAccount(receiverContextBuildingIpr.generateReceiverAddress(destinationAddress))
@@ -72,10 +70,10 @@ public class InterledgerPaymentRequestEndToEndTest {
     // Encode to send...
     byte[] encodedIpr = receiverCodecContextBuildingIpr.write(InterledgerPaymentRequest.class, ipr);
 
-    // Copy encrypted data from PSK message for testing against later
+    // Copy encrypted data of PSK message for testing against later
     byte[] encryptedData = encryptedPskMessage.getData();
 
-    /**** Step 2 - Parse IPR at Sender ****/
+    /**** Step 2 - Parse IPR at Sender. ****/
 
     // Load codecs
     CodecContext senderCodecContext = CodecContextFactory.interledger();
@@ -85,7 +83,6 @@ public class InterledgerPaymentRequestEndToEndTest {
         senderCodecContext.read(InterledgerPaymentRequest.class, encodedIpr);
 
     InterledgerPayment paymentToSend = decodedIpr.getInterledgerPayment();
-    Condition conditionToSend = decodedIpr.getCondition();
 
     // Decode PSK message
     PskMessage message = senderCodecContext.read(PskMessage.class, paymentToSend.getData());
@@ -97,11 +94,13 @@ public class InterledgerPaymentRequestEndToEndTest {
         message.getPublicHeaders(PskMessage.Header.WellKnown.PAYMENT_ID).get(0).getValue(),
         paymentId.toString());
 
+    Condition conditionToSend = decodedIpr.getCondition();
+
     // Encode Payment and Condition to send
     byte[] encodedPayment = senderCodecContext.write(InterledgerPayment.class, paymentToSend);
     byte[] encodedCondition = senderCodecContext.write(Condition.class, conditionToSend);
 
-    /**** Step 3 - Parse Payment at receiver ****/
+    /**** Step 3 - Parse Payment at receiver. ****/
 
     // Load codecs
     CodecContext receiverCodecContext = CodecContextFactory.interledger();
@@ -115,7 +114,7 @@ public class InterledgerPaymentRequestEndToEndTest {
 
     assertArrayEquals("Encrypted data has changed.", encryptedData, encryptedMessage.getData());
 
-    // Load PSK Context based on token extracted from address in payment packet
+    // Load PSK Context based on token extracted of address in payment packet
     PskContext receiverContext =
         PskContext.fromReceiverAddress(SECRET, decodedPayment.getDestinationAccount());
 

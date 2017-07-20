@@ -7,45 +7,45 @@ import java.util.Objects;
 
 /**
  * The fulfillment of a {@link Condition}.
- * 
+ *
  * <p>The standard for Interledger payments is for the fulfillment to be the pre-image of a SHA-256
  * hash (the condition).
- * 
+ *
  * <p>The fulfillment (pre-image) must be exactly 32 bytes.
  */
 public interface Fulfillment {
 
   /**
+   * Get the default builder.
+   *
+   * @return a {@link Builder} instance.
+   */
+  public static Builder builder() {
+    return new Builder();
+  }
+
+  /**
    * Get the raw pre-image (safe copy).
-   * 
+   *
    * @return 32 byte octet string
    */
   public byte[] getPreimage();
 
   /**
    * Get the {@link Condition} that is fulfilled by this Fulfillment.
-   * 
+   *
    * @return a condition representing the SHA-256 hash of this preimage.
    */
   public Condition getCondition();
 
   /**
    * Validate a given condition against this fulfillment.
-   * 
+   *
    * @param condition The condition to compare against.
-   * 
+   *
    * @return true if this fulfillment fulfills the given condition.
    */
   public boolean validate(Condition condition);
-
-  /**
-   * Get the default builder.
-   * 
-   * @return a {@link Builder} instance.
-   */
-  public static Builder builder() {
-    return new Builder();
-  }
 
   class Builder {
 
@@ -85,7 +85,9 @@ public interface Fulfillment {
         try {
           MessageDigest digest = MessageDigest.getInstance("SHA-256");
           byte[] hash = digest.digest(builder.preimage);
-          condition = Condition.builder().hash(hash).build();
+          condition = Condition.builder()
+              .hash(hash)
+              .build();
         } catch (NoSuchAlgorithmException e) {
           throw new RuntimeException(e);
         }

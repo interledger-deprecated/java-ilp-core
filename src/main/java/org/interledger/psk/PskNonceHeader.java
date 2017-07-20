@@ -17,13 +17,15 @@ public class PskNonceHeader extends PskMessage.Header {
   private byte[] nonce;
 
   private PskNonceHeader(final byte[] nonce) {
-    super(WellKnown.NONCE, Base64.getUrlEncoder().withoutPadding().encodeToString(nonce));
+    super(WellKnown.NONCE, Base64.getUrlEncoder()
+        .withoutPadding()
+        .encodeToString(nonce));
     this.nonce = Arrays.copyOf(nonce, nonce.length);
   }
 
   /**
    * Constructs an instance of the header with a randomly generated value.
-   * 
+   *
    * @return new nonce header
    */
   public static PskNonceHeader seed() {
@@ -62,7 +64,8 @@ public class PskNonceHeader extends PskMessage.Header {
   public static PskNonceHeader fromHeader(PskMessage.Header header) {
     Objects.requireNonNull(header);
     return fromNonce(
-        Arrays.copyOf(Base64.getUrlDecoder().decode(header.getValue()), NONCE_LEN_BYTES));
+        Arrays.copyOf(Base64.getUrlDecoder()
+            .decode(header.getValue()), NONCE_LEN_BYTES));
   }
 
 

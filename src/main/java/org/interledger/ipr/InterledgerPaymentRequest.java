@@ -9,14 +9,23 @@ import java.util.Objects;
  * An Interledger Payment Request as defined in ILP RFC 11.
  *
  * @see "https://github.com/interledger/rfcs/blob/master/0011-interledger-payment-request/0011
- *      -interledger-payment-request.md"
+ * -interledger-payment-request.md"
  */
 
 public interface InterledgerPaymentRequest {
 
   /**
+   * Get the default builder.
+   *
+   * @return a {@link Builder} instance.
+   */
+  public static Builder builder() {
+    return new Builder();
+  }
+
+  /**
    * Get the version of this IPR (this interface represents Version 2).
-   * 
+   *
    * @return The version of the IPR (currently 2)
    */
   default int getVersion() {
@@ -25,27 +34,17 @@ public interface InterledgerPaymentRequest {
 
   /**
    * The Interledger Payment being requested.
-   * 
+   *
    * @return an Interledger Payment.
    */
   InterledgerPayment getInterledgerPayment();
 
   /**
    * The {@link Condition} to use when sending the payment.
-   * 
+   *
    * @return a Condition
    */
   Condition getCondition();
-
-
-  /**
-   * Get the default builder.
-   * 
-   * @return a {@link Builder} instance.
-   */
-  public static Builder builder() {
-    return new Builder();
-  }
 
   public class Builder {
 
@@ -54,9 +53,9 @@ public interface InterledgerPaymentRequest {
 
     /**
      * Set the Interledger Payment packet for this IPR.
-     * 
+     *
      * @param interledgerPayment The Interledger Payment packet to use when building this IPR
-     * 
+     *
      * @return this builder
      */
     public Builder payment(InterledgerPayment interledgerPayment) {
@@ -66,9 +65,9 @@ public interface InterledgerPaymentRequest {
 
     /**
      * Set the Condition for this IPR.
-     * 
+     *
      * @param condition The {@link Condition} to use when building this IPR
-     * 
+     *
      * @return this builder
      */
     public Builder condition(Condition condition) {
@@ -78,13 +77,13 @@ public interface InterledgerPaymentRequest {
 
     /**
      * Get the IPR.
-     * 
+     *
      * <p>Calling this will result in the internal PSK message being built (and encrypted unless
      * encryption is disabled).
-     * 
+     *
      * <p>After the PSK message is built the ILP Packet is built and OER encoded before the
      * Condition is generated.
-     * 
+     *
      * @return an Interledger Payment Request.
      */
     public InterledgerPaymentRequest build() {
@@ -92,6 +91,7 @@ public interface InterledgerPaymentRequest {
     }
 
     private static final class Impl implements InterledgerPaymentRequest {
+
       private static int VERSION = 2;
 
       private InterledgerPayment packet;

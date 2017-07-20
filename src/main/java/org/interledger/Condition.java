@@ -5,42 +5,50 @@ import java.util.Objects;
 
 /**
  * The execution condition attached to all transfers in an Interledger payment.
- * 
+ *
  * <p>Interledger relies on conditional payments where each transfer that is part of a payment is
  * conditional upon the presentation of a fulfillment.
- * 
+ *
  * <p>The standard for conditions is to use the SHA-256 hash of a pre-image. The pre-image is
  * therefor the fulfillment of the condition.
- * 
+ *
  * @see Fulfillment
  */
 public interface Condition {
 
   /**
-   * Get the SHA-256 hash of this condition.
-   * 
-   * @return a {@code byte[]} of exactly 32 bytes
-   */
-  public byte[] getHash();
-
-  /**
    * Get the default builder.
-   * 
+   *
    * @return a {@link Builder} instance.
    */
   public static Builder builder() {
     return new Builder();
   }
 
+  /**
+   * Build a new Condition using the provided hash
+   *
+   * @param hash A SHA-256 hash representing a Condition.
+   *
+   * @return a {@link Builder} instance.
+   */
+  public static Condition of(byte[] hash) {
+    return new Builder().hash(hash)
+        .build();
+  }
+
+  /**
+   * Get the SHA-256 hash of this condition.
+   *
+   * @return a {@code byte[]} of exactly 32 bytes
+   */
+  public byte[] getHash();
+
   class Builder {
 
     private byte[] hash;
 
     public Builder hash(byte[] hash) {
-      Objects.requireNonNull(hash, "Hash must not be null!");
-      if (hash.length != 32) {
-        throw new IllegalArgumentException("Hash must be 32 bytes.");
-      }
       this.hash = Arrays.copyOf(hash, 32);
       return this;
 
@@ -51,7 +59,7 @@ public interface Condition {
     }
 
 
-    private static class Impl implements Condition {
+    private static final class Impl implements Condition {
 
       private final byte[] hash;
 

@@ -9,6 +9,7 @@ import org.interledger.codecs.Codec;
 import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.CodecContextFactory;
 import org.interledger.ilp.InterledgerPayment;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -44,13 +45,13 @@ public class InterledgerPaymentOerCodecTests {
       byteArrayOutputStream.write(i);
     }
 
-    return Arrays.asList(new Object[][] {{new InterledgerPayment.Builder()
+    return Arrays.asList(new Object[][]{{new InterledgerPayment.Builder()
         .destinationAccount(InterledgerAddress.builder().value("test3.foo").build())
-        .destinationAmount(100L).data(new byte[] {}).build()},
+        .destinationAmount(100L).data(new byte[]{}).build()},
 
         {new InterledgerPayment.Builder()
             .destinationAccount(InterledgerAddress.builder().value("test1.bar").build())
-            .destinationAmount(50L).data(new byte[] {1, 2, 3, 4, 5, 6, 7, 8}).build()},
+            .destinationAmount(50L).data(new byte[]{1, 2, 3, 4, 5, 6, 7, 8}).build()},
 
         {new InterledgerPayment.Builder()
             .destinationAccount(InterledgerAddress.builder().value("test1.bar").build())

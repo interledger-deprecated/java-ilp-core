@@ -20,16 +20,12 @@ public enum PskEncryptionType {
     this.name = name;
   }
 
-  @Override
-  public String toString() {
-    return name;
-  }
-
   /**
    * Convenience method to return the {@link PskEncryptionType} that matches the text description.
    *
    * @param description The text description of the encryption type, typically found in PSK message
-   *        headers.
+   *                    headers.
+   *
    * @return The matching {@link PskEncryptionType} if one can be found, otherwise null.
    */
   public static PskEncryptionType fromString(final String description) {
@@ -42,5 +38,10 @@ public enum PskEncryptionType {
     }
 
     return null;
+  }
+
+  @Override
+  public String toString() {
+    return name;
   }
 }

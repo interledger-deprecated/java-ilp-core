@@ -1,7 +1,6 @@
 package org.interledger.setup.spsp.model;
 
 import org.interledger.setup.model.Receiver;
-import org.interledger.setup.spsp.model.ReceiverType;
 
 import java.net.URI;
 

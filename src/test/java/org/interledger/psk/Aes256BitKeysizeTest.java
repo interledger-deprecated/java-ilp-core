@@ -6,7 +6,6 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -17,10 +16,10 @@ import javax.crypto.spec.SecretKeySpec;
 
 /**
  * Test that locally installed provider is working as expected.
- * 
+ *
  * <p>To use 256-bit AES keys you must have Java Cryptography Extension (JCE) Unlimited Strength
  * Jurisdiction Policy Files installed.
- * 
+ *
  * <p>@see <a
  * href="http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html">
  * http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html</a>

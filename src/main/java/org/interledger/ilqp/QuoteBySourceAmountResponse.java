@@ -20,8 +20,16 @@ public interface QuoteBySourceAmountResponse extends QuoteResponse {
    * A builder for constructing instances of {@link QuoteBySourceAmountResponse}.
    */
   class Builder {
+
     private long destinationAmount;
     private Duration sourceHoldDuration;
+
+    /**
+     * Constructs a new builder.
+     */
+    public static Builder builder() {
+      return new Builder();
+    }
 
     /**
      * Set the destination amount into this builder.
@@ -56,16 +64,10 @@ public interface QuoteBySourceAmountResponse extends QuoteResponse {
     }
 
     /**
-     * Constructs a new builder.
-     */
-    public static Builder builder() {
-      return new Builder();
-    }
-
-    /**
      * A private, immutable implementation of {@link QuoteBySourceAmountResponse}.
      */
     private static class Impl implements QuoteBySourceAmountResponse {
+
       private final Duration sourceHoldDuration;
       private long destinationAmount;
 
@@ -124,8 +126,10 @@ public interface QuoteBySourceAmountResponse extends QuoteResponse {
       @Override
       public String toString() {
         final StringBuilder sb = new StringBuilder("Impl{");
-        sb.append("destinationAmount=").append(destinationAmount);
-        sb.append(", sourceHoldDuration=").append(sourceHoldDuration);
+        sb.append("destinationAmount=")
+            .append(destinationAmount);
+        sb.append(", sourceHoldDuration=")
+            .append(sourceHoldDuration);
         sb.append('}');
         return sb.toString();
       }

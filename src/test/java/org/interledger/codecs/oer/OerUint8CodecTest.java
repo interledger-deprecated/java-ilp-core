@@ -5,13 +5,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.oer.OerUint8Codec.OerUint8;
+
+import com.google.common.io.BaseEncoding;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
-
-import com.google.common.io.BaseEncoding;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -27,13 +27,27 @@ public class OerUint8CodecTest {
 
   private CodecContext codecContext;
   private OerUint8Codec oerUint8Codec;
+  private int inputValue;
+  private byte[] asn1OerBytes;
+
+  /**
+   * Construct an instance of this parameterized test with the supplied inputs.
+   *
+   * @param inputValue   A {@code int} representing the unsigned 8bit integer to write in OER
+   *                     encoding.
+   * @param asn1OerBytes The expected value, in binary, of the supplied {@code intValue}.
+   */
+  public OerUint8CodecTest(final int inputValue, final byte[] asn1OerBytes) {
+    this.inputValue = inputValue;
+    this.asn1OerBytes = asn1OerBytes;
+  }
 
   /**
    * The data for this test...
    */
   @Parameters
   public static Collection<Object[]> data() {
-    return Arrays.asList(new Object[][] {
+    return Arrays.asList(new Object[][]{
         // Input Value as a int; Expected byte[] in ASN.1
         // 0
         {0, BaseEncoding.base16().decode("00")},
@@ -49,22 +63,6 @@ public class OerUint8CodecTest {
         {254, BaseEncoding.base16().decode("FE")},
         // 6
         {255, BaseEncoding.base16().decode("FF")},});
-  }
-
-  private int inputValue;
-
-  private byte[] asn1OerBytes;
-
-  /**
-   * Construct an instance of this parameterized test with the supplied inputs.
-   *
-   * @param inputValue A {@code int} representing the unsigned 8bit integer to write in OER
-   *        encoding.
-   * @param asn1OerBytes The expected value, in binary, of the supplied {@code intValue}.
-   */
-  public OerUint8CodecTest(final int inputValue, final byte[] asn1OerBytes) {
-    this.inputValue = inputValue;
-    this.asn1OerBytes = asn1OerBytes;
   }
 
   /**

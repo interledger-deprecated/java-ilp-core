@@ -6,13 +6,13 @@ import static org.junit.Assert.assertArrayEquals;
 
 import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.oer.OerLengthPrefixCodec.OerLengthPrefix;
+
+import com.google.common.io.BaseEncoding;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
-
-import com.google.common.io.BaseEncoding;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -27,13 +27,28 @@ public class OerLengthPrefixCodecTest {
 
   private CodecContext codecContext;
   private OerLengthPrefixCodec oerLengthPrefixCodec;
+  private int expectedPayloadLength;
+  private byte[] asn1OerBytes;
+
+  /**
+   * Construct an instance of this parameterized test with the supplied inputs.
+   *
+   * @param expectedPayloadLength An integer representing the length of a payload that should be
+   *                              encoded as a length-prefix.
+   * @param asn1OerBytes          The expected value, in binary, of the supplied {@code
+   *                              expectedPayloadLength}.
+   */
+  public OerLengthPrefixCodecTest(final int expectedPayloadLength, final byte[] asn1OerBytes) {
+    this.expectedPayloadLength = expectedPayloadLength;
+    this.asn1OerBytes = asn1OerBytes;
+  }
 
   /**
    * The data for this test...
    */
   @Parameters
   public static Collection<Object[]> data() {
-    return Arrays.asList(new Object[][] {
+    return Arrays.asList(new Object[][]{
         // [input_value][num_octets_written][byte_values]
         // 0
         {0, BaseEncoding.base16().decode("00")},
@@ -65,23 +80,6 @@ public class OerLengthPrefixCodecTest {
 
         // 11 (First number that can be encoded in 4 value octets).
         {Integer.MAX_VALUE, BaseEncoding.base16().decode("847FFFFFFF")},});
-  }
-
-  private int expectedPayloadLength;
-
-  private byte[] asn1OerBytes;
-
-  /**
-   * Construct an instance of this parameterized test with the supplied inputs.
-   *
-   * @param expectedPayloadLength An integer representing the length of a payload that should be
-   *        encoded as a length-prefix.
-   * @param asn1OerBytes The expected value, in binary, of the supplied {@code
-   *                              expectedPayloadLength}.
-   */
-  public OerLengthPrefixCodecTest(final int expectedPayloadLength, final byte[] asn1OerBytes) {
-    this.expectedPayloadLength = expectedPayloadLength;
-    this.asn1OerBytes = asn1OerBytes;
   }
 
   /**

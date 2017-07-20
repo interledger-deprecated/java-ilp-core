@@ -21,7 +21,7 @@ public class StreamReader {
 
   /**
    * Constructs a new instance of the reader.
-   * 
+   *
    * @param in The input stream to read data from.
    */
   public StreamReader(InputStream in) {
@@ -33,7 +33,7 @@ public class StreamReader {
    * Reads data from the input stream until a line feed character ('\n') is found or the input
    * stream is exhausted. Returns the data interpreted as a *UTF-8* string. Note that lines ending
    * with '\n' or '\r\n' are treated the same, the trailing '\r' will be removed if present.
-   * 
+   *
    * @return A UTF-8 encoded string read from the input stream.
    */
   public String readLine() throws IOException {
@@ -76,7 +76,7 @@ public class StreamReader {
 
   /**
    * Consumes the remaining data in the input stream, writing it to the output stream.
-   * 
+   *
    * @param out The output stream to write to.
    */
   public void readRemainingBytes(OutputStream out) throws IOException {

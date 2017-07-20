@@ -18,6 +18,11 @@ public class InterledgerAddressSchemeTest {
 
   private static final String EXPECTED_ERROR_MESSAGE =
       "Invalid characters in address.  Reference Interledger RFC-15 for proper format.";
+  private final String scheme;
+
+  public InterledgerAddressSchemeTest(final String scheme) {
+    this.scheme = scheme;
+  }
 
   /**
    * Generates an {@link Iterable} of arrays containing Strings that will be passed to each of the
@@ -25,14 +30,8 @@ public class InterledgerAddressSchemeTest {
    */
   @Parameters(name = "{index}: scheme({0})")
   public static Iterable<Object[]> schemes() {
-    return Arrays.asList(new Object[][] {{"g"}, {"private"}, {"example"}, {"peer"}, {"self"},
+    return Arrays.asList(new Object[][]{{"g"}, {"private"}, {"example"}, {"peer"}, {"self"},
         {"test1"}, {"test2"}, {"test3"}});
-  }
-
-  private final String scheme;
-
-  public InterledgerAddressSchemeTest(final String scheme) {
-    this.scheme = scheme;
   }
 
   /**

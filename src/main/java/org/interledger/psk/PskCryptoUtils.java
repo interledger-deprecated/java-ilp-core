@@ -5,7 +5,6 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Objects;
-
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -35,18 +34,20 @@ public class PskCryptoUtils {
   /**
    * Encrypts a block of data using the encryption scheme specific in the PSK RFC and returns the
    * encrypted data and the authentication.
-   * 
+   *
    * <p>NOTE: May throw an InvalidKeyExcpetion if the Java Cryptography Extension (JCE) Unlimited
    * Strength Jurisdiction Policy Files are not installed.
-   * 
+   *
    * <p>@see <a
    * href="http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html">
    * http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html</a>
-   * 
-   * @param key The AES encryption key.
+   *
+   * @param key   The AES encryption key.
    * @param nonce The 16 byte nonce to use as an IV.
-   * @param data The data to encrypt.
+   * @param data  The data to encrypt.
+   *
    * @return The encrypted data and its accompanying GCM authentication tag.
+   *
    * @throws Exception if there is an error encrypting the data
    */
   public static AesGcmEncryptResult encryptPskData(SecretKey key, byte[] nonce, byte[] data) {
@@ -75,7 +76,7 @@ public class PskCryptoUtils {
           encryptOutput.length - AUTH_TAG_LEN_BYTES, encryptOutput.length);
 
       /*
-       * remove the auth tag from the encrypted data, since other implementations probably wont
+       * remove the auth tag of the encrypted data, since other implementations probably wont
        * understand proprietary java weirdness..
        */
       final byte[] encryptedData =
@@ -95,21 +96,22 @@ public class PskCryptoUtils {
       };
     } catch (BadPaddingException | NoSuchAlgorithmException | NoSuchPaddingException
         | InvalidAlgorithmParameterException | IllegalBlockSizeException e) {
-      throw new RuntimeException("Error encrypting data from PSK message.", e);
+      throw new RuntimeException("Error encrypting data of PSK message.", e);
     } catch (InvalidKeyException e) {
-      throw new RuntimeException("Error encrypting data from PSK message. "
+      throw new RuntimeException("Error encrypting data of PSK message. "
           + "Ensure Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files "
           + "are installed to allow for 256-bit AES keys.", e);
     }
   }
 
   /**
-   * Decrypts an encrypted data block from a PSK message, according to the rules in the PSK RFC.
-   * 
-   * @param key The AES encryption key.
-   * @param authTag The 16 byte auth tag to verify.
-   * @param nonce The 16 byte nonce to use as an IV.
+   * Decrypts an encrypted data block of a PSK message, according to the rules in the PSK RFC.
+   *
+   * @param key           The AES encryption key.
+   * @param authTag       The 16 byte auth tag to verify.
+   * @param nonce         The 16 byte nonce to use as an IV.
    * @param encryptedData The data to decrypt.
+   *
    * @return The decrypted data.
    */
   public static byte[] decryptPskData(SecretKey key, byte[] authTag, byte[] nonce,
@@ -140,9 +142,9 @@ public class PskCryptoUtils {
       return cipher.doFinal(authTag);
     } catch (InvalidAlgorithmParameterException | NoSuchPaddingException | IllegalBlockSizeException
         | BadPaddingException | NoSuchAlgorithmException e) {
-      throw new RuntimeException("Error decrypting data from PSK message.", e);
+      throw new RuntimeException("Error decrypting data of PSK message.", e);
     } catch (InvalidKeyException e) {
-      throw new RuntimeException("Error decrypting data from PSK message. "
+      throw new RuntimeException("Error decrypting data of PSK message. "
           + "Ensure Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files "
           + "are installed to allow for 256-bit AES keys.", e);
     }
@@ -150,6 +152,7 @@ public class PskCryptoUtils {
   }
 
   public interface AesGcmEncryptResult {
+
     byte[] getEncryptedData();
 
     byte[] getAuthenticationTag();

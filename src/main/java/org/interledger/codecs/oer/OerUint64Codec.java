@@ -11,7 +11,7 @@ import java.math.BigInteger;
 import java.util.Objects;
 
 /**
- * <p>An extension of {@link Codec} for reading and writing an ASN.1 OER 64-Bit unsigned integer 
+ * <p>An extension of {@link Codec} for reading and writing an ASN.1 OER 64-Bit unsigned integer
  * type as defined by the Interledger ASN.1 definitions.</p>
  * <p>All Interledger ASN.1 integer types are encoded as fixed-size, non-extensible numbers. Thus,
  * for a UInt64 type, the integer value is encoded as an unsigned binary integer in 8 octets, and
@@ -24,9 +24,10 @@ public class OerUint64Codec implements Codec<OerUint64> {
    * upper bound is not greater than 18446744073709551615 and the constraint is not extensible, the
    * integer value is encoded as an unsigned binary integer in eight octets.
    *
-   * @param context An instance of {@link CodecContext}.
+   * @param context     An instance of {@link CodecContext}.
    * @param inputStream An instance of @link InputStream}.
-   * @throws IOException If there is a problem writing to the {@code stream}.
+   *
+   * @throws IOException              If there is a problem writing to the {@code stream}.
    * @throws IllegalArgumentException If the input has a value greater than 18446744073709551615.
    */
   @Override
@@ -37,11 +38,11 @@ public class OerUint64Codec implements Codec<OerUint64> {
 
     byte[] value = new byte[8];
     int read = inputStream.read(value);
-    
+
     if (read != 8) {
       throw new IOException("unexpected end of stream. expected 8 bytes, read " + read);
     }
-    
+
     return new OerUint64(new BigInteger(1, value));
   }
 
@@ -50,10 +51,11 @@ public class OerUint64Codec implements Codec<OerUint64> {
    * upper bound is not greater than 18446744073709551615 and the constraint is not extensible, the
    * integer value is encoded as an unsigned binary integer in eight octets.
    *
-   * @param context An instance of {@link CodecContext}.
-   * @param instance An instance of {@link OerUint64}.
+   * @param context      An instance of {@link CodecContext}.
+   * @param instance     An instance of {@link OerUint64}.
    * @param outputStream An instance of {@link OutputStream}.
-   * @throws IOException If there is a problem writing to the {@code stream}.
+   *
+   * @throws IOException              If there is a problem writing to the {@code stream}.
    * @throws IllegalArgumentException If the input has a value greater than 18446744073709551615.
    */
   @Override
@@ -64,8 +66,8 @@ public class OerUint64Codec implements Codec<OerUint64> {
     Objects.requireNonNull(instance);
     Objects.requireNonNull(outputStream);
 
-    
-    byte[] value = instance.getValue().toByteArray();
+    byte[] value = instance.getValue()
+        .toByteArray();
     
     /* BigInteger's toByteArray writes data in two's complement, so positive values requiring 64
      * bits will include a leading byte set to 0 which we don't want. */
@@ -91,15 +93,16 @@ public class OerUint64Codec implements Codec<OerUint64> {
 
     /**
      * Constructs an OerUint64 instance.
-     * 
+     *
      * @param value The value to read or write as an OER 64-bit int value.
+     *
      * @deprecated OER Uint64 supports values beyond the range of Java long primitives
      */
-    @Deprecated 
+    @Deprecated
     public OerUint64(final long value) {
       this.value = new BigInteger(Long.toString(value));
     }
-    
+
     public OerUint64(final BigInteger value) {
       this.value = value;
     }
@@ -130,7 +133,8 @@ public class OerUint64Codec implements Codec<OerUint64> {
     @Override
     public String toString() {
       final StringBuilder sb = new StringBuilder("OerUint64{");
-      sb.append("value=").append(value);
+      sb.append("value=")
+          .append(value);
       sb.append('}');
       return sb.toString();
     }

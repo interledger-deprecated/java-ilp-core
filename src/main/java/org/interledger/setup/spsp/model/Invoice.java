@@ -1,7 +1,6 @@
 package org.interledger.setup.spsp.model;
 
 import java.net.URI;
-
 import javax.money.MonetaryAmount;
 
 /**

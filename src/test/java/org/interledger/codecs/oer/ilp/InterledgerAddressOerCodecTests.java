@@ -6,6 +6,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import org.interledger.InterledgerAddress;
 import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.CodecContextFactory;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -44,7 +45,7 @@ public class InterledgerAddressOerCodecTests {
    */
   @Parameters
   public static Collection<Object[]> data() {
-    return Arrays.asList(new Object[][] {{InterledgerAddress.builder().value("test1.").build()},
+    return Arrays.asList(new Object[][]{{InterledgerAddress.builder().value("test1.").build()},
         {InterledgerAddress.builder().value("test3.foo").build()},
         {InterledgerAddress.builder().value("test2.foo").build()},
         {InterledgerAddress.builder().value("test1.foo").build()},

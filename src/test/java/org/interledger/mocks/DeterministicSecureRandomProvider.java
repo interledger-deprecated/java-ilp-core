@@ -7,7 +7,6 @@ import java.security.Security;
 
 /**
  * A PRNG that always returns a deterministic outcome for use in testing.
- *
  */
 public class DeterministicSecureRandomProvider extends Provider {
 
@@ -28,7 +27,7 @@ public class DeterministicSecureRandomProvider extends Provider {
 
   /**
    * Set this provider as the default PRNG provider.
-   * 
+   *
    * @param seed The seed to use for any calls to the provider
    */
   public static void setAsDefault(byte[] seed) {

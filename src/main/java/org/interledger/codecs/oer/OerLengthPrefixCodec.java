@@ -44,12 +44,12 @@ public class OerLengthPrefixCodec implements Codec<OerLengthPrefix> {
       // Convert the bytes into an integer...
       byte[] ba = new byte[lengthOfLength];
       int read = inputStream.read(ba, 0, lengthOfLength);
-      
+
       if (read != lengthOfLength) {
         throw new IOException(
             "error reading " + lengthOfLength + " bytes from stream, only read " + read);
       }
-      
+
       numEncodedOctets = toInt(ba);
     }
 
@@ -125,15 +125,19 @@ public class OerLengthPrefixCodec implements Codec<OerLengthPrefix> {
         return (bytes[0] << 0) & 0x000000ff;
       }
       case 2: {
-        return (bytes[0] << 8) & 0x0000ff00 | (bytes[1] << 0) & 0x000000ff;
+        return (bytes[0] << 8) & 0x0000ff00
+            | (bytes[1] << 0) & 0x000000ff;
       }
       case 3: {
-        return (bytes[0] << 16) & 0x00ff0000 | (bytes[1] << 8) & 0x0000ff00
+        return (bytes[0] << 16) & 0x00ff0000
+            | (bytes[1] << 8) & 0x0000ff00
             | (bytes[2] << 0) & 0x000000ff;
       }
       case 4: {
-        return (bytes[0] << 24) & 0xff000000 | (bytes[1] << 16) & 0x00ff0000
-            | (bytes[2] << 8) & 0x0000ff00 | (bytes[3] << 0) & 0x000000ff;
+        return (bytes[0] << 24) & 0xff000000
+            | (bytes[1] << 16) & 0x00ff0000
+            | (bytes[2] << 8) & 0x0000ff00
+            | (bytes[3] << 0) & 0x000000ff;
       }
       default: {
         throw new RuntimeException("This method only supports arrays up to length 4!");
@@ -180,7 +184,8 @@ public class OerLengthPrefixCodec implements Codec<OerLengthPrefix> {
     @Override
     public String toString() {
       final StringBuilder sb = new StringBuilder("LengthPrefix{");
-      sb.append("length=").append(length);
+      sb.append("length=")
+          .append(length);
       sb.append('}');
       return sb.toString();
     }

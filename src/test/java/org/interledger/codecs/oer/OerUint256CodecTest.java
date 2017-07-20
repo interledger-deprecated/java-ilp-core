@@ -5,6 +5,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.oer.OerUint256Codec.OerUint256;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,38 +27,36 @@ public class OerUint256CodecTest {
 
   private CodecContext codecContext;
   private OerUint256Codec oerUint256Codec;
+  private byte[] inputValue;
+  private byte[] asn1OerBytes;
+
+  /**
+   * Construct an instance of this parameterized test with the supplied inputs.
+   *
+   * @param inputValue   A {@code byte[]} representing the unsigned 256bit integer to write in OER
+   *                     encoding.
+   * @param asn1OerBytes The expected value, in binary, of the supplied {@code intValue}.
+   */
+  public OerUint256CodecTest(final byte[] inputValue, final byte[] asn1OerBytes) {
+    this.inputValue = inputValue;
+    this.asn1OerBytes = asn1OerBytes;
+  }
 
   /**
    * The data for this test...
    */
   @Parameters
   public static Collection<Object[]> data() {
-    return Arrays.asList(new Object[][] {
+    return Arrays.asList(new Object[][]{
         // Input Value as a byte[]; Expected same byte[] in ASN.1
-        {new byte[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        {new byte[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0},
-            new byte[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            new byte[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0}},
-        {new byte[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6,
+        {new byte[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6,
             7, 8, 9, 0, 1, 2},
-            new byte[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5,
+            new byte[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5,
                 6, 7, 8, 9, 0, 1, 2}},});
-  }
-
-  private byte[] inputValue;
-
-  private byte[] asn1OerBytes;
-
-  /**
-   * Construct an instance of this parameterized test with the supplied inputs.
-   *
-   * @param inputValue A {@code byte[]} representing the unsigned 256bit integer to write in OER
-   *        encoding.
-   * @param asn1OerBytes The expected value, in binary, of the supplied {@code intValue}.
-   */
-  public OerUint256CodecTest(final byte[] inputValue, final byte[] asn1OerBytes) {
-    this.inputValue = inputValue;
-    this.asn1OerBytes = asn1OerBytes;
   }
 
   /**

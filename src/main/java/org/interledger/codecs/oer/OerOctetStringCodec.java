@@ -28,7 +28,8 @@ public class OerOctetStringCodec implements Codec<OerOctetString> {
     Objects.requireNonNull(inputStream);
 
     // Detect the length of the encoded OctetString...
-    final int lengthPrefix = context.read(OerLengthPrefix.class, inputStream).getLength();
+    final int lengthPrefix = context.read(OerLengthPrefix.class, inputStream)
+        .getLength();
 
     final byte[] returnable = new byte[lengthPrefix];
     inputStream.read(returnable);
@@ -90,7 +91,8 @@ public class OerOctetStringCodec implements Codec<OerOctetString> {
     @Override
     public String toString() {
       final StringBuilder sb = new StringBuilder("OctetString{");
-      sb.append("value=").append(Arrays.toString(value));
+      sb.append("value=")
+          .append(Arrays.toString(value));
       sb.append('}');
       return sb.toString();
     }

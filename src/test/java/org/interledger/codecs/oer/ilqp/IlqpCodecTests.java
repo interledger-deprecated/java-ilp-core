@@ -13,6 +13,7 @@ import org.interledger.ilqp.QuoteByDestinationAmountResponse;
 import org.interledger.ilqp.QuoteBySourceAmountRequest;
 import org.interledger.ilqp.QuoteBySourceAmountResponse;
 import org.interledger.ilqp.QuoteLiquidityRequest;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -38,24 +39,24 @@ public class IlqpCodecTests {
    */
   @Parameters
   public static Object[] data() {
-    return new Object[] {
+    return new Object[]{
         new QuoteBySourceAmountRequest.Builder()
-            .destinationAccount(InterledgerAddress.from("test1.foo"))
+            .destinationAccount(InterledgerAddress.of("test1.foo"))
             .sourceAmount(100)
             .destinationHoldDuration(Duration.ofSeconds(30)).build(),
         new QuoteBySourceAmountResponse.Builder()
             .destinationAmount(95)
             .sourceHoldDuration(Duration.ofSeconds(30)).build(),
         new QuoteByDestinationAmountRequest.Builder()
-            .destinationAccount(InterledgerAddress.from("test2.foo"))
+            .destinationAccount(InterledgerAddress.of("test2.foo"))
             .destinationAmount(100)
             .destinationHoldDuration(Duration.ofSeconds(35)).build(),
         new QuoteByDestinationAmountResponse.Builder()
             .sourceAmount(105)
             .sourceHoldDuration(Duration.ofMinutes(1)).build(),
         new QuoteLiquidityRequest.Builder()
-        .destinationAccount(InterledgerAddress.from("test3.foo"))
-        .destinationHoldDuration(Duration.ofMinutes(5)).build()};
+            .destinationAccount(InterledgerAddress.of("test3.foo"))
+            .destinationHoldDuration(Duration.ofMinutes(5)).build()};
   }
 
   @Test

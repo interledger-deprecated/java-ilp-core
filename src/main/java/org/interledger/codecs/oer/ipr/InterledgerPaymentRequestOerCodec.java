@@ -25,7 +25,8 @@ public class InterledgerPaymentRequestOerCodec implements InterledgerPaymentRequ
     Objects.requireNonNull(context);
     Objects.requireNonNull(inputStream);
 
-    final int version = context.read(OerUint8.class, inputStream).getValue();
+    final int version = context.read(OerUint8.class, inputStream)
+        .getValue();
 
     if (version != 2) {
       throw new RuntimeException("Unknown IPR version: " + version);
@@ -34,7 +35,10 @@ public class InterledgerPaymentRequestOerCodec implements InterledgerPaymentRequ
     final InterledgerPayment packet = context.read(InterledgerPayment.class, inputStream);
     final Condition condition = context.read(Condition.class, inputStream);
 
-    return InterledgerPaymentRequest.builder().payment(packet).condition(condition).build();
+    return InterledgerPaymentRequest.builder()
+        .payment(packet)
+        .condition(condition)
+        .build();
   }
 
   @Override

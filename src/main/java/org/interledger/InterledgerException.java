@@ -17,7 +17,7 @@ public class InterledgerException extends RuntimeException {
    * Required-args constructor.
    *
    * @param interledgerError An instance of {@link InterledgerError} that is the underlying error
-   *        encapsulated by this exception.
+   *                         encapsulated by this exception.
    */
   public InterledgerException(final InterledgerError interledgerError) {
     super();

@@ -30,6 +30,7 @@ public interface InterledgerPacket {
      * type, apply some business logic, and optionally return a value in response.
      *
      * @param packet An instance of {@link InterledgerPacket}.
+     *
      * @return An instance of type {@link R}, in response to the suppllied input.
      */
     R execute(InterledgerPacket packet);
@@ -37,13 +38,13 @@ public interface InterledgerPacket {
     /**
      * A handler for allowing callers to specify logic based upon an unknown result type. This class
      * can be used in the following manner:
-     * 
+     *
      * <pre>
      * <code>
      *
      * final InterledgerPacket decodedPacket = context.read(asn1OerPaymentBytes);
      * final String stringValue = new AbstractHandler&lt;String&gt;() {
-     *   protected String handle(final InterledgerPayment ipr) {
+     *   protected String handle(final InterledgerPayment interledgerPacket) {
      *      // ... do handling here.
      *      return interledgerPacket.toString();
      *   }
@@ -60,7 +61,8 @@ public interface InterledgerPacket {
       /**
        * Handle an instance of {@link InterledgerPayment}.
        *
-       * @param ipr An instance of {@link InterledgerPayment}.
+       * @param interledgerPayment An instance of {@link InterledgerPayment}.
+       *
        * @return An instance of type {@link R}, in response to the supplied input.
        */
       protected abstract R handle(final InterledgerPayment interledgerPayment);
@@ -69,6 +71,7 @@ public interface InterledgerPacket {
        * Handle an instance of {@link QuoteLiquidityRequest}.
        *
        * @param quoteLiquidityRequest An instance of {@link QuoteLiquidityRequest}.
+       *
        * @return An instance of type {@link R}, in response to the supplied input.
        */
       protected abstract R handle(final QuoteLiquidityRequest quoteLiquidityRequest);
@@ -77,6 +80,7 @@ public interface InterledgerPacket {
        * Handle an instance of {@link QuoteLiquidityResponse}.
        *
        * @param quoteLiquidityResponse An instance of {@link QuoteLiquidityResponse}.
+       *
        * @return An instance of type {@link R}, in response to the supplied input.
        */
       protected abstract R handle(final QuoteLiquidityResponse quoteLiquidityResponse);
@@ -88,6 +92,7 @@ public interface InterledgerPacket {
        * type, apply some business logic, and optionally return a value in response.
        *
        * @param packet An instance of {@link InterledgerPacket}.
+       *
        * @return An instance of type {@link R}, in response to the suppllied input.
        */
       @Override
@@ -155,12 +160,12 @@ public interface InterledgerPacket {
      * An abstract implementation of {@link VoidHandler} for allowing callers to specify logic based
      * upon an unknown result type extending {@link InterledgerPacket}. This class can be used in
      * the following manner:
-     * 
+     *
      * <pre>
      * <code>
      * final InterledgerPacket decodedPacket = context.read(asn1OerPaymentBytes);
      * new AbstractVoidHandler() {
-     *   protected void handle(final InterledgerPayment ipr) {
+     *   protected void handle(final InterledgerPayment interledgerPayment) {
      *      // ... do handling here.
      *   }
      * }.execute(decodedPacket); // be sure to call .execute!
@@ -172,7 +177,7 @@ public interface InterledgerPacket {
       /**
        * Handle an instance of {@link InterledgerPayment}.
        *
-       * @param ipr An instance of {@link InterledgerPayment}.
+       * @param interledgerPayment An instance of {@link InterledgerPayment}.
        */
       protected abstract void handle(final InterledgerPayment interledgerPayment);
 

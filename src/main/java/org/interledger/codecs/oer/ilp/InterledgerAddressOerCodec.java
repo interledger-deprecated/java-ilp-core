@@ -21,8 +21,9 @@ public class InterledgerAddressOerCodec implements InterledgerAddressCodec {
       throws IOException {
     Objects.requireNonNull(context);
     Objects.requireNonNull(inputStream);
-    final String value = context.read(OerIA5String.class, inputStream).getValue();
-    return InterledgerAddress.builder().value(value).build();
+    final String value = context.read(OerIA5String.class, inputStream)
+        .getValue();
+    return InterledgerAddress.of(value);
   }
 
   @Override

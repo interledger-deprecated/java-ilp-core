@@ -47,17 +47,20 @@ public class InterledgerPaymentOerCodec implements InterledgerPaymentCodec {
 
     // 3. Read the destinationAmount, which is a UInt64.
     /* NOTE: we don't expect amounts to exceed 2^63 - 1, so we risk the conversion to long */
-    long destinationAmount = context.read(OerUint64.class, inputStream).getValue().longValue();
+    long destinationAmount = context.read(OerUint64.class, inputStream)
+        .getValue()
+        .longValue();
 
     // 4. Read the Interledger Address.
     final InterledgerAddress destinationAccount =
         context.read(InterledgerAddress.class, inputStream);
 
     // 5. Read the data portion of the packet.
-    final byte[] data = context.read(OerOctetString.class, inputStream).getValue();
+    final byte[] data = context.read(OerOctetString.class, inputStream)
+        .getValue();
 
     return InterledgerPayment.builder()
-        .destinationAmount(destinationAmount) 
+        .destinationAmount(destinationAmount)
         .destinationAccount(destinationAccount)
         .data(data)
         .build();
