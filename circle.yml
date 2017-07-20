@@ -9,12 +9,6 @@ machine:
     - sudo mv -f /tmp/UnlimitedJCEPolicyJDK8/US_export_policy.jar $JAVA_HOME/jre/lib/security/US_export_policy.jar
     - sudo mv -f /tmp/UnlimitedJCEPolicyJDK8/local_policy.jar $JAVA_HOME/jre/lib/security/local_policy.jar
 
-dependencies:
-  pre:
-    # we rely on the source of several other ILP projects for now. 
-    # TODO: once we reach a release milestone, swap this for dependecies on published jars
-    - cd .. && git clone https://github.com/interledger/java-crypto-conditions
-
 test:
   post:
     # run the checkstyle checks

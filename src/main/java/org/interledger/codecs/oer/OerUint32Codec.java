@@ -3,6 +3,7 @@ package org.interledger.codecs.oer;
 import org.interledger.codecs.Codec;
 import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.oer.OerUint32Codec.OerUint32;
+import org.interledger.codecs.oer.OerUint64Codec.OerUint64;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,9 +24,9 @@ public class OerUint32Codec implements Codec<OerUint32> {
    * upper bound is not greater than 4294967295 and the constraint is not extensible,
    * the integer value is encoded as an unsigned binary integer in four octets.
    *
-   * @param context     An instance of {@link CodecContext}.
+   * @param context An instance of {@link CodecContext}.
    * @param inputStream An instance of @link InputStream}.
-   * @throws IOException              If there is a problem writing to the {@code stream}.
+   * @throws IOException If there is a problem writing to the {@code stream}.
    * @throws IllegalArgumentException If the input has a value greater than 4294967295.
    */
   @Override
@@ -67,7 +68,7 @@ public class OerUint32Codec implements Codec<OerUint32> {
           "Interledger Uint32 only supports values from 0 to 4294967295, value "
               + instance.getValue() + " is out of range.");
     }
-    
+
     long value = instance.getValue();
     for (int i = 3; i >= 0; i--) {
       byte octet = ((byte) ((value >> (Byte.SIZE * i)) & 0xFF));
