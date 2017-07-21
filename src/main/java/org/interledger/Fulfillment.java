@@ -20,8 +20,21 @@ public interface Fulfillment {
    *
    * @return a {@link Builder} instance.
    */
-  public static Builder builder() {
+  static Builder builder() {
     return new Builder();
+  }
+
+  /**
+   * Build a new Fulfillment using the provided preimage.
+   *
+   * @param preimage The preimage representing the fulfillment
+   *
+   * @return a  {@link Fulfillment} instance
+   */
+  static Fulfillment of(final byte[] preimage) {
+    return Fulfillment.builder()
+        .preimage(preimage)
+        .build();
   }
 
   /**
@@ -29,14 +42,14 @@ public interface Fulfillment {
    *
    * @return 32 byte octet string
    */
-  public byte[] getPreimage();
+  byte[] getPreimage();
 
   /**
    * Get the {@link Condition} that is fulfilled by this Fulfillment.
    *
    * @return a condition representing the SHA-256 hash of this preimage.
    */
-  public Condition getCondition();
+  Condition getCondition();
 
   /**
    * Validate a given condition against this fulfillment.
@@ -45,7 +58,7 @@ public interface Fulfillment {
    *
    * @return true if this fulfillment fulfills the given condition.
    */
-  public boolean validate(Condition condition);
+  boolean validate(Condition condition);
 
   class Builder {
 
@@ -137,11 +150,7 @@ public interface Fulfillment {
         } else if (!condition.equals(other.getCondition())) {
           return false;
         }
-        if (!Arrays.equals(preimage, other.getPreimage())) {
-          return false;
-        }
-
-        return true;
+        return Arrays.equals(preimage, other.getPreimage());
       }
     }
 

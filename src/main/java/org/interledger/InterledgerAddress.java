@@ -34,8 +34,9 @@ public interface InterledgerAddress {
    *
    * @param value String representation of an Interledger Address
    */
-  public static InterledgerAddress of(final String value) {
-    return new Builder().value(value)
+  static InterledgerAddress of(final String value) {
+    return new Builder()
+        .value(value)
         .build();
   }
 
@@ -44,14 +45,14 @@ public interface InterledgerAddress {
    *
    * @return a {@link Builder} instance.
    */
-  public static Builder builder() {
+  static Builder builder() {
     return new Builder();
   }
 
   /**
    * Get builder initialized with the value of another address to enable copy-functionality.
    */
-  public static Builder builder(final InterledgerAddress interledgerAddress) {
+  static Builder builder(final InterledgerAddress interledgerAddress) {
     Objects.requireNonNull(interledgerAddress, "InterledgerAddress must not be null!");
     return new Builder().value(interledgerAddress.getValue());
   }
@@ -156,7 +157,7 @@ public interface InterledgerAddress {
    * <p> <em>NOTE: {@code Builder} is not thread-safe and generally should not be stored in a field
    * or collection, but instead used immediately to create instances.</em> </p>
    */
-  public class Builder {
+  class Builder {
 
     private String value;
 
@@ -181,7 +182,7 @@ public interface InterledgerAddress {
      *              version of an Interledger Address.
      */
     public Builder value(final String value) {
-      this.value = Objects.requireNonNull(value, "value must not be null!");
+      this.value = value;
       return this;
     }
 
@@ -234,7 +235,7 @@ public interface InterledgerAddress {
 
       /**
        * Accessor method for this address's {@link String} value. <p> NOTE: This is distinct of
-       * {@link#toString()} to allow for the two values to diverge, e.g., for debugging or logging
+       * {@link #toString()} to allow for the two values to diverge, e.g., for debugging or logging
        * purposes. </p>
        *
        * @return The value of the {@code value} attribute
@@ -278,12 +279,11 @@ public interface InterledgerAddress {
 
       @Override
       public String toString() {
-        final StringBuilder sb = new StringBuilder("Impl{");
-        sb.append("value='")
-            .append(value)
-            .append('\'');
-        sb.append('}');
-        return sb.toString();
+        return "Impl{"
+            + "value='"
+            + value
+            + '\''
+            + '}';
       }
     }
   }

@@ -21,7 +21,7 @@ public interface Condition {
    *
    * @return a {@link Builder} instance.
    */
-  public static Builder builder() {
+  static Builder builder() {
     return new Builder();
   }
 
@@ -30,9 +30,9 @@ public interface Condition {
    *
    * @param hash A SHA-256 hash representing a Condition.
    *
-   * @return a {@link Builder} instance.
+   * @return a {@link Condition} instance.
    */
-  public static Condition of(byte[] hash) {
+  static Condition of(byte[] hash) {
     return new Builder().hash(hash)
         .build();
   }
@@ -42,7 +42,7 @@ public interface Condition {
    *
    * @return a {@code byte[]} of exactly 32 bytes
    */
-  public byte[] getHash();
+  byte[] getHash();
 
   class Builder {
 
@@ -94,11 +94,7 @@ public interface Condition {
         }
 
         Condition other = (Condition) obj;
-        if (!Arrays.equals(hash, other.getHash())) {
-          return false;
-        }
-
-        return true;
+        return Arrays.equals(hash, other.getHash());
       }
 
       public byte[] getHash() {
