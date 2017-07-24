@@ -108,13 +108,10 @@ public interface InterledgerPacketType {
 
     @Override
     public String toString() {
-      final StringBuilder sb = new StringBuilder("AbstractInterledgerPacketType{");
-      sb.append("typeIdentifier=")
-          .append(typeIdentifier);
-      sb.append(", typeUri=")
-          .append(typeUri);
-      sb.append('}');
-      return sb.toString();
+      return "AbstractInterledgerPacketType{"
+          + "typeIdentifier=" + typeIdentifier
+          + ", typeUri=" + typeUri
+          + '}';
     }
 
     @Override
@@ -128,10 +125,8 @@ public interface InterledgerPacketType {
 
       AbstractInterledgerPacketType that = (AbstractInterledgerPacketType) obj;
 
-      if (!typeIdentifier.equals(that.typeIdentifier)) {
-        return false;
-      }
-      return typeUri.equals(that.typeUri);
+      return typeIdentifier.equals(that.typeIdentifier)
+          && typeUri.equals(that.typeUri);
     }
 
     @Override

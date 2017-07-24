@@ -22,7 +22,7 @@ public interface SetupService {
   Receiver query(ReceiverQuery query);
 
   /**
-   * The service produces an InterldgerPaymentRequest for this receiver, amount and with the given
+   * The service produces an InterledgerPaymentRequest for this receiver, amount and with the given
    * sender data.
    *
    * @param receiver         The receiver

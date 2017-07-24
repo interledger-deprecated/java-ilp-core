@@ -132,11 +132,9 @@ public class OerUint64Codec implements Codec<OerUint64> {
 
     @Override
     public String toString() {
-      final StringBuilder sb = new StringBuilder("OerUint64{");
-      sb.append("value=")
-          .append(value);
-      sb.append('}');
-      return sb.toString();
+      return "OerUint64{"
+          + "value=" + value
+          + '}';
     }
   }
 }

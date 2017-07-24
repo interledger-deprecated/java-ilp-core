@@ -78,7 +78,7 @@ public interface PskMessage {
    */
   byte[] getData();
 
-  public class Header {
+  class Header {
 
     private final String name;
     private final String value;
@@ -104,26 +104,22 @@ public interface PskMessage {
 
     @Override
     public String toString() {
-      return new StringBuilder().append(name)
-          .append(":")
-          .append(value)
-          .toString();
+      return name + ":" + value;
     }
 
     @Override
-    public boolean equals(Object header) {
-      if (header == null) {
+    public boolean equals(Object obj) {
+      if (this == obj) {
+        return true;
+      }
+      if (obj == null || !(obj instanceof Header)) {
         return false;
       }
 
-      if (header instanceof Header) {
-        return ((Header) header).getName()
-            .equals(name)
-            && ((Header) header).getValue()
-            .equals(value);
-      }
+      Header header = (Header) obj;
 
-      return false;
+      return name.equalsIgnoreCase(header.getName())
+          && value.equals(header.getValue());
     }
 
     /**
@@ -299,7 +295,7 @@ public interface PskMessage {
      *
      * @return true if the message uses encryption
      *
-     * @throws a NullPointerException if the builder has had no encryption header added.
+     * @throws NullPointerException if the builder has had no encryption header added.
      */
     public boolean usesEncryption() {
       Objects.requireNonNull(encryptionHeader, "No encryption header added.");
@@ -329,7 +325,7 @@ public interface PskMessage {
       private final byte[] data;
 
       /**
-       * Default constructor for instances of {@link PskMessageImpl}.
+       * Default constructor for instances of {@link PskMessage}.
        */
       public Impl(Builder builder) {
 

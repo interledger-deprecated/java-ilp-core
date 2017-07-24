@@ -140,22 +140,16 @@ public class LedgerSpecificDecimalMonetaryAmountFormat implements MonetaryAmount
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append(LedgerSpecificDecimalMonetaryAmountFormat.class.getName())
-        .append('{')
-        .append(" decimalFormat: ")
-        .append(this.format)
-        .append(',')
-        .append(" precision: ")
-        .append(this.context.getInt(KEY_PRECISION))
-        .append(',')
-        .append(" scale: ")
-        .append(this.context.getInt(KEY_SCALE))
-        .append(',')
-        .append(" currencyUnit: ")
-        .append(currencyUnit)
-        .append('}');
-    return sb.toString();
+    return LedgerSpecificDecimalMonetaryAmountFormat.class.getName()
+        + '{'
+        + " decimalFormat: " + this.format
+        + ','
+        + " precision: " + this.context.getInt(KEY_PRECISION)
+        + ','
+        + " scale: " + this.context.getInt(KEY_SCALE)
+        + ','
+        + " currencyUnit: " + currencyUnit
+        + '}';
   }
 
 }

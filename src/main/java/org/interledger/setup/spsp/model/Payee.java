@@ -11,12 +11,12 @@ public interface Payee extends SpspReceiver {
   /**
    * Returns the name of the payee.
    */
-  public String getName();
+  String getName();
 
   /**
    * Returns the URI of an image representing the payee.
    */
-  public URI getImageUrl();
+  URI getImageUrl();
 
 }
 

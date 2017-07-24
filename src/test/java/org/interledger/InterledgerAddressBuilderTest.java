@@ -7,7 +7,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.Test;
 
 /**
- * Unit tests for {@link InterledgerAddressBuilder}.
+ * Unit tests for {@link InterledgerAddress.Builder}.
  */
 public class InterledgerAddressBuilderTest {
 
@@ -37,7 +37,7 @@ public class InterledgerAddressBuilderTest {
     try {
       InterledgerAddress.builder().build();
     } catch (NullPointerException e) {
-      assertThat(e.getMessage(), is("InterledgerAddress must not be null!"));
+      assertThat(e.getMessage(), is("value must not be null!"));
       throw e;
     }
   }
@@ -45,7 +45,9 @@ public class InterledgerAddressBuilderTest {
   @Test(expected = NullPointerException.class)
   public void test_wither_with_null_value() throws Exception {
     try {
-      InterledgerAddress.builder().value(null);
+      InterledgerAddress.builder()
+          .value(null)
+          .build();
     } catch (NullPointerException e) {
       assertThat(e.getMessage(), is("value must not be null!"));
       throw e;

@@ -100,15 +100,8 @@ public interface QuoteLiquidityRequest extends QuoteRequest {
 
         Impl impl = (Impl) obj;
 
-        if (!destinationAccount.equals(impl.destinationAccount)) {
-          return false;
-        }
-
-        if (!destinationHoldDuration.equals(impl.destinationHoldDuration)) {
-          return false;
-        }
-
-        return true;
+        return destinationAccount.equals(impl.destinationAccount)
+            && destinationHoldDuration.equals(impl.destinationHoldDuration);
       }
 
       @Override
@@ -120,13 +113,10 @@ public interface QuoteLiquidityRequest extends QuoteRequest {
 
       @Override
       public String toString() {
-        final StringBuilder sb = new StringBuilder("Impl{");
-        sb.append("destinationAccount=")
-            .append(destinationAccount);
-        sb.append(", destinationHoldDuration=")
-            .append(destinationHoldDuration);
-        sb.append('}');
-        return sb.toString();
+        return "Impl{"
+            + "destinationAccount=" + destinationAccount
+            + ", destinationHoldDuration=" + destinationHoldDuration
+            + '}';
       }
     }
   }

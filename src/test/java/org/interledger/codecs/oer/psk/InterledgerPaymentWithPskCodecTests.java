@@ -116,10 +116,10 @@ public class InterledgerPaymentWithPskCodecTests {
             context.read(PskMessage.class, decodedPayment.getData());
 
         assertThat(decodedPskMessage.getData(), is(pskMessage.getData()));
-        pskMessage.getPrivateHeaders().stream()
+        pskMessage.getPrivateHeaders()
             .forEach(header -> assertTrue(String.format("Header was not found: %s", header),
                 decodedPskMessage.getPrivateHeaders(header.getName()).contains(header)));
-        pskMessage.getPublicHeaders().stream()
+        pskMessage.getPublicHeaders()
             .forEach(header -> assertTrue(String.format("Header was not found: %s", header),
                 decodedPskMessage.getPublicHeaders(header.getName()).contains(header)));
 

@@ -142,6 +142,7 @@ public class CodecContext {
 
     try (ByteArrayInputStream bais = new ByteArrayInputStream(data)) {
       if (InterledgerPacket.class.isAssignableFrom(type)) {
+        //noinspection ResultOfMethodCallIgnored
         bais.read(); // swallow type field
       }
       return lookup(type).read(this, bais);
@@ -284,6 +285,7 @@ public class CodecContext {
    * @param type An instance of {@link Class}.
    * @param <T>  The specific type of {@link Codec} to return.
    */
+  @SuppressWarnings("unchecked")
   private <T> Codec<T> lookup(final Class<T> type) {
     Objects.requireNonNull(type);
 
@@ -299,7 +301,7 @@ public class CodecContext {
           .findFirst()
           .orElseThrow(() -> new CodecException(
               String.format("No codec registered for %s or its super classes!",
-                  Codec.class.getName(), type.getName())));
+                  type.getName())));
     }
   }
 
@@ -323,7 +325,7 @@ public class CodecContext {
    *
    * @return {@code true} if the supplied class has a registered codec, {@code false} otherwise.
    */
-  public boolean hasRegisteredCodec(final Class<?> clazz) throws IOException {
+  public boolean hasRegisteredCodec(final Class<?> clazz) {
     Objects.requireNonNull(clazz);
     return codecs.containsKey(clazz);
   }

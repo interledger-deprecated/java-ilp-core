@@ -37,6 +37,7 @@ public interface Codec<T> {
    * @param instance     An instance of type {@link Object}.
    * @param outputStream An instance of {@link OutputStream} to write data to.
    */
+  @SuppressWarnings("unchecked")
   default void writeObject(final CodecContext context, final Object instance,
       final OutputStream outputStream) throws IOException {
     write(context, (T) instance, outputStream);

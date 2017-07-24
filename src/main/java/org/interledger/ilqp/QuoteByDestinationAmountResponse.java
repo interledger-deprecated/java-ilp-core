@@ -109,15 +109,8 @@ public interface QuoteByDestinationAmountResponse extends QuoteResponse {
 
         Impl impl = (Impl) obj;
 
-        if (!sourceHoldDuration.equals(impl.sourceHoldDuration)) {
-          return false;
-        }
-
-        if (sourceAmount != impl.sourceAmount) {
-          return false;
-        }
-
-        return true;
+        return sourceHoldDuration.equals(impl.sourceHoldDuration)
+            && sourceAmount == impl.sourceAmount;
       }
 
       @Override
@@ -129,13 +122,10 @@ public interface QuoteByDestinationAmountResponse extends QuoteResponse {
 
       @Override
       public String toString() {
-        final StringBuilder sb = new StringBuilder("Impl{");
-        sb.append("sourceAmount=")
-            .append(sourceAmount);
-        sb.append(", sourceHoldDuration=")
-            .append(sourceHoldDuration);
-        sb.append('}');
-        return sb.toString();
+        return "Impl{"
+            + "sourceAmount=" + sourceAmount
+            + ", sourceHoldDuration=" + sourceHoldDuration
+            + '}';
       }
     }
   }

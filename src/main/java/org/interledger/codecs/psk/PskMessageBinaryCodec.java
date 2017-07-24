@@ -40,7 +40,7 @@ public class PskMessageBinaryCodec implements PskMessageCodec {
     boolean readCarriageReturn = false;
 
     try (ByteArrayOutputStream bos = new ByteArrayOutputStream(256)) {
-      int byteValue = 0;
+      int byteValue;
       while ((byteValue = in.read()) != -1) {
 
         if (byteValue == CR) {
@@ -61,9 +61,7 @@ public class PskMessageBinaryCodec implements PskMessageCodec {
         bos.write(byteValue);
       }
 
-      String line = bos.toString(StandardCharsets.UTF_8.name());
-
-      return line;
+      return bos.toString(StandardCharsets.UTF_8.name());
     }
   }
 

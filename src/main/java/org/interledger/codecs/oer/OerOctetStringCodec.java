@@ -32,7 +32,17 @@ public class OerOctetStringCodec implements Codec<OerOctetString> {
         .getLength();
 
     final byte[] returnable = new byte[lengthPrefix];
-    inputStream.read(returnable);
+
+    if (lengthPrefix == 0) {
+      return new OerOctetString(returnable);
+    }
+
+    int bytesRead = inputStream.read(returnable);
+    if (bytesRead < lengthPrefix) {
+      throw new RuntimeException(
+          String.format("Unexpected end of stream. Expected %s bytes but only read %s.",
+              lengthPrefix, bytesRead));
+    }
     return new OerOctetString(returnable);
   }
 
@@ -90,11 +100,7 @@ public class OerOctetStringCodec implements Codec<OerOctetString> {
 
     @Override
     public String toString() {
-      final StringBuilder sb = new StringBuilder("OctetString{");
-      sb.append("value=")
-          .append(Arrays.toString(value));
-      sb.append('}');
-      return sb.toString();
+      return "OctetString{" + "value=" + Arrays.toString(value) + '}';
     }
   }
 }

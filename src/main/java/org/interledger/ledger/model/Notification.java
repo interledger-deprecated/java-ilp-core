@@ -5,13 +5,13 @@ import java.util.UUID;
 
 public interface Notification<T> {
 
-  public UUID getId();
+  UUID getId();
 
-  public String getEvent();
+  String getEvent();
 
-  public T getResource();
+  T getResource();
 
-  public Map<String, String> getRelatedResources();
+  Map<String, String> getRelatedResources();
 
 
 }

@@ -160,13 +160,9 @@ public interface InterledgerPayment extends InterledgerPacket {
 
         Impl impl = (Impl) obj;
 
-        if (!destinationAccount.equals(impl.destinationAccount)) {
-          return false;
-        }
-        if (!destinationAmount.equals(impl.destinationAmount)) {
-          return false;
-        }
-        return Arrays.equals(data, impl.data);
+        return destinationAccount.equals(impl.destinationAccount)
+            && destinationAmount.equals(impl.destinationAmount)
+            && Arrays.equals(data, impl.data);
       }
 
       @Override
@@ -179,15 +175,11 @@ public interface InterledgerPayment extends InterledgerPacket {
 
       @Override
       public String toString() {
-        final StringBuilder sb = new StringBuilder("Impl{");
-        sb.append("destinationAccount=")
-            .append(destinationAccount);
-        sb.append(", destinationAmount=")
-            .append(destinationAmount);
-        sb.append(", data=")
-            .append(Arrays.toString(data));
-        sb.append('}');
-        return sb.toString();
+        return "Impl{"
+            + "destinationAccount=" + destinationAccount
+            + ", destinationAmount=" + destinationAmount
+            + ", data=" + Arrays.toString(data)
+            + '}';
       }
     }
   }

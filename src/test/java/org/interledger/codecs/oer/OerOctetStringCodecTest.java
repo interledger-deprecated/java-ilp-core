@@ -28,8 +28,8 @@ public class OerOctetStringCodecTest {
 
   private CodecContext codecContext;
   private OerOctetStringCodec oerOctetStringCodec;
-  private byte[] asn1ByteValue;
-  private byte[] octetBytes;
+  private final byte[] asn1ByteValue;
+  private final byte[] octetBytes;
 
   /**
    * Construct an instance of this parameterized test with the supplied inputs.

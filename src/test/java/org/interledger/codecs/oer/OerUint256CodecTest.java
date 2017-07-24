@@ -27,8 +27,8 @@ public class OerUint256CodecTest {
 
   private CodecContext codecContext;
   private OerUint256Codec oerUint256Codec;
-  private byte[] inputValue;
-  private byte[] asn1OerBytes;
+  private final byte[] inputValue;
+  private final byte[] asn1OerBytes;
 
   /**
    * Construct an instance of this parameterized test with the supplied inputs.

@@ -21,11 +21,7 @@ public class InterledgerPacketHandlerTest {
 
   @Test(expected = NullPointerException.class)
   public void testAbstractHandler_NullExecute() throws Exception {
-    try {
-      new AbstractHandler.HelperHandler().execute(null);
-    } catch (NullPointerException e) {
-      throw e;
-    }
+    new AbstractHandler.HelperHandler().execute(null);
   }
 
   @Test
@@ -37,7 +33,8 @@ public class InterledgerPacketHandlerTest {
     final String actual = new TestAbstractHandler().execute(interledgerPayment);
 
     assertThat(actual, is("a"));
-    Mockito.verify(interledgerPayment).getDestinationAmount();
+    Mockito.verify(interledgerPayment)
+        .getDestinationAmount();
     Mockito.verifyNoMoreInteractions(quoteLiquidityRequest);
     Mockito.verifyNoMoreInteractions(quoteLiquidityResponse);
   }
@@ -56,7 +53,8 @@ public class InterledgerPacketHandlerTest {
 
     assertThat(actual, is("b"));
     Mockito.verifyNoMoreInteractions(interledgerPayment);
-    Mockito.verify(quoteLiquidityRequest).getDestinationAccount();
+    Mockito.verify(quoteLiquidityRequest)
+        .getDestinationAccount();
     Mockito.verifyNoMoreInteractions(quoteLiquidityResponse);
   }
 
@@ -71,16 +69,13 @@ public class InterledgerPacketHandlerTest {
     assertThat(actual, is("c"));
     Mockito.verifyNoMoreInteractions(interledgerPayment);
     Mockito.verifyNoMoreInteractions(quoteLiquidityRequest);
-    Mockito.verify(quoteLiquidityResponse).getSourceHoldDuration();
+    Mockito.verify(quoteLiquidityResponse)
+        .getSourceHoldDuration();
   }
 
   @Test(expected = NullPointerException.class)
   public void testAbstractVoidHandler_NullExecute() throws Exception {
-    try {
-      new AbstractVoidHandler.HelperHandler().execute(null);
-    } catch (NullPointerException e) {
-      throw e;
-    }
+    new AbstractVoidHandler.HelperHandler().execute(null);
   }
 
   @Test
@@ -91,7 +86,8 @@ public class InterledgerPacketHandlerTest {
 
     new TestAbstractVoidHandler().execute(interledgerPayment);
 
-    Mockito.verify(interledgerPayment).getDestinationAmount();
+    Mockito.verify(interledgerPayment)
+        .getDestinationAmount();
     Mockito.verifyNoMoreInteractions(quoteLiquidityRequest);
     Mockito.verifyNoMoreInteractions(quoteLiquidityResponse);
   }
@@ -109,7 +105,8 @@ public class InterledgerPacketHandlerTest {
     new TestAbstractHandler().execute(quoteLiquidityRequest);
 
     Mockito.verifyNoMoreInteractions(interledgerPayment);
-    Mockito.verify(quoteLiquidityRequest).getDestinationAccount();
+    Mockito.verify(quoteLiquidityRequest)
+        .getDestinationAccount();
     Mockito.verifyNoMoreInteractions(quoteLiquidityResponse);
   }
 
@@ -123,7 +120,8 @@ public class InterledgerPacketHandlerTest {
 
     Mockito.verifyNoMoreInteractions(interledgerPayment);
     Mockito.verifyNoMoreInteractions(quoteLiquidityRequest);
-    Mockito.verify(quoteLiquidityResponse).getSourceHoldDuration();
+    Mockito.verify(quoteLiquidityResponse)
+        .getSourceHoldDuration();
   }
 
   /**

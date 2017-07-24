@@ -27,8 +27,8 @@ public class OerUint64CodecTest {
 
   private CodecContext codecContext;
   private OerUint64Codec oerUint64Codec;
-  private BigInteger inputValue;
-  private byte[] asn1OerBytes;
+  private final BigInteger inputValue;
+  private final byte[] asn1OerBytes;
 
   /**
    * Construct an instance of this parameterized test with the supplied inputs.

@@ -95,17 +95,13 @@ public class OerLengthPrefixCodec implements Codec<OerLengthPrefix> {
         outputStream.write((length >> 8));
         outputStream.write(length);
         // return 4;
-      } else if (length <= Integer.MAX_VALUE) {
+      } else {
         outputStream.write(128 + 4);
         // Write four bytes,
         outputStream.write((length >> 24));
         outputStream.write((length >> 16));
         outputStream.write((length >> 8));
         outputStream.write(length);
-        // return 5;
-      } else {
-        throw new IllegalArgumentException(String
-            .format("Field lengths of greater than %s are not supported.", Integer.MAX_VALUE));
       }
     }
 
@@ -115,6 +111,8 @@ public class OerLengthPrefixCodec implements Codec<OerLengthPrefix> {
    * Helper method to convert a byte array of varying length (assuming not larger than 4 bytes) into
    * an int. This is necessary because most traditional library assume a 4-byte array when
    * converting to an Integer.
+   *
+   * @return the int representation of the given bytes
    */
   protected int toInt(final byte[] bytes) {
 
@@ -122,22 +120,22 @@ public class OerLengthPrefixCodec implements Codec<OerLengthPrefix> {
       case 0:
         return 0;
       case 1: {
-        return (bytes[0] << 0) & 0x000000ff;
+        return (bytes[0]) & 0x000000ff;
       }
       case 2: {
         return (bytes[0] << 8) & 0x0000ff00
-            | (bytes[1] << 0) & 0x000000ff;
+            | (bytes[1]) & 0x000000ff;
       }
       case 3: {
         return (bytes[0] << 16) & 0x00ff0000
             | (bytes[1] << 8) & 0x0000ff00
-            | (bytes[2] << 0) & 0x000000ff;
+            | (bytes[2]) & 0x000000ff;
       }
       case 4: {
         return (bytes[0] << 24) & 0xff000000
             | (bytes[1] << 16) & 0x00ff0000
             | (bytes[2] << 8) & 0x0000ff00
-            | (bytes[3] << 0) & 0x000000ff;
+            | (bytes[3]) & 0x000000ff;
       }
       default: {
         throw new RuntimeException("This method only supports arrays up to length 4!");
@@ -183,11 +181,9 @@ public class OerLengthPrefixCodec implements Codec<OerLengthPrefix> {
 
     @Override
     public String toString() {
-      final StringBuilder sb = new StringBuilder("LengthPrefix{");
-      sb.append("length=")
-          .append(length);
-      sb.append('}');
-      return sb.toString();
+      return "LengthPrefix{"
+          + "length=" + length
+          + '}';
     }
   }
 

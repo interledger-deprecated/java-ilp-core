@@ -9,7 +9,7 @@ import java.net.URI;
  */
 public final class SpspReceiverQuery implements ReceiverQuery {
 
-  private URI endpoint;
+  private final URI endpoint;
 
   public SpspReceiverQuery(String receiverEndpoint) {
     this.endpoint = URI.create(receiverEndpoint);

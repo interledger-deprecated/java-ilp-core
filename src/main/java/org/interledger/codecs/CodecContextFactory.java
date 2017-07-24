@@ -85,7 +85,7 @@ public class CodecContextFactory {
     throw new RuntimeException("Not yet implemented!");
   }
 
-  public static CodecContext interledgerProtofbuf() {
+  public static CodecContext interledgerProtobuf() {
     throw new RuntimeException("Not yet implemented!");
   }
 

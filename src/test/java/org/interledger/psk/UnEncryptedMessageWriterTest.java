@@ -1,8 +1,5 @@
 package org.interledger.psk;
 
-/**
- * JUnit to exercise the {@link UnencryptedPskMessageReader} implementation.
- */
 public class UnEncryptedMessageWriterTest {
 
   // @Test

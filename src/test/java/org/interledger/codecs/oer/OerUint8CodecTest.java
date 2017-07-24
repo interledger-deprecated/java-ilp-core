@@ -27,8 +27,8 @@ public class OerUint8CodecTest {
 
   private CodecContext codecContext;
   private OerUint8Codec oerUint8Codec;
-  private int inputValue;
-  private byte[] asn1OerBytes;
+  private final int inputValue;
+  private final byte[] asn1OerBytes;
 
   /**
    * Construct an instance of this parameterized test with the supplied inputs.

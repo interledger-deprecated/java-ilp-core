@@ -14,7 +14,7 @@ public class PskNonceHeader extends PskMessage.Header {
   /* the expected length of the nonce, in bytes */
   private static final int NONCE_LEN_BYTES = 16;
 
-  private byte[] nonce;
+  private final byte[] nonce;
 
   private PskNonceHeader(final byte[] nonce) {
     super(WellKnown.NONCE, Base64.getUrlEncoder()

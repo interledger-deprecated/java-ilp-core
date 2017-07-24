@@ -2,8 +2,8 @@ package org.interledger.ledger.model;
 
 public interface SignedMessage<T> {
 
-  public T getMessage();
+  T getMessage();
 
-  public MessageSignature getSignature();
+  MessageSignature getSignature();
 
 }

@@ -9,7 +9,7 @@ public enum PskEncryptionType {
   NONE("none"),
   AES_256_GCM("aes-256-gcm");
 
-  private String name;
+  private final String name;
 
   /**
    * Internal constructor that binds the enum to the description found in PSK message headers.

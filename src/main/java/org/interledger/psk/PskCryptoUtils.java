@@ -35,7 +35,7 @@ public class PskCryptoUtils {
    * Encrypts a block of data using the encryption scheme specific in the PSK RFC and returns the
    * encrypted data and the authentication.
    *
-   * <p>NOTE: May throw an InvalidKeyExcpetion if the Java Cryptography Extension (JCE) Unlimited
+   * <p>NOTE: May throw an InvalidKeyException if the Java Cryptography Extension (JCE) Unlimited
    * Strength Jurisdiction Policy Files are not installed.
    *
    * <p>@see <a
@@ -48,7 +48,7 @@ public class PskCryptoUtils {
    *
    * @return The encrypted data and its accompanying GCM authentication tag.
    *
-   * @throws Exception if there is an error encrypting the data
+   * @throws RuntimeException if there is an error encrypting the data
    */
   public static AesGcmEncryptResult encryptPskData(SecretKey key, byte[] nonce, byte[] data) {
 
@@ -122,7 +122,7 @@ public class PskCryptoUtils {
     Objects.requireNonNull(nonce, "cannot decrypt data without the nonce");
     Objects.requireNonNull(encryptedData, "cannot decrypt null data");
 
-    if (nonce == null || nonce.length != NONCE_LEN_BYTES) {
+    if (nonce.length != NONCE_LEN_BYTES) {
       throw new RuntimeException("Invalid PSK message - nonce must be " + NONCE_LEN_BYTES);
     }
 

@@ -27,8 +27,8 @@ public class OerLengthPrefixCodecTest {
 
   private CodecContext codecContext;
   private OerLengthPrefixCodec oerLengthPrefixCodec;
-  private int expectedPayloadLength;
-  private byte[] asn1OerBytes;
+  private final int expectedPayloadLength;
+  private final byte[] asn1OerBytes;
 
   /**
    * Construct an instance of this parameterized test with the supplied inputs.

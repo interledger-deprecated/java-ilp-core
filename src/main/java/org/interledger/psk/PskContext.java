@@ -387,9 +387,7 @@ public interface PskContext {
               .equals(WellKnown.ENCRYPTION)
               && !header.getName()
               .equals(WellKnown.NONCE)))
-          .forEach(header -> {
-            builder.addPublicHeader(header);
-          });
+          .forEach(builder::addPublicHeader);
 
       for (PskMessage.Header privateHeader : privateMessage.getPrivateHeaders()) {
         builder.addPrivateHeader(privateHeader);
@@ -434,9 +432,7 @@ public interface PskContext {
               .equals(WellKnown.ENCRYPTION)
               && !header.getName()
               .equals(WellKnown.NONCE)))
-          .forEach(header -> {
-            builder.addPublicHeader(header);
-          });
+          .forEach(builder::addPublicHeader);
 
       builder.addPublicHeader(PskEncryptionHeader.aesGcm(result.getAuthenticationTag()));
       builder.addPublicHeader(nonceHeader);

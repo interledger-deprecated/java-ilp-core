@@ -21,7 +21,7 @@ public interface QuoteLiquidityResponse extends QuoteResponse {
    * <p>A series of exchange rates that can be plotted to assemble a "curve" of liquidity
    * representing the amount that one currency can be exchanged for another.</p> <p>For example, if
    * a liquidity curve contains the rate [0,0] and [10,20], then there is a linear path of rates for
-   * which one currency can be exchange for another. To illustate, it can be assumed that [5,10]
+   * which one currency can be exchange for another. To illustrate, it can be assumed that [5,10]
    * exists on this curve.</p>
    *
    * @return A {@link List} of type {link ExchangeRate}.

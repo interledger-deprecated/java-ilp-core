@@ -24,7 +24,7 @@ import java.util.Objects;
  * presence bitmap. As an example of this, reference "Overview of OER Encoding" () example B, which
  * also has no presence bitmap since no fields are optional/default.</p> <p><b>Extension Presence
  * Bitmap</b> This implementation does not currently support extensions, and therefore does not
- * encode or decode an "extension presence bitmpa". If it did, in order to indicate an extension,
+ * encode or decode an "extension presence bitmap". If it did, in order to indicate an extension,
  * the presence bitmap must be present, and the MSB of the bitmap must be 1, and further rules.
  * Reference section 2.8 "Encoding of a Sequence Type" in "Overview of OER" for more details. </p>
  * <p><b>Components</b> The rest of the packet is the concatenation of the encodings of the fields

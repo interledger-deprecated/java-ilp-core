@@ -31,7 +31,7 @@ public interface InterledgerPacket {
      *
      * @param packet An instance of {@link InterledgerPacket}.
      *
-     * @return An instance of type {@link R}, in response to the suppllied input.
+     * @return An instance of type {@link R}, in response to the supplied input.
      */
     R execute(InterledgerPacket packet);
 
@@ -93,7 +93,7 @@ public interface InterledgerPacket {
        *
        * @param packet An instance of {@link InterledgerPacket}.
        *
-       * @return An instance of type {@link R}, in response to the suppllied input.
+       * @return An instance of type {@link R}, in response to the supplied input.
        */
       @Override
       public final R execute(final InterledgerPacket packet) {
@@ -105,7 +105,7 @@ public interface InterledgerPacket {
         } else if (packet instanceof QuoteLiquidityResponse) {
           return this.handle((QuoteLiquidityResponse) packet);
         } else {
-          throw new RuntimeException(String.format("Unhandled InterledgerPacket: ", packet));
+          throw new RuntimeException("Unhandled InterledgerPacket: " +  packet);
         }
       }
 
@@ -212,7 +212,7 @@ public interface InterledgerPacket {
         } else if (packet instanceof QuoteLiquidityResponse) {
           this.handle((QuoteLiquidityResponse) packet);
         } else {
-          throw new RuntimeException(String.format("Unhandled InterledgerPacket: ", packet));
+          throw new RuntimeException("Unhandled InterledgerPacket: " + packet);
         }
       }
 

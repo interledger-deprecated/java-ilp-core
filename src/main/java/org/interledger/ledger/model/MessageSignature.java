@@ -5,12 +5,12 @@ import java.security.spec.AlgorithmParameterSpec;
 
 public interface MessageSignature {
 
-  public String getAlgorithm();
+  String getAlgorithm();
 
-  public AlgorithmParameterSpec getAlgorithmParameters();
+  AlgorithmParameterSpec getAlgorithmParameters();
 
-  public PublicKey getPublicKey();
+  PublicKey getPublicKey();
 
-  public byte[] getSignature();
+  byte[] getSignature();
 
 }

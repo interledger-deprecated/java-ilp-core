@@ -19,7 +19,7 @@ public interface InterledgerPaymentRequest {
    *
    * @return a {@link Builder} instance.
    */
-  public static Builder builder() {
+  static Builder builder() {
     return new Builder();
   }
 
@@ -46,7 +46,7 @@ public interface InterledgerPaymentRequest {
    */
   Condition getCondition();
 
-  public class Builder {
+  class Builder {
 
     private InterledgerPayment interledgerPayment;
     private Condition condition;
@@ -92,10 +92,10 @@ public interface InterledgerPaymentRequest {
 
     private static final class Impl implements InterledgerPaymentRequest {
 
-      private static int VERSION = 2;
+      private static final int VERSION = 2;
 
-      private InterledgerPayment packet;
-      private Condition condition;
+      private final InterledgerPayment packet;
+      private final Condition condition;
 
       public Impl(InterledgerPayment packet, Condition condition) {
         this.packet = packet;

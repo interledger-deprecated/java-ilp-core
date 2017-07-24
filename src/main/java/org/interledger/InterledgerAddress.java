@@ -206,7 +206,7 @@ public interface InterledgerAddress {
        */
       private Impl(final Builder builder) {
         Objects.requireNonNull(builder, "Builder must not be null!");
-        Objects.requireNonNull(builder.value, "InterledgerAddress must not be null!");
+        Objects.requireNonNull(builder.value, "value must not be null!");
 
         if (!isValidInterledgerAddress(builder.value)) {
           throw new IllegalArgumentException(

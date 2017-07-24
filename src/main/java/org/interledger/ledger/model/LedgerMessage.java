@@ -12,26 +12,26 @@ public interface LedgerMessage {
   /**
    * Returns the unique id of the message.
    */
-  public UUID getId();
+  UUID getId();
 
   /**
    * Defines the type of message, for example 'quote_request'.
    */
-  public String getType();
+  String getType();
 
   /**
    * Defines the account from which the message is sent.
    */
-  public InterledgerAddress getFrom();
+  InterledgerAddress getFrom();
 
   /**
    * Defines the account to which the message is sent.
    */
-  public InterledgerAddress getTo();
+  InterledgerAddress getTo();
 
   /**
    * The message content.
    */
-  public Object getData();
+  Object getData();
 
 }

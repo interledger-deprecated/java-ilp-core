@@ -9,8 +9,8 @@ import java.util.Base64;
 
 public class FulfillmentTest {
 
-  private static byte[] TEST_PREIMAGE = new byte[32];
-  private static Condition TEST_CONDITION = Condition.builder()
+  private static final byte[] TEST_PREIMAGE = new byte[32];
+  private static final Condition TEST_CONDITION = Condition.builder()
       .hash(Base64.getUrlDecoder().decode("Zmh6rfhivXdsj8GLjp-OIAiXFIVu4jOzkCpZHQ1fKSU")).build();
 
   @Test(expected = IllegalArgumentException.class)

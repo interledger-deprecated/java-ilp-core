@@ -132,19 +132,9 @@ public interface QuoteBySourceAmountRequest extends QuoteRequest {
 
         Impl impl = (Impl) obj;
 
-        if (!destinationAccount.equals(impl.destinationAccount)) {
-          return false;
-        }
-
-        if (sourceAmount != impl.sourceAmount) {
-          return false;
-        }
-
-        if (!destinationHoldDuration.equals(impl.destinationHoldDuration)) {
-          return false;
-        }
-
-        return true;
+        return destinationAccount.equals(impl.destinationAccount)
+            && sourceAmount == impl.sourceAmount
+            && destinationHoldDuration.equals(impl.destinationHoldDuration);
       }
 
       @Override
@@ -157,15 +147,11 @@ public interface QuoteBySourceAmountRequest extends QuoteRequest {
 
       @Override
       public String toString() {
-        final StringBuilder sb = new StringBuilder("Impl{");
-        sb.append("destinationAccount=")
-            .append(destinationAccount);
-        sb.append(", sourceAmount=")
-            .append(sourceAmount);
-        sb.append(", destinationHoldDuration=")
-            .append(destinationHoldDuration);
-        sb.append('}');
-        return sb.toString();
+        return "Impl{"
+            + "destinationAccount=" + destinationAccount
+            + ", sourceAmount=" + sourceAmount
+            + ", destinationHoldDuration=" + destinationHoldDuration
+            + '}';
       }
     }
   }

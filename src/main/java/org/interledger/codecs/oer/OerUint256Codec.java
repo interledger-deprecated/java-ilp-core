@@ -114,11 +114,9 @@ public class OerUint256Codec implements Codec<OerUint256> {
 
     @Override
     public String toString() {
-      final StringBuilder sb = new StringBuilder("OerUint256{");
-      sb.append("value=")
-          .append(Arrays.toString(value));
-      sb.append('}');
-      return sb.toString();
+      return "OerUint256{"
+          + "value=" + Arrays.toString(value)
+          + '}';
     }
   }
 }

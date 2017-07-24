@@ -20,12 +20,11 @@ public class PskEncryptionHeader extends PskMessage.Header {
 
   private PskEncryptionHeader(byte[] authTag) {
     super(WellKnown.ENCRYPTION,
-        new StringBuilder().append(PskEncryptionType.AES_256_GCM.toString())
-            .append(" ")
-            .append(Base64.getUrlEncoder()
-                .withoutPadding()
-                .encodeToString(authTag))
-            .toString());
+        PskEncryptionType.AES_256_GCM.toString()
+            + " "
+            + Base64.getUrlEncoder()
+            .withoutPadding()
+            .encodeToString(authTag));
     this.type = PskEncryptionType.AES_256_GCM;
     this.authTag = Arrays.copyOf(authTag, authTag.length);
   }
@@ -55,7 +54,7 @@ public class PskEncryptionHeader extends PskMessage.Header {
    *
    * @return An encryption header
    *
-   * @throws a RuntimeException if an encryption header can't be constructed of the given header
+   * @throws RuntimeException if an encryption header can't be constructed of the given header
    */
   public static PskEncryptionHeader fromHeader(PskMessage.Header header) {
 

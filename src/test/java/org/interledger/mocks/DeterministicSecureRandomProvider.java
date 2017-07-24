@@ -32,25 +32,18 @@ public class DeterministicSecureRandomProvider extends Provider {
    */
   public static void setAsDefault(byte[] seed) {
 
-    PREVIOUS_STRONG_ALGO = AccessController.doPrivileged(new PrivilegedAction<String>() {
-      @Override
-      public String run() {
-        return Security.getProperty("securerandom.strongAlgorithms");
-      }
-    });
+    PREVIOUS_STRONG_ALGO = AccessController.doPrivileged(
+        (PrivilegedAction<String>) () -> Security.getProperty("securerandom.strongAlgorithms"));
 
     Security.insertProviderAt(new DeterministicSecureRandomProvider(seed), 1);
 
-    AccessController.doPrivileged(new PrivilegedAction<String>() {
-      @Override
-      public String run() {
+    AccessController.doPrivileged((PrivilegedAction<String>) () -> {
 
-        final String property = ALGO_NAME + ":" + PROVIDER_NAME;
+      final String property = ALGO_NAME + ":" + PROVIDER_NAME;
 
-        Security.setProperty("securerandom.strongAlgorithms", property);
-        return property;
+      Security.setProperty("securerandom.strongAlgorithms", property);
+      return property;
 
-      }
     });
   }
 
@@ -59,14 +52,11 @@ public class DeterministicSecureRandomProvider extends Provider {
    */
   public static void remove() {
 
-    AccessController.doPrivileged(new PrivilegedAction<String>() {
-      @Override
-      public String run() {
+    AccessController.doPrivileged((PrivilegedAction<String>) () -> {
 
-        Security.setProperty("securerandom.strongAlgorithms", PREVIOUS_STRONG_ALGO);
-        return PREVIOUS_STRONG_ALGO;
+      Security.setProperty("securerandom.strongAlgorithms", PREVIOUS_STRONG_ALGO);
+      return PREVIOUS_STRONG_ALGO;
 
-      }
     });
 
     Security.removeProvider(PROVIDER_NAME);

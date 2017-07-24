@@ -128,13 +128,9 @@ public class OerIA5StringCodec implements Codec<OerIA5String> {
 
     @Override
     public String toString() {
-      final StringBuilder sb = new StringBuilder("IA5String{");
-      sb.append("value='")
-          .append(value)
-          .append('\'');
-      sb.append('}');
-      return sb.toString();
-
+      return "IA5String{"
+          + "value='" + value + '\''
+          + '}';
     }
   }
 }

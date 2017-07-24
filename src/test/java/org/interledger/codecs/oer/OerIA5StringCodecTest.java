@@ -28,8 +28,8 @@ public class OerIA5StringCodecTest {
 
   private CodecContext codecContext;
   private OerIA5StringCodec oerIA5StringCodec;
-  private String stringValue;
-  private byte[] asn1ByteValue;
+  private final String stringValue;
+  private final byte[] asn1ByteValue;
 
   /**
    * Construct an instance of this parameterized test with the supplied inputs.
