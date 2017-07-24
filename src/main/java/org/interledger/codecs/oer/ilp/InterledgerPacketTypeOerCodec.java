@@ -24,16 +24,15 @@ public class InterledgerPacketTypeOerCodec implements InterledgerPacketTypeCodec
     Objects.requireNonNull(context);
     Objects.requireNonNull(inputStream);
 
-    final int typeId = context.read(OerUint8.class, inputStream).getValue();
+    final int typeId = context.read(OerUint8.class, inputStream)
+        .getValue();
 
     try {
       return InterledgerPacketType.fromTypeId(typeId);
     } catch (InvalidPacketTypeException e) {
-      throw new RuntimeException(
-          "Encountered unsupported Interledger Packet Type.  Please extend "
-              + "InterledgerPacketTypeCodec and register it with the CodecContext to support this"
-              + "new type.",
-          e);
+      throw new RuntimeException("Encountered unsupported Interledger Packet Type.  Please extend "
+          + "InterledgerPacketTypeCodec and register it with the CodecContext to support this"
+          + "new type.", e);
     }
   }
 

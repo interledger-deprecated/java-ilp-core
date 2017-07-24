@@ -37,7 +37,7 @@ public class QuoteByDestinationAmountRequestOerCodec
         context.read(InterledgerAddress.class, inputStream);
 
     /* read the destination amount, which is a uint64 */
-    /* NOTE: we dont expect amounts to exceed 2^63 - 1, so we risk the down-cast */
+    /* NOTE: we don't expect amounts to exceed 2^63 - 1, so we risk the down-cast */
     long destinationAmount = context.read(OerUint64.class, inputStream).getValue().longValue();
 
     /* read the destination hold duration which is a unit32 */

@@ -17,10 +17,10 @@ public interface QuoteBySourceAmountRequest extends QuoteRequest {
    * Returns the amount the sender wishes to send, denominated in the asset of the source ledger.
    */
   long getSourceAmount();
-  
+
   @Override
   Duration getDestinationHoldDuration();
-  
+
   /**
    * A builder for instances of {@link QuoteBySourceAmountRequest}.
    */
@@ -29,6 +29,10 @@ public interface QuoteBySourceAmountRequest extends QuoteRequest {
     private InterledgerAddress destinationAccount;
     private long sourceAmount;
     private Duration destinationHoldDuration;
+
+    public static Builder builder() {
+      return new Builder();
+    }
 
     /**
      * Set the destination account address into this builder.
@@ -73,10 +77,6 @@ public interface QuoteBySourceAmountRequest extends QuoteRequest {
       return new Builder.Impl(this);
     }
 
-    public static Builder builder() {
-      return new Builder();
-    }
-
     /**
      * A private, immutable implementation of {@link QuoteBySourceAmountRequest}.
      */
@@ -94,18 +94,18 @@ public interface QuoteBySourceAmountRequest extends QuoteRequest {
 
         this.destinationAccount = Objects.requireNonNull(builder.destinationAccount,
             "destinationAccount must not be null!");
-        
+
         if (builder.sourceAmount < 0) {
           throw new IllegalArgumentException("Source amount must be at least 0");
         }
 
         this.sourceAmount = builder.sourceAmount;
-        
+
         this.destinationHoldDuration = Objects.requireNonNull(builder.destinationHoldDuration,
             "destinationHoldDuration must not be null!");
-        
+
       }
-      
+
       @Override
       public InterledgerAddress getDestinationAccount() {
         return this.destinationAccount;
@@ -115,7 +115,7 @@ public interface QuoteBySourceAmountRequest extends QuoteRequest {
       public long getSourceAmount() {
         return this.sourceAmount;
       }
-      
+
       @Override
       public Duration getDestinationHoldDuration() {
         return this.destinationHoldDuration;
@@ -132,19 +132,9 @@ public interface QuoteBySourceAmountRequest extends QuoteRequest {
 
         Impl impl = (Impl) obj;
 
-        if (!destinationAccount.equals(impl.destinationAccount)) {
-          return false;
-        }
-        
-        if (sourceAmount != impl.sourceAmount) {
-          return false;
-        }
-        
-        if (!destinationHoldDuration.equals(impl.destinationHoldDuration)) {
-          return false;
-        }
-        
-        return true;
+        return destinationAccount.equals(impl.destinationAccount)
+            && sourceAmount == impl.sourceAmount
+            && destinationHoldDuration.equals(impl.destinationHoldDuration);
       }
 
       @Override
@@ -157,14 +147,13 @@ public interface QuoteBySourceAmountRequest extends QuoteRequest {
 
       @Override
       public String toString() {
-        final StringBuilder sb = new StringBuilder("Impl{");
-        sb.append("destinationAccount=").append(destinationAccount);
-        sb.append(", sourceAmount=").append(sourceAmount);
-        sb.append(", destinationHoldDuration=").append(destinationHoldDuration);
-        sb.append('}');
-        return sb.toString();
+        return "Impl{"
+            + "destinationAccount=" + destinationAccount
+            + ", sourceAmount=" + sourceAmount
+            + ", destinationHoldDuration=" + destinationHoldDuration
+            + '}';
       }
     }
-  }  
+  }
 
 }

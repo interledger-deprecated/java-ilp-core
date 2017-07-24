@@ -7,8 +7,8 @@ import java.net.URI;
 /**
  * An implementation of {@link InterledgerPacketType} for ILQP Liquidity requests.
  */
-public class QuoteLiquidityRequestPacketType extends AbstractInterledgerPacketType implements
-    InterledgerPacketType {
+public class QuoteLiquidityRequestPacketType extends AbstractInterledgerPacketType
+    implements InterledgerPacketType {
 
   /**
    * No-args Constructor.

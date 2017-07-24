@@ -37,7 +37,7 @@ public class QuoteBySourceAmountRequestOerCodec implements QuoteBySourceAmountRe
         context.read(InterledgerAddress.class, inputStream);
     
     /* read the source amount, which is a uint64 */
-    /* NOTE: we dont expect amounts to exceed 2^63 - 1, so we risk the down-cast */
+    /* NOTE: we don't expect amounts to exceed 2^63 - 1, so we risk the down-cast */
     //TODO: should we change this?
     long sourceAmount = context.read(OerUint64.class, inputStream).getValue().longValue();
 

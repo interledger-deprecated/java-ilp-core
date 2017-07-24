@@ -39,7 +39,7 @@ public interface AccountInfo {
 
   /**
    * Flag indicating if the account is currently able to transact.
-   * 
+   *
    * @return true if the account is disabled.
    */
   boolean isDisabled();

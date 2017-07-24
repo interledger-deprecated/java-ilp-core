@@ -13,26 +13,24 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 /**
- * An extension of {@link Codec} for reading and writing an ASN.1 OER IA5String.
- * <p>The encoding of IA5String types depends on the size constraint present in the type, if any.
- * Interledger's usage of IA5String always uses a dynamic size constraint, so the encoding of the
- * string value consists of a length prefix followed by the encodings of each character.</p>
- * <p>After encoding a length-prefix using an instance of {@link OerLengthPrefixCodec}, each
- * character
- * in the supplied {@link String} will be encoded in one octet with the highest-order bit set to
- * zero.</p>
+ * An extension of {@link Codec} for reading and writing an ASN.1 OER IA5String. <p>The encoding of
+ * IA5String types depends on the size constraint present in the type, if any. Interledger's usage
+ * of IA5String always uses a dynamic size constraint, so the encoding of the string value consists
+ * of a length prefix followed by the encodings of each character.</p> <p>After encoding a
+ * length-prefix using an instance of {@link OerLengthPrefixCodec}, each character in the supplied
+ * {@link String} will be encoded in one octet with the highest-order bit set to zero.</p>
  */
 public class OerIA5StringCodec implements Codec<OerIA5String> {
 
   @Override
-  public OerIA5String read(
-      final CodecContext context, final InputStream inputStream
-  ) throws IOException {
+  public OerIA5String read(final CodecContext context, final InputStream inputStream)
+      throws IOException {
     Objects.requireNonNull(context);
     Objects.requireNonNull(inputStream);
 
     // Detect the length of the encoded IA5String, and move the buffer index to the correct spot.
-    final int length = context.read(OerLengthPrefix.class, inputStream).getLength();
+    final int length = context.read(OerLengthPrefix.class, inputStream)
+        .getLength();
     
     /* beware the 0-length string */
     final String result = (length == 0 ? "" : this.toString(inputStream, length));
@@ -41,15 +39,15 @@ public class OerIA5StringCodec implements Codec<OerIA5String> {
   }
 
   @Override
-  public void write(
-      final CodecContext context, final OerIA5String instance, final OutputStream outputStream
-  ) throws IOException {
+  public void write(final CodecContext context, final OerIA5String instance,
+      final OutputStream outputStream) throws IOException {
 
     Objects.requireNonNull(context);
     Objects.requireNonNull(instance);
     Objects.requireNonNull(outputStream);
 
-    final byte[] data = instance.getValue().getBytes();
+    final byte[] data = instance.getValue()
+        .getBytes();
 
     // Write the length-prefix, and move the buffer index to the correct spot.
     context.write(OerLengthPrefix.class, new OerLengthPrefix(data.length), outputStream);
@@ -59,11 +57,13 @@ public class OerIA5StringCodec implements Codec<OerIA5String> {
   }
 
   /**
-   * Convert an {@link InputStream} into a {@link String}.  Reference the SO below for an
-   * interesting performance comparison of various InputStream to String methodologies.
+   * Convert an {@link InputStream} into a {@link String}. Reference the SO below for an interesting
+   * performance comparison of various InputStream to String methodologies.
    *
    * @param inputStream An instance of {@link InputStream}.
+   *
    * @return A {@link String}
+   *
    * @throws IOException If the {@code inputStream} is unable to be read properly.
    * @see "http://stackoverflow.com/questions/309424/read-convert-an-inputstream-to-a-string"
    */
@@ -75,12 +75,12 @@ public class OerIA5StringCodec implements Codec<OerIA5String> {
     // Read lengthToRead bytes from the inputStream into the buffer...
     byte[] buffer = new byte[lengthToRead];
     int read = inputStream.read(buffer);
-    
+
     if (read != lengthToRead) {
       throw new IOException(
           "error reading " + lengthToRead + " bytes from stream, only read " + read);
     }
-    
+
     result.write(buffer, 0, lengthToRead);
     return result.toString(StandardCharsets.US_ASCII.name());
   }
@@ -128,11 +128,9 @@ public class OerIA5StringCodec implements Codec<OerIA5String> {
 
     @Override
     public String toString() {
-      final StringBuilder sb = new StringBuilder("IA5String{");
-      sb.append("value='").append(value).append('\'');
-      sb.append('}');
-      return sb.toString();
-
+      return "IA5String{"
+          + "value='" + value + '\''
+          + '}';
     }
   }
 }

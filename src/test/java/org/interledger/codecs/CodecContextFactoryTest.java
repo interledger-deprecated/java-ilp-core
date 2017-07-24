@@ -10,6 +10,15 @@ import org.interledger.codecs.oer.OerUint64Codec.OerUint64;
 import org.interledger.codecs.oer.OerUint8Codec.OerUint8;
 import org.interledger.codecs.packettypes.InterledgerPacketType;
 import org.interledger.ilp.InterledgerPayment;
+import org.interledger.ilqp.QuoteByDestinationAmountRequest;
+import org.interledger.ilqp.QuoteByDestinationAmountResponse;
+import org.interledger.ilqp.QuoteBySourceAmountRequest;
+import org.interledger.ilqp.QuoteBySourceAmountResponse;
+import org.interledger.ilqp.QuoteLiquidityRequest;
+import org.interledger.ilqp.QuoteLiquidityResponse;
+import org.interledger.ipr.InterledgerPaymentRequest;
+import org.interledger.psk.PskMessage;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -36,18 +45,17 @@ public class CodecContextFactoryTest {
     assertTrue(context.hasRegisteredCodec(InterledgerAddress.class));
     assertTrue(context.hasRegisteredCodec(InterledgerPacketType.class));
     assertTrue(context.hasRegisteredCodec(InterledgerPayment.class));
+    assertTrue(context.hasRegisteredCodec(InterledgerPaymentRequest.class));
 
-    // TODO: Add ILQP!
-    //    assertTrue(context.readable(InterledgerPacketType.ILQP_QUOTE_LIQUIDITY_REQUEST_TYPE));
-    // assertTrue(context.readable(InterledgerPacketType.ILQP_QUOTE_LIQUIDITY_RESPONSE_TYPE));
-    // assertTrue(context.readable(InterledgerPacketType.ILP_PAYMENT_TYPE));
-    // assertTrue(
-    //   context.readable(InterledgerPacketType.ILQP_QUOTE_BY_DESTINATION_AMOUNT_REQUEST_TYPE));
-    // assertTrue(
-    //  context.readable(InterledgerPacketType.ILQP_QUOTE_BY_DESTINATION_AMOUNT_RESPONSE_TYPE));
-    // assertTrue(context.readable(InterledgerPacketType.ILQP_QUOTE_BY_SOURCE_AMOUNT_REQUEST_TYPE));
-    // assertTrue(context
-    // .readable(InterledgerPacketType.ILQP_QUOTE_BY_SOURCE_AMOUNT_RESPONSE_TYPE));
+    //TODO Finish liquidity response
+    assertTrue(context.hasRegisteredCodec(QuoteLiquidityRequest.class));
+    //assertTrue(context.hasRegisteredCodec(QuoteLiquidityResponse.class));
+    assertTrue(context.hasRegisteredCodec(QuoteByDestinationAmountRequest.class));
+    assertTrue(context.hasRegisteredCodec(QuoteByDestinationAmountResponse.class));
+    assertTrue(context.hasRegisteredCodec(QuoteBySourceAmountRequest.class));
+    assertTrue(context.hasRegisteredCodec(QuoteBySourceAmountResponse.class));
+
+    assertTrue(context.hasRegisteredCodec(PskMessage.class));
   }
 
 }

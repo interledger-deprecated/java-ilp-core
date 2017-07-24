@@ -1,6 +1,5 @@
 package org.interledger.ilqp;
 
-
 import org.interledger.InterledgerPacket;
 
 import java.time.Duration;

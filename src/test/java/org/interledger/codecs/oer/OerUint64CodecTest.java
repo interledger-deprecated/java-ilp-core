@@ -3,10 +3,10 @@ package org.interledger.codecs.oer;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import com.google.common.primitives.Longs;
-
 import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.oer.OerUint64Codec.OerUint64;
+
+import com.google.common.primitives.Longs;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,6 +27,20 @@ public class OerUint64CodecTest {
 
   private CodecContext codecContext;
   private OerUint64Codec oerUint64Codec;
+  private final BigInteger inputValue;
+  private final byte[] asn1OerBytes;
+
+  /**
+   * Construct an instance of this parameterized test with the supplied inputs.
+   *
+   * @param inputValue   A {@code int} representing the unsigned 8bit integer to write in OER
+   *                     encoding.
+   * @param asn1OerBytes The expected value, in binary, of the supplied {@code intValue}.
+   */
+  public OerUint64CodecTest(final BigInteger inputValue, final byte[] asn1OerBytes) {
+    this.inputValue = inputValue;
+    this.asn1OerBytes = asn1OerBytes;
+  }
 
   /**
    * The data for this test...
@@ -113,40 +127,24 @@ public class OerUint64CodecTest {
             {new BigInteger("9223372036854775806"), Longs.toByteArray(Long.MAX_VALUE - 1L)},
             // 31
             {new BigInteger("9223372036854775807"), Longs.toByteArray(Long.MAX_VALUE)},
-            
+
             // 32 Eight bytes, beyond Long.MAX_VALUE
-            {new BigInteger("9223372036854775808"), 
-                new byte[] {(byte) 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}},
-            
+            {new BigInteger("9223372036854775808"),
+                new byte[]{(byte) 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}},
+
             // 33
-            {new BigInteger("9223372036854775809"), 
-                new byte[] {(byte) 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01}},
+            {new BigInteger("9223372036854775809"),
+                new byte[]{(byte) 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01}},
             // 33
             {new BigInteger("18446744073709551614"),
-                new byte[] {(byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF,
-                  (byte) 0xFF, (byte) 0xFF, (byte) 0xFE}},
+                new byte[]{(byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF,
+                    (byte) 0xFF, (byte) 0xFF, (byte) 0xFE}},
             // 34
-            {new BigInteger("18446744073709551615"), 
-                new byte[] {(byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, 
-                  (byte) 0xFF, (byte) 0xFF, (byte) 0xFF}}
+            {new BigInteger("18446744073709551615"),
+                new byte[]{(byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF,
+                    (byte) 0xFF, (byte) 0xFF, (byte) 0xFF}}
         }
     );
-  }
-
-  private BigInteger inputValue;
-
-  private byte[] asn1OerBytes;
-
-  /**
-   * Construct an instance of this parameterized test with the supplied inputs.
-   *
-   * @param inputValue   A {@code int} representing the unsigned 8bit integer to write in OER
-   *                     encoding.
-   * @param asn1OerBytes The expected value, in binary, of the supplied {@code intValue}.
-   */
-  public OerUint64CodecTest(final BigInteger inputValue, final byte[] asn1OerBytes) {
-    this.inputValue = inputValue;
-    this.asn1OerBytes = asn1OerBytes;
   }
 
   /**
@@ -164,7 +162,7 @@ public class OerUint64CodecTest {
     final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(asn1OerBytes);
     final BigInteger actualValue =
         oerUint64Codec.read(codecContext, byteArrayInputStream).getValue();
-    
+
     assertThat(actualValue, is(inputValue));
   }
 
@@ -183,8 +181,8 @@ public class OerUint64CodecTest {
     assertThat(byteArrayOutputStream.toByteArray(), is(asn1OerBytes));
 
     // Read...
-    final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(
-        byteArrayOutputStream.toByteArray());
+    final ByteArrayInputStream byteArrayInputStream =
+        new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
     final OerUint64 decodedValue = oerUint64Codec.read(codecContext, byteArrayInputStream);
 
     // Write...

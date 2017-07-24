@@ -12,14 +12,14 @@ import java.util.Objects;
  * Interledger packet using some sort of encoding, such as ANS.1, JSON, Protobuf or some other
  * encoding. Not all POJOs in this library are considered Interledger "packets". For example, an
  * {@link InterledgerAddress} is used in many packet implementations, but is not something that is
- * sent by itself "on the wire" to facilitate Interledger operations. Conversely, {@link
- * InterledgerPayment} is an Interledger packet because it is sent by itself  "on the wire" to
+ * sent by itself "on the wire" to facilitate Interledger operations. Conversely,
+ * {@link InterledgerPayment} is an Interledger packet because it is sent by itself "on the wire" to
  * facilitate Interledger operations.</p>
  */
 public interface InterledgerPacket {
 
   /**
-   * A handler interface that defines all types of {@link InterledgerPacket} to handle.  For actual
+   * A handler interface that defines all types of {@link InterledgerPacket} to handle. For actual
    * usage, consider an instance of {@link Handler.AbstractHandler}, which provides useful
    * scaffolding to assist in actually handling concrete packets at runtime.
    */
@@ -30,19 +30,21 @@ public interface InterledgerPacket {
      * type, apply some business logic, and optionally return a value in response.
      *
      * @param packet An instance of {@link InterledgerPacket}.
-     * @return An instance of type {@link R}, in response to the suppllied input.
+     *
+     * @return An instance of type {@link R}, in response to the supplied input.
      */
     R execute(InterledgerPacket packet);
 
     /**
-     * A handler for allowing callers to specify logic based upon an unknown result type.  This
-     * class can be used in the following manner:
+     * A handler for allowing callers to specify logic based upon an unknown result type. This class
+     * can be used in the following manner:
+     *
      * <pre>
      * <code>
      *
      * final InterledgerPacket decodedPacket = context.read(asn1OerPaymentBytes);
      * final String stringValue = new AbstractHandler&lt;String&gt;() {
-     *   protected String handle(final InterledgerPayment interledgerPayment) {
+     *   protected String handle(final InterledgerPayment interledgerPacket) {
      *      // ... do handling here.
      *      return interledgerPacket.toString();
      *   }
@@ -60,6 +62,7 @@ public interface InterledgerPacket {
        * Handle an instance of {@link InterledgerPayment}.
        *
        * @param interledgerPayment An instance of {@link InterledgerPayment}.
+       *
        * @return An instance of type {@link R}, in response to the supplied input.
        */
       protected abstract R handle(final InterledgerPayment interledgerPayment);
@@ -68,6 +71,7 @@ public interface InterledgerPacket {
        * Handle an instance of {@link QuoteLiquidityRequest}.
        *
        * @param quoteLiquidityRequest An instance of {@link QuoteLiquidityRequest}.
+       *
        * @return An instance of type {@link R}, in response to the supplied input.
        */
       protected abstract R handle(final QuoteLiquidityRequest quoteLiquidityRequest);
@@ -76,6 +80,7 @@ public interface InterledgerPacket {
        * Handle an instance of {@link QuoteLiquidityResponse}.
        *
        * @param quoteLiquidityResponse An instance of {@link QuoteLiquidityResponse}.
+       *
        * @return An instance of type {@link R}, in response to the supplied input.
        */
       protected abstract R handle(final QuoteLiquidityResponse quoteLiquidityResponse);
@@ -87,7 +92,8 @@ public interface InterledgerPacket {
        * type, apply some business logic, and optionally return a value in response.
        *
        * @param packet An instance of {@link InterledgerPacket}.
-       * @return An instance of type {@link R}, in response to the suppllied input.
+       *
+       * @return An instance of type {@link R}, in response to the supplied input.
        */
       @Override
       public final R execute(final InterledgerPacket packet) {
@@ -99,7 +105,7 @@ public interface InterledgerPacket {
         } else if (packet instanceof QuoteLiquidityResponse) {
           return this.handle((QuoteLiquidityResponse) packet);
         } else {
-          throw new RuntimeException(String.format("Unhandled InterledgerPacket: ", packet));
+          throw new RuntimeException("Unhandled InterledgerPacket: " +  packet);
         }
       }
 
@@ -107,10 +113,10 @@ public interface InterledgerPacket {
        * A utility class that provides default implementations of {@link AbstractHandler} so that a
        * caller is only forced to implement the handlers that are of interest. The idea behind this
        * class is that an implementor will only override the methods that are desired to be handled,
-       * and if any unimplemented methods are called, an exception will be thrown.  For example, if
-       * a caller knows that the result is going to be of type {@link InterledgerPayment}, then it
-       * is not useful to add boilerplate implementations of the other handler methods that do
-       * nothing, just to satisfy the abstract-class requirements of {@link AbstractHandler}.
+       * and if any unimplemented methods are called, an exception will be thrown. For example, if a
+       * caller knows that the result is going to be of type {@link InterledgerPayment}, then it is
+       * not useful to add boilerplate implementations of the other handler methods that do nothing,
+       * just to satisfy the abstract-class requirements of {@link AbstractHandler}.
        */
       public static class HelperHandler<R> extends AbstractHandler<R> {
 
@@ -136,7 +142,7 @@ public interface InterledgerPacket {
   }
 
   /**
-   * A handler interface that defines all types of {@link InterledgerPacket} to handle.  For actual
+   * A handler interface that defines all types of {@link InterledgerPacket} to handle. For actual
    * usage, consider an instance of {@link VoidHandler.AbstractVoidHandler}, which provides useful
    * scaffolding to assist in actually handling concrete packets at runtime.
    */
@@ -152,8 +158,9 @@ public interface InterledgerPacket {
 
     /**
      * An abstract implementation of {@link VoidHandler} for allowing callers to specify logic based
-     * upon an unknown result type extending {@link InterledgerPacket}.  This class can be used in
+     * upon an unknown result type extending {@link InterledgerPacket}. This class can be used in
      * the following manner:
+     *
      * <pre>
      * <code>
      * final InterledgerPacket decodedPacket = context.read(asn1OerPaymentBytes);
@@ -205,7 +212,7 @@ public interface InterledgerPacket {
         } else if (packet instanceof QuoteLiquidityResponse) {
           this.handle((QuoteLiquidityResponse) packet);
         } else {
-          throw new RuntimeException(String.format("Unhandled InterledgerPacket: ", packet));
+          throw new RuntimeException("Unhandled InterledgerPacket: " + packet);
         }
       }
 
@@ -214,10 +221,10 @@ public interface InterledgerPacket {
        * methods so that a caller is only forced to implement the handlers that are of interest. The
        * idea behind this class is that an implementor will only override the methods that are
        * desired to be handled, and if any unimplemented methods are called, an exception will be
-       * thrown.  For example, if a caller knows that the result is going to be of type {@link
-       * InterledgerPayment}, then it is not useful to add boilerplate implementations of the other
-       * handler methods that do nothing, just to satisfy the abstract-class requirements of {@link
-       * AbstractHandler}.
+       * thrown. For example, if a caller knows that the result is going to be of type
+       * {@link InterledgerPayment}, then it is not useful to add boilerplate implementations of the
+       * other handler methods that do nothing, just to satisfy the abstract-class requirements of
+       * {@link AbstractHandler}.
        */
       public static class HelperHandler extends AbstractVoidHandler {
 

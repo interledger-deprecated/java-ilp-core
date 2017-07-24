@@ -1,6 +1,6 @@
 group = 'org.interledger'
 description = 'Core libraries for implementing the Interledger suite of protocols.'
-version = '0.5.0-SNAPSHOT'
+version = '0.6.0-SNAPSHOT'
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
@@ -12,7 +12,8 @@ apply plugin: 'jacoco'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-/* 
+
+/*
  custom checkstyle properties for the build.
  see https://docs.gradle.org/current/dsl/org.gradle.api.plugins.quality.CheckstyleExtension.html
 */
@@ -35,6 +36,10 @@ jacocoTestReport {
 }
 
 jar {
+
+    //Include source in JAR
+    from sourceSets.main.allSource
+
     manifest {
         attributes 'Implementation-Title': description, 'Implementation-Version': version
     }
