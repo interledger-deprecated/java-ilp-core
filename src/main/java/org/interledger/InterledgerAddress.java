@@ -50,14 +50,6 @@ public interface InterledgerAddress {
   }
 
   /**
-   * Get builder initialized with the value of another address to enable copy-functionality.
-   */
-  static Builder builder(final InterledgerAddress interledgerAddress) {
-    Objects.requireNonNull(interledgerAddress, "InterledgerAddress must not be null!");
-    return new Builder().value(interledgerAddress.getValue());
-  }
-
-  /**
    * Return this address's value as a non-null {@link String}. For example:
    * <code>us.usd.bank.account</code>
    *

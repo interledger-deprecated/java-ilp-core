@@ -55,12 +55,6 @@ public class InterledgerAddressBuilderTest {
   }
 
   @Test
-  public void test_builder_copy() throws Exception {
-    final InterledgerAddress address = InterledgerAddress.builder().value(TEST1_US_USD_BOB).build();
-    assertThat(InterledgerAddress.builder(address).build(), is(address));
-  }
-
-  @Test
   public void testConstruction_DeliverableAddress() throws Exception {
     final InterledgerAddress address = InterledgerAddress.builder().value(TEST1_US_USD_BOB).build();
     assertThat(address.getValue(), is(TEST1_US_USD_BOB));

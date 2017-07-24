@@ -1,7 +1,10 @@
 package org.interledger.codecs.oer;
 
+import static java.lang.String.format;
+
 import org.interledger.codecs.Codec;
 import org.interledger.codecs.CodecContext;
+import org.interledger.codecs.CodecException;
 import org.interledger.codecs.oer.OerLengthPrefixCodec.OerLengthPrefix;
 import org.interledger.codecs.oer.OerOctetStringCodec.OerOctetString;
 
@@ -39,8 +42,8 @@ public class OerOctetStringCodec implements Codec<OerOctetString> {
 
     int bytesRead = inputStream.read(returnable);
     if (bytesRead < lengthPrefix) {
-      throw new RuntimeException(
-          String.format("Unexpected end of stream. Expected %s bytes but only read %s.",
+      throw new CodecException(
+          format("Unexpected end of stream. Expected %s bytes but only read %s.",
               lengthPrefix, bytesRead));
     }
     return new OerOctetString(returnable);

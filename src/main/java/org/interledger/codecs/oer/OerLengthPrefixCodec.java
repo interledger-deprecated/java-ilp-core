@@ -2,6 +2,7 @@ package org.interledger.codecs.oer;
 
 import org.interledger.codecs.Codec;
 import org.interledger.codecs.CodecContext;
+import org.interledger.codecs.CodecException;
 import org.interledger.codecs.oer.OerLengthPrefixCodec.OerLengthPrefix;
 
 import java.io.IOException;
@@ -112,6 +113,8 @@ public class OerLengthPrefixCodec implements Codec<OerLengthPrefix> {
    * an int. This is necessary because most traditional library assume a 4-byte array when
    * converting to an Integer.
    *
+   * @param bytes An array of up to 4 bytes representing an integer
+   *
    * @return the int representation of the given bytes
    */
   protected int toInt(final byte[] bytes) {
@@ -138,7 +141,7 @@ public class OerLengthPrefixCodec implements Codec<OerLengthPrefix> {
             | (bytes[3]) & 0x000000ff;
       }
       default: {
-        throw new RuntimeException("This method only supports arrays up to length 4!");
+        throw new CodecException("This method only supports arrays up to length 4!");
       }
     }
   }

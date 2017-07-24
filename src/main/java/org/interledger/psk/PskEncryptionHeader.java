@@ -1,5 +1,8 @@
 package org.interledger.psk;
 
+import org.interledger.InterledgerRuntimeException;
+import org.interledger.psk.PskMessage.Header;
+
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Objects;
@@ -56,7 +59,7 @@ public class PskEncryptionHeader extends PskMessage.Header {
    *
    * @throws RuntimeException if an encryption header can't be constructed of the given header
    */
-  public static PskEncryptionHeader fromHeader(PskMessage.Header header) {
+  public static PskEncryptionHeader fromHeader(Header header) {
 
     String value = header.getValue()
         .trim();
@@ -68,13 +71,13 @@ public class PskEncryptionHeader extends PskMessage.Header {
     String[] tokens = value.split(" ");
     if (tokens[0].equalsIgnoreCase(PskEncryptionType.AES_256_GCM.toString())) {
       if (tokens.length == 1) {
-        throw new RuntimeException("Invalid AES GCM encryption header. No auth tag.");
+        throw new InterledgerRuntimeException("Invalid AES GCM encryption header. No auth tag.");
       }
       return aesGcm(Base64.getUrlDecoder()
           .decode(tokens[1]));
     }
 
-    throw new RuntimeException("Invalid encryption header value.");
+    throw new InterledgerRuntimeException("Invalid encryption header value.");
   }
 
   /**

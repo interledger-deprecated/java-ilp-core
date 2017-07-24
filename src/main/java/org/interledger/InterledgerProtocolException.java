@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * Base ILP exception, see RFC REF: https://interledger.org/rfcs/0003-interledger-protocol/#errors
  */
-public class InterledgerException extends RuntimeException {
+public class InterledgerProtocolException extends InterledgerRuntimeException {
 
   private static final long serialVersionUID = 1L;
 
@@ -19,8 +19,8 @@ public class InterledgerException extends RuntimeException {
    * @param interledgerError An instance of {@link InterledgerError} that is the underlying error
    *                         encapsulated by this exception.
    */
-  public InterledgerException(final InterledgerError interledgerError) {
-    super();
+  public InterledgerProtocolException(final InterledgerError interledgerError) {
+    super("Interledger protocol error.");
     this.interledgerError =
         Objects.requireNonNull(interledgerError, "interledgerError must not be null");
   }

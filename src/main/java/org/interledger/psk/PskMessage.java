@@ -1,5 +1,7 @@
 package org.interledger.psk;
 
+import org.interledger.InterledgerRuntimeException;
+
 import java.time.OffsetDateTime;
 import java.time.temporal.TemporalAmount;
 import java.util.ArrayList;
@@ -185,13 +187,14 @@ public interface PskMessage {
       if (header.getName()
           .equalsIgnoreCase(PskMessage.Header.WellKnown.NONCE)) {
         if (this.nonceHeader != null) {
-          throw new RuntimeException("Unable to add nonce header. Nonce is already defined.");
+          throw new InterledgerRuntimeException(
+              "Unable to add nonce header. Nonce is already defined.");
         }
         this.nonceHeader = PskNonceHeader.fromHeader(header);
       } else if (header.getName()
           .equalsIgnoreCase(PskMessage.Header.WellKnown.ENCRYPTION)) {
         if (this.encryptionHeader != null) {
-          throw new RuntimeException(
+          throw new InterledgerRuntimeException(
               "Unable to add encryption header. Encryption is already defined.");
         }
         this.encryptionHeader = PskEncryptionHeader.fromHeader(header);
@@ -348,7 +351,8 @@ public interface PskMessage {
 
         if (encryptionHeader.getEncryptionType() != PskEncryptionType.NONE
             && privateHeaders.size() > 0) {
-          throw new RuntimeException("Can't build an encrypted message with private headers");
+          throw new InterledgerRuntimeException(
+              "Can't build an encrypted message with private headers");
         }
         if (builder.data == null) {
           data = new byte[]{};

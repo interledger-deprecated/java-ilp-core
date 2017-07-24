@@ -1,5 +1,7 @@
 package org.interledger.psk;
 
+import org.interledger.InterledgerRuntimeException;
+
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -96,9 +98,9 @@ public class PskCryptoUtils {
       };
     } catch (BadPaddingException | NoSuchAlgorithmException | NoSuchPaddingException
         | InvalidAlgorithmParameterException | IllegalBlockSizeException e) {
-      throw new RuntimeException("Error encrypting data of PSK message.", e);
+      throw new InterledgerRuntimeException("Error encrypting data of PSK message.", e);
     } catch (InvalidKeyException e) {
-      throw new RuntimeException("Error encrypting data of PSK message. "
+      throw new InterledgerRuntimeException("Error encrypting data of PSK message. "
           + "Ensure Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files "
           + "are installed to allow for 256-bit AES keys.", e);
     }
@@ -123,7 +125,8 @@ public class PskCryptoUtils {
     Objects.requireNonNull(encryptedData, "cannot decrypt null data");
 
     if (nonce.length != NONCE_LEN_BYTES) {
-      throw new RuntimeException("Invalid PSK message - nonce must be " + NONCE_LEN_BYTES);
+      throw new InterledgerRuntimeException(
+          "Invalid PSK message - nonce must be " + NONCE_LEN_BYTES);
     }
 
     Cipher cipher;
@@ -142,9 +145,9 @@ public class PskCryptoUtils {
       return cipher.doFinal(authTag);
     } catch (InvalidAlgorithmParameterException | NoSuchPaddingException | IllegalBlockSizeException
         | BadPaddingException | NoSuchAlgorithmException e) {
-      throw new RuntimeException("Error decrypting data of PSK message.", e);
+      throw new InterledgerRuntimeException("Error decrypting data of PSK message.", e);
     } catch (InvalidKeyException e) {
-      throw new RuntimeException("Error decrypting data of PSK message. "
+      throw new InterledgerRuntimeException("Error decrypting data of PSK message. "
           + "Ensure Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files "
           + "are installed to allow for 256-bit AES keys.", e);
     }

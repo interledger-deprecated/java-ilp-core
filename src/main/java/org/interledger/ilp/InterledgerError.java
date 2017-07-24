@@ -1,6 +1,7 @@
 package org.interledger.ilp;
 
 import org.interledger.InterledgerAddress;
+import org.interledger.InterledgerRuntimeException;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -48,8 +49,9 @@ public class InterledgerError {
           // has already been found. This means that the error is
           // "running-in-circles" trying to reach the client. This must never happen.
           // launch a RuntimeException to break the loop.
-          throw new RuntimeException("CRITICAL, InterledgerError: " + selfAddress.getValue()
-              + "was already found in the forwardedBy list");
+          throw new InterledgerRuntimeException(
+              "CRITICAL, InterledgerError: " + selfAddress.getValue()
+                  + "was already found in the forwardedBy list");
         }
       }
       forwardedBy.add(selfAddress);
@@ -58,12 +60,16 @@ public class InterledgerError {
   }
 
   /**
-   * Constructs an instance of <code>InterledgerException</code> with default parameters for
+   * Constructs an instance of <code>InterledgerProtocolException</code> with default parameters for
    * forwardedBy (Empty list) and triggeredAt (ZonedDateTime.now()). In most situations such values
    * match the default ones when triggering a new exception (vs an exception received from another
    * ILP node that is being forwarded back to originating request clients).
    * <p>Check the RFC https://interledger.org/rfcs/0003-interledger-protocol/#errors for the newest
    * updated doc.</p>
+   *
+   * @param errorCode Error code for the error
+   * @param data Meta data
+   * @param triggeredBy The address of the node that triggered the error (if known)
    */
   public InterledgerError(ErrorCode errorCode, InterledgerAddress triggeredBy, String data) {
     this(errorCode, triggeredBy, ZonedDateTime.now(), new java.util.ArrayList<>(),
@@ -148,7 +154,7 @@ public class InterledgerError {
           .trim();
 
       if (code.length() < 3) {
-        throw new RuntimeException(
+        throw new InterledgerRuntimeException(
             "Per IL-RFC-3, error code length must be at least 3 characters!");
       }
 

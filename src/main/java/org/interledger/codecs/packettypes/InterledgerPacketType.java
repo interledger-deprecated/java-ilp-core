@@ -1,5 +1,7 @@
 package org.interledger.codecs.packettypes;
 
+import org.interledger.InterledgerRuntimeException;
+
 import java.net.URI;
 import java.util.Objects;
 
@@ -76,7 +78,7 @@ public interface InterledgerPacketType {
   /**
    * An exception that indicates if a packet type is invalid for the current implementation.
    */
-  class InvalidPacketTypeException extends RuntimeException {
+  class InvalidPacketTypeException extends InterledgerRuntimeException {
 
     private static final long serialVersionUID = 6086784345849001539L;
 

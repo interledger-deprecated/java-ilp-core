@@ -1,7 +1,10 @@
 package org.interledger.codecs.oer;
 
+import static java.lang.String.format;
+
 import org.interledger.codecs.Codec;
 import org.interledger.codecs.CodecContext;
+import org.interledger.codecs.CodecException;
 import org.interledger.codecs.oer.OerUint256Codec.OerUint256;
 
 import java.io.IOException;
@@ -37,8 +40,8 @@ public class OerUint256Codec implements Codec<OerUint256> {
     int bytesRead = inputStream.read(returnable);
 
     if (bytesRead != 32) {
-      throw new RuntimeException(
-          String.format("Attempted to read a UInt256 and only got %s bytes.", bytesRead));
+      throw new CodecException(
+          format("Attempted to read a UInt256 and only got %s bytes.", bytesRead));
     }
 
     return new OerUint256(returnable);

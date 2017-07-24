@@ -105,7 +105,7 @@ public interface InterledgerPacket {
         } else if (packet instanceof QuoteLiquidityResponse) {
           return this.handle((QuoteLiquidityResponse) packet);
         } else {
-          throw new RuntimeException("Unhandled InterledgerPacket: " +  packet);
+          throw new InterledgerRuntimeException("Unhandled InterledgerPacket: " + packet);
         }
       }
 
@@ -122,19 +122,19 @@ public interface InterledgerPacket {
 
         @Override
         protected R handle(InterledgerPayment interledgerPayment) {
-          throw new RuntimeException(
+          throw new InterledgerRuntimeException(
               "Not yet implemented. Override this method to provide a useful implementation!");
         }
 
         @Override
         protected R handle(QuoteLiquidityRequest quoteLiquidityRequest) {
-          throw new RuntimeException(
+          throw new InterledgerRuntimeException(
               "Not yet implemented. Override this method to provide a useful implementation!");
         }
 
         @Override
         protected R handle(QuoteLiquidityResponse quoteLiquidityResponse) {
-          throw new RuntimeException(
+          throw new InterledgerRuntimeException(
               "Not yet implemented. Override this method to provide a useful implementation!");
         }
       }
@@ -212,7 +212,7 @@ public interface InterledgerPacket {
         } else if (packet instanceof QuoteLiquidityResponse) {
           this.handle((QuoteLiquidityResponse) packet);
         } else {
-          throw new RuntimeException("Unhandled InterledgerPacket: " + packet);
+          throw new InterledgerRuntimeException("Unhandled InterledgerPacket: " + packet);
         }
       }
 
@@ -230,19 +230,19 @@ public interface InterledgerPacket {
 
         @Override
         protected void handle(InterledgerPayment interledgerPayment) {
-          throw new RuntimeException(
+          throw new InterledgerRuntimeException(
               "Not yet implemented. Override this method to provide a useful implementation!");
         }
 
         @Override
         protected void handle(QuoteLiquidityRequest quoteLiquidityRequest) {
-          throw new RuntimeException(
+          throw new InterledgerRuntimeException(
               "Not yet implemented. Override this method to provide a useful implementation!");
         }
 
         @Override
         protected void handle(QuoteLiquidityResponse quoteLiquidityResponse) {
-          throw new RuntimeException(
+          throw new InterledgerRuntimeException(
               "Not yet implemented. Override this method to provide a useful implementation!");
         }
       }

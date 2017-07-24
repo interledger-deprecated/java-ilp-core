@@ -102,7 +102,7 @@ public interface Fulfillment {
               .hash(hash)
               .build();
         } catch (NoSuchAlgorithmException e) {
-          throw new RuntimeException(e);
+          throw new InterledgerRuntimeException(e);
         }
       }
 

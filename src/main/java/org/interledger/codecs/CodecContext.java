@@ -119,6 +119,7 @@ public class CodecContext {
     Objects.requireNonNull(inputStream);
 
     if (InterledgerPacket.class.isAssignableFrom(type)) {
+      //noinspection ResultOfMethodCallIgnored
       inputStream.read(); // swallow type field
     }
     return lookup(type).read(this, inputStream);

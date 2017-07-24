@@ -22,7 +22,7 @@ checkstyle {
     toolVersion '7.1'
     showViolations = true
     /* 
-       by default, checkstyle warnings dont fail the build. but we want exactly that for circle-ci 
+       by default, checkstyle warnings don't fail the build. but we want exactly that for circle-ci
        pass/fail reporting, so tell the plugin to break the build on the first error 
     */
     maxWarnings = 0
