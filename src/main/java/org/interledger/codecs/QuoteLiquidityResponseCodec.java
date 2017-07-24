@@ -5,11 +5,11 @@ import org.interledger.codecs.packettypes.QuoteLiquidityResponsePacketType;
 import org.interledger.ilqp.QuoteLiquidityResponse;
 
 /**
- * An implementation of {@link Codec} that reads and writes instances of {@link
- * QuoteLiquidityResponse}.
+ * An implementation of {@link Codec} that reads and writes instances of
+ * {@link QuoteLiquidityResponse}.
  */
-public interface QuoteLiquidityResponseCodec extends
-    InterledgerPacketCodec<QuoteLiquidityResponse> {
+public interface QuoteLiquidityResponseCodec
+    extends InterledgerPacketCodec<QuoteLiquidityResponse> {
 
   InterledgerPacketType TYPE = new QuoteLiquidityResponsePacketType();
 

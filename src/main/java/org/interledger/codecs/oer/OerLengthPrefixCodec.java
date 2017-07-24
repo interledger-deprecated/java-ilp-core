@@ -12,14 +12,12 @@ import java.util.Objects;
 /**
  * <p>An extension of {@link Codec} for reading and writing an ASN.1 OER Length prefix octets.</p>
  * <p>A length prefix specifies the length of a subsequent encoded object in terms of number of
- * octets required to encoded that object.</p>
- * <p>The following rules apply:</p>
- * <p>If the number of octets required to encode an object is less than 128, then that length is
- * encoded in the lowest-order 7 bit positions of the first and only octet.  The highest-order
- * bit of the octet is set to zero.</p>
- * <p>Conversely, the number of octets required to encode an object is greater than 127, then
- * then that length is encoded into 2 or more octets as follows: The first octet will have its
- * highest-order bit set to 1, with the remaining 7 octets representing the number of subsequent
+ * octets required to encoded that object.</p> <p>The following rules apply:</p> <p>If the number of
+ * octets required to encode an object is less than 128, then that length is encoded in the
+ * lowest-order 7 bit positions of the first and only octet. The highest-order bit of the octet is
+ * set to zero.</p> <p>Conversely, the number of octets required to encode an object is greater than
+ * 127, then then that length is encoded into 2 or more octets as follows: The first octet will have
+ * its highest-order bit set to 1, with the remaining 7 octets representing the number of subsequent
  * octets required to encode a number representing the actual length of the encoded object.
  * Depending on the value of that first length number (called 'N' for now), the next N octets will
  * encode a number representing the number of octets required to encode the actual object.</p>
@@ -46,12 +44,12 @@ public class OerLengthPrefixCodec implements Codec<OerLengthPrefix> {
       // Convert the bytes into an integer...
       byte[] ba = new byte[lengthOfLength];
       int read = inputStream.read(ba, 0, lengthOfLength);
-      
+
       if (read != lengthOfLength) {
         throw new IOException(
             "error reading " + lengthOfLength + " bytes from stream, only read " + read);
       }
-      
+
       numEncodedOctets = toInt(ba);
     }
 
@@ -59,10 +57,8 @@ public class OerLengthPrefixCodec implements Codec<OerLengthPrefix> {
   }
 
   @Override
-  public void write(
-      final CodecContext context, final OerLengthPrefix oerLengthPrefix,
-      final OutputStream outputStream
-  ) throws IOException {
+  public void write(final CodecContext context, final OerLengthPrefix oerLengthPrefix,
+      final OutputStream outputStream) throws IOException {
 
     Objects.requireNonNull(context);
     Objects.requireNonNull(oerLengthPrefix);
@@ -80,47 +76,43 @@ public class OerLengthPrefixCodec implements Codec<OerLengthPrefix> {
       if (length <= 127) {
         // Write the first byte
         outputStream.write(length);
-        //return 1;
+        // return 1;
       } else if (length <= 255) {
         // Write the first byte
         outputStream.write(128 + 1);
         outputStream.write(length);
-        //return 2;
+        // return 2;
       } else if (length <= 65535) {
         outputStream.write(128 + 2);
         // Write the first byte, then the second byte.
         outputStream.write((length >> 8));
         outputStream.write(length);
-        //return 3;
+        // return 3;
       } else if (length <= 16777215) {
         outputStream.write(128 + 3);
         // Write three bytes
         outputStream.write((length >> 16));
         outputStream.write((length >> 8));
         outputStream.write(length);
-        //return 4;
-      } else if (length <= Integer.MAX_VALUE) {
+        // return 4;
+      } else {
         outputStream.write(128 + 4);
         // Write four bytes,
         outputStream.write((length >> 24));
         outputStream.write((length >> 16));
         outputStream.write((length >> 8));
         outputStream.write(length);
-        //return 5;
-      } else {
-        throw new IllegalArgumentException(
-            String
-                .format("Field lengths of greater than %s are not supported.",
-                    Integer.MAX_VALUE));
       }
     }
 
   }
 
   /**
-   * Helper method to convert a byte array of varying length (assuming not larger than 4 bytes)
-   * into an int.  This is necessary because most traditional library assume a 4-byte array when
+   * Helper method to convert a byte array of varying length (assuming not larger than 4 bytes) into
+   * an int. This is necessary because most traditional library assume a 4-byte array when
    * converting to an Integer.
+   *
+   * @return the int representation of the given bytes
    */
   protected int toInt(final byte[] bytes) {
 
@@ -128,23 +120,22 @@ public class OerLengthPrefixCodec implements Codec<OerLengthPrefix> {
       case 0:
         return 0;
       case 1: {
-        return (bytes[0] << 0) & 0x000000ff;
+        return (bytes[0]) & 0x000000ff;
       }
       case 2: {
         return (bytes[0] << 8) & 0x0000ff00
-            | (bytes[1] << 0) & 0x000000ff;
+            | (bytes[1]) & 0x000000ff;
       }
       case 3: {
-        return
-            (bytes[0] << 16) & 0x00ff0000
-                | (bytes[1] << 8) & 0x0000ff00
-                | (bytes[2] << 0) & 0x000000ff;
+        return (bytes[0] << 16) & 0x00ff0000
+            | (bytes[1] << 8) & 0x0000ff00
+            | (bytes[2]) & 0x000000ff;
       }
       case 4: {
         return (bytes[0] << 24) & 0xff000000
             | (bytes[1] << 16) & 0x00ff0000
             | (bytes[2] << 8) & 0x0000ff00
-            | (bytes[3] << 0) & 0x000000ff;
+            | (bytes[3]) & 0x000000ff;
       }
       default: {
         throw new RuntimeException("This method only supports arrays up to length 4!");
@@ -190,10 +181,9 @@ public class OerLengthPrefixCodec implements Codec<OerLengthPrefix> {
 
     @Override
     public String toString() {
-      final StringBuilder sb = new StringBuilder("LengthPrefix{");
-      sb.append("length=").append(length);
-      sb.append('}');
-      return sb.toString();
+      return "LengthPrefix{"
+          + "length=" + length
+          + '}';
     }
   }
 

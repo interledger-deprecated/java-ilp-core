@@ -1,7 +1,6 @@
 package org.interledger.codecs.oer.ilp;
 
 import org.interledger.Condition;
-import org.interledger.InterledgerAddress;
 import org.interledger.codecs.Codec;
 import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.ConditionCodec;
@@ -22,8 +21,9 @@ public class ConditionOerCodec implements ConditionCodec {
       throws IOException {
     Objects.requireNonNull(context);
     Objects.requireNonNull(inputStream);
-    final byte[] value = context.read(OerUint256.class, inputStream).getValue();
-    return new Condition(value);
+    final byte[] value = context.read(OerUint256.class, inputStream)
+        .getValue();
+    return Condition.of(value);
   }
 
   @Override

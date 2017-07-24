@@ -72,6 +72,7 @@ public interface LedgerAdaptor {
    * Get basic details of an account.
    *
    * @param account The local account identifier
+   *
    * @return Details of the account requested.
    */
   AccountInfo getAccountInfo(InterledgerAddress account);

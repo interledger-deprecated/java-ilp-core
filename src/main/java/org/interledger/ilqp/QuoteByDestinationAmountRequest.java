@@ -17,19 +17,23 @@ public interface QuoteByDestinationAmountRequest extends QuoteRequest {
    * Returns fixed the amount that will arrive at the receiver.
    */
   long getDestinationAmount();
-  
+
   @Override
   Duration getDestinationHoldDuration();
-  
+
   /**
    * A builder for instances of {@link QuoteByDestinationAmountRequest}.
    */
   class Builder {
-    
+
     private InterledgerAddress destinationAccount;
     private long destinationAmount;
     private Duration destinationHoldDuration;
-    
+
+    public static Builder builder() {
+      return new Builder();
+    }
+
     /**
      * Set the destination account address into this builder.
      *
@@ -63,51 +67,47 @@ public interface QuoteByDestinationAmountRequest extends QuoteRequest {
       this.destinationHoldDuration = Objects.requireNonNull(destinationHoldDuration);
       return this;
     }
-    
+
     /**
      * The method that actually constructs a QuoteByDestinationAmountRequest.
-     * 
+     *
      * @return An instance of {@link QuoteByDestinationAmountRequest}
      */
     public QuoteByDestinationAmountRequest build() {
       return new Builder.Impl(this);
     }
-    
-    public static Builder builder() {
-      return new Builder();
-    }
-    
+
     /**
      * A private, immutable implementation of {@link QuoteByDestinationAmountRequest}.
      */
     private static class Impl implements QuoteByDestinationAmountRequest {
 
       private final InterledgerAddress destinationAccount;
-      private long destinationAmount;
       private final Duration destinationHoldDuration;
-      
+      private long destinationAmount;
+
       /**
        * Constructs an instance from the values held in the builder.
-       * 
+       *
        * @param builder A Builder used to construct {@link QuoteByDestinationAmountRequest}
-       *        instances.
+       *                instances.
        */
       private Impl(final Builder builder) {
         Objects.requireNonNull(builder);
-        
+
         this.destinationAccount = Objects.requireNonNull(builder.destinationAccount,
             "destinationAccount must not be null!");
-        
+
         if (builder.destinationAmount < 0) {
           throw new IllegalArgumentException("Destination amount must be at least 0");
         }
 
         this.destinationAmount = builder.destinationAmount;
-        
+
         this.destinationHoldDuration = Objects.requireNonNull(builder.destinationHoldDuration,
             "destinationHoldDuration must not be null!");
       }
-      
+
       @Override
       public InterledgerAddress getDestinationAccount() {
         return this.destinationAccount;
@@ -122,7 +122,7 @@ public interface QuoteByDestinationAmountRequest extends QuoteRequest {
       public Duration getDestinationHoldDuration() {
         return this.destinationHoldDuration;
       }
-      
+
       @Override
       public boolean equals(Object obj) {
         if (this == obj) {
@@ -134,19 +134,9 @@ public interface QuoteByDestinationAmountRequest extends QuoteRequest {
 
         Impl impl = (Impl) obj;
 
-        if (!destinationAccount.equals(impl.destinationAccount)) {
-          return false;
-        }
-        
-        if (destinationAmount != impl.destinationAmount) {
-          return false;
-        }
-        
-        if (!destinationHoldDuration.equals(impl.destinationHoldDuration)) {
-          return false;
-        }
-        
-        return true;
+        return destinationAccount.equals(impl.destinationAccount)
+            && destinationAmount == impl.destinationAmount
+            && destinationHoldDuration.equals(impl.destinationHoldDuration);
       }
 
       @Override
@@ -159,12 +149,11 @@ public interface QuoteByDestinationAmountRequest extends QuoteRequest {
 
       @Override
       public String toString() {
-        final StringBuilder sb = new StringBuilder("Impl{");
-        sb.append("destinationAccount=").append(destinationAccount);
-        sb.append(", destinationAmount=").append(destinationAmount);
-        sb.append(", destinationHoldDuration=").append(destinationHoldDuration);
-        sb.append('}');
-        return sb.toString();
+        return "Impl{"
+            + "destinationAccount=" + destinationAccount
+            + ", destinationAmount=" + destinationAmount
+            + ", destinationHoldDuration=" + destinationHoldDuration
+            + '}';
       }
     }
   }
