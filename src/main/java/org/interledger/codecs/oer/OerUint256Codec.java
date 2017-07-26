@@ -1,7 +1,10 @@
 package org.interledger.codecs.oer;
 
+import static java.lang.String.format;
+
 import org.interledger.codecs.Codec;
 import org.interledger.codecs.CodecContext;
+import org.interledger.codecs.CodecException;
 import org.interledger.codecs.oer.OerUint256Codec.OerUint256;
 
 import java.io.IOException;
@@ -21,9 +24,10 @@ public class OerUint256Codec implements Codec<OerUint256> {
   /**
    * ASN.1 256BitUInt: Alias for a fixed length octet string of 32 octets.
    *
-   * @param context An instance of {@link CodecContext}.
+   * @param context     An instance of {@link CodecContext}.
    * @param inputStream An instance of @link InputStream}.
-   * @throws IOException If there is a problem writing to the {@code stream}.
+   *
+   * @throws IOException              If there is a problem writing to the {@code stream}.
    * @throws IllegalArgumentException If the input has a value greater than 18446744073709551615.
    */
   @Override
@@ -36,8 +40,8 @@ public class OerUint256Codec implements Codec<OerUint256> {
     int bytesRead = inputStream.read(returnable);
 
     if (bytesRead != 32) {
-      throw new RuntimeException(
-          String.format("Attempted to read a UInt256 and only got %s bytes.", bytesRead));
+      throw new CodecException(
+          format("Attempted to read a UInt256 and only got %s bytes.", bytesRead));
     }
 
     return new OerUint256(returnable);
@@ -46,10 +50,11 @@ public class OerUint256Codec implements Codec<OerUint256> {
   /**
    * ASN.1 256BitUInt: Alias for a fixed length octet string of 32 octets.
    *
-   * @param context An instance of {@link CodecContext}.
-   * @param instance An instance of {@link OerUint256}.
+   * @param context      An instance of {@link CodecContext}.
+   * @param instance     An instance of {@link OerUint256}.
    * @param outputStream An instance of {@link OutputStream}.
-   * @throws IOException If there is a problem writing to the {@code stream}.
+   *
+   * @throws IOException              If there is a problem writing to the {@code stream}.
    * @throws IllegalArgumentException If the input has a value greater than 18446744073709551615.
    */
   @Override
@@ -72,7 +77,7 @@ public class OerUint256Codec implements Codec<OerUint256> {
 
     /**
      * Create a new OerUint256 from the given byte array
-     * 
+     *
      * @param value a byte array of 32 bytes.
      */
     public OerUint256(final byte[] value) {
@@ -112,10 +117,9 @@ public class OerUint256Codec implements Codec<OerUint256> {
 
     @Override
     public String toString() {
-      final StringBuilder sb = new StringBuilder("OerUint256{");
-      sb.append("value=").append(Arrays.toString(value));
-      sb.append('}');
-      return sb.toString();
+      return "OerUint256{"
+          + "value=" + Arrays.toString(value)
+          + '}';
     }
   }
 }

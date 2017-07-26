@@ -3,12 +3,13 @@ package org.interledger.codecs.oer.ilp;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import org.interledger.InterledgerAddressBuilder;
+import org.interledger.InterledgerAddress;
 import org.interledger.InterledgerPacket;
 import org.interledger.codecs.Codec;
 import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.CodecContextFactory;
 import org.interledger.ilp.InterledgerPayment;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -44,24 +45,17 @@ public class InterledgerPaymentOerCodecTests {
       byteArrayOutputStream.write(i);
     }
 
-    return Arrays.asList(new Object[][]{
-        {new InterledgerPayment.Builder()
-            .destinationAccount(InterledgerAddressBuilder.builder().value("test3.foo").build())
-            .destinationAmount(100L)
-            .data(new byte[]{})
-            .build()},
+    return Arrays.asList(new Object[][]{{new InterledgerPayment.Builder()
+        .destinationAccount(InterledgerAddress.builder().value("test3.foo").build())
+        .destinationAmount(100L).data(new byte[]{}).build()},
 
         {new InterledgerPayment.Builder()
-            .destinationAccount(InterledgerAddressBuilder.builder().value("test1.bar").build())
-            .destinationAmount(50L)
-            .data(new byte[]{1, 2, 3, 4, 5, 6, 7, 8})
-            .build()},
+            .destinationAccount(InterledgerAddress.builder().value("test1.bar").build())
+            .destinationAmount(50L).data(new byte[]{1, 2, 3, 4, 5, 6, 7, 8}).build()},
 
         {new InterledgerPayment.Builder()
-            .destinationAccount(InterledgerAddressBuilder.builder().value("test1.bar").build())
-            .destinationAmount(50L)
-            .data(byteArrayOutputStream.toByteArray())
-            .build()},
+            .destinationAccount(InterledgerAddress.builder().value("test1.bar").build())
+            .destinationAmount(50L).data(byteArrayOutputStream.toByteArray()).build()},
 
     });
   }
@@ -82,8 +76,8 @@ public class InterledgerPaymentOerCodecTests {
 
   /**
    * The primary difference between this test and {@link #testIndividualRead()} is that this context
-   * determines the interledgerPayment type from the payload, whereas the test above specifies the
-   * type in the method call.
+   * determines the ipr type from the payload, whereas the test above specifies the type in the
+   * method call.
    */
   @Test
   public void testInterledgerPaymentCodec() throws Exception {

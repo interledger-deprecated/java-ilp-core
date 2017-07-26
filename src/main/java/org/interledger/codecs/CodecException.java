@@ -1,14 +1,14 @@
 package org.interledger.codecs;
 
+import org.interledger.InterledgerRuntimeException;
+
 /**
  * An extension of {@link RuntimeException} to represent errors that occur during encoding or
  * decoding.
  */
-public class CodecException extends RuntimeException {
+public class CodecException extends InterledgerRuntimeException {
 
-  public CodecException() {
-    super();
-  }
+  private static final long serialVersionUID = 6647367875148981736L;
 
   public CodecException(String message) {
     super(message);

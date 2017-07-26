@@ -3,44 +3,119 @@ package org.interledger.ipr;
 import org.interledger.Condition;
 import org.interledger.ilp.InterledgerPayment;
 
+import java.util.Objects;
+
 /**
  * An Interledger Payment Request as defined in ILP RFC 11.
  *
  * @see "https://github.com/interledger/rfcs/blob/master/0011-interledger-payment-request/0011
- *      -interledger-payment-request.md"
+ * -interledger-payment-request.md"
  */
 
-public class InterledgerPaymentRequest {
+public interface InterledgerPaymentRequest {
 
-  private static int VERSION = 2;
-
-  private InterledgerPayment packet;
-  private Condition condition;
-
-  public InterledgerPaymentRequest(InterledgerPayment packet, Condition condition) {
-    this.packet = packet;
-    this.condition = condition;
+  /**
+   * Get the default builder.
+   *
+   * @return a {@link Builder} instance.
+   */
+  static Builder builder() {
+    return new Builder();
   }
 
-  public int getVersion() {
-    return VERSION;
+  /**
+   * Get the version of this IPR (this interface represents Version 2).
+   *
+   * @return The version of the IPR (currently 2)
+   */
+  default int getVersion() {
+    return 2;
   }
 
-  public InterledgerPayment getPacket() {
-    return packet;
-  }
+  /**
+   * The Interledger Payment being requested.
+   *
+   * @return an Interledger Payment.
+   */
+  InterledgerPayment getInterledgerPayment();
 
-  public Condition getCondition() {
-    return condition;
-  }
+  /**
+   * The {@link Condition} to use when sending the payment.
+   *
+   * @return a Condition
+   */
+  Condition getCondition();
 
-  public void setPacket(InterledgerPayment packet) {
-    this.packet = packet;
-  }
+  class Builder {
 
-  public void setCondition(Condition condition) {
-    this.condition = condition;
-  }
+    private InterledgerPayment interledgerPayment;
+    private Condition condition;
 
+    /**
+     * Set the Interledger Payment packet for this IPR.
+     *
+     * @param interledgerPayment The Interledger Payment packet to use when building this IPR
+     *
+     * @return this builder
+     */
+    public Builder payment(InterledgerPayment interledgerPayment) {
+      this.interledgerPayment = Objects.requireNonNull(interledgerPayment);
+      return this;
+    }
+
+    /**
+     * Set the Condition for this IPR.
+     *
+     * @param condition The {@link Condition} to use when building this IPR
+     *
+     * @return this builder
+     */
+    public Builder condition(Condition condition) {
+      this.condition = Objects.requireNonNull(condition);
+      return this;
+    }
+
+    /**
+     * Get the IPR.
+     *
+     * <p>Calling this will result in the internal PSK message being built (and encrypted unless
+     * encryption is disabled).
+     *
+     * <p>After the PSK message is built the ILP Packet is built and OER encoded before the
+     * Condition is generated.
+     *
+     * @return an Interledger Payment Request.
+     */
+    public InterledgerPaymentRequest build() {
+      return new Impl(interledgerPayment, condition);
+    }
+
+    private static final class Impl implements InterledgerPaymentRequest {
+
+      private static final int VERSION = 2;
+
+      private final InterledgerPayment packet;
+      private final Condition condition;
+
+      public Impl(InterledgerPayment packet, Condition condition) {
+        this.packet = packet;
+        this.condition = condition;
+      }
+
+      public int getVersion() {
+        return VERSION;
+      }
+
+      public InterledgerPayment getInterledgerPayment() {
+        return packet;
+      }
+
+      public Condition getCondition() {
+        return condition;
+      }
+
+    }
+
+  }
 }
 

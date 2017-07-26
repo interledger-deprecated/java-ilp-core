@@ -3,6 +3,7 @@ package org.interledger.codecs.oer;
 import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.oer.OerIA5StringCodec.OerIA5String;
 import org.interledger.codecs.oer.OerLengthPrefixCodec.OerLengthPrefix;
+
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;

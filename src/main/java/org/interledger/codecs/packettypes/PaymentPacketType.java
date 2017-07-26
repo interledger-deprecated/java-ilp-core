@@ -7,8 +7,8 @@ import java.net.URI;
 /**
  * An implementation of {@link InterledgerPacketType} for ILP Payment packets.
  */
-public class PaymentPacketType extends AbstractInterledgerPacketType implements
-    InterledgerPacketType {
+public class PaymentPacketType extends AbstractInterledgerPacketType
+    implements InterledgerPacketType {
 
   /**
    * No-args Constructor.

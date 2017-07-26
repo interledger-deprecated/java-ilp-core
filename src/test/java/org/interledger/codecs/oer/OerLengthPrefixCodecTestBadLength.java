@@ -2,6 +2,7 @@ package org.interledger.codecs.oer;
 
 import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.oer.OerLengthPrefixCodec.OerLengthPrefix;
+
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
@@ -25,7 +26,7 @@ public class OerLengthPrefixCodecTestBadLength {
      */
     byte lengthOfLength = (byte) ((1 << 7) | 2);
 
-    byte[] lengthIndicator = new byte[] {lengthOfLength, 0};
+    byte[] lengthIndicator = new byte[]{lengthOfLength, 0};
 
     final ByteArrayInputStream inputStream = new ByteArrayInputStream(lengthIndicator);
 

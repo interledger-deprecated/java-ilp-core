@@ -1,7 +1,6 @@
 package org.interledger.codecs.oer.ilp;
 
 import org.interledger.InterledgerAddress;
-import org.interledger.InterledgerAddressBuilder;
 import org.interledger.codecs.Codec;
 import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.InterledgerAddressCodec;
@@ -22,13 +21,14 @@ public class InterledgerAddressOerCodec implements InterledgerAddressCodec {
       throws IOException {
     Objects.requireNonNull(context);
     Objects.requireNonNull(inputStream);
-    final String value = context.read(OerIA5String.class, inputStream).getValue();
-    return InterledgerAddressBuilder.builder().value(value).build();
+    final String value = context.read(OerIA5String.class, inputStream)
+        .getValue();
+    return InterledgerAddress.of(value);
   }
 
   @Override
   public void write(final CodecContext context, final InterledgerAddress instance,
-                    final OutputStream outputStream) throws IOException {
+      final OutputStream outputStream) throws IOException {
     Objects.requireNonNull(context);
     Objects.requireNonNull(instance);
     Objects.requireNonNull(outputStream);

@@ -14,6 +14,7 @@ public interface Codec<T> {
    *
    * @param context     An instance of {@link CodecContext}.
    * @param inputStream An instance of {@link InputStream} to read data from.
+   *
    * @return An instance of {@link T} as decoded from {@code inputStream}.
    */
   T read(CodecContext context, InputStream inputStream) throws IOException;
@@ -36,9 +37,9 @@ public interface Codec<T> {
    * @param instance     An instance of type {@link Object}.
    * @param outputStream An instance of {@link OutputStream} to write data to.
    */
-  default void writeObject(
-      final CodecContext context, final Object instance, final OutputStream outputStream
-  ) throws IOException {
+  @SuppressWarnings("unchecked")
+  default void writeObject(final CodecContext context, final Object instance,
+      final OutputStream outputStream) throws IOException {
     write(context, (T) instance, outputStream);
   }
 }
