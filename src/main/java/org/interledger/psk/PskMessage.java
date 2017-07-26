@@ -46,6 +46,8 @@ public interface PskMessage {
    * Returns a list of all <b>private</b> headers in the message, provided that either the message
    * was <b>not</b> encrypted, or the private portion of the message has been decrypted by the
    * receiver.
+   *
+   * @return the <b>private</b> headers or an empty list.
    */
   List<Header> getPrivateHeaders();
 
