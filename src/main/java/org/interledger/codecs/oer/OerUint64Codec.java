@@ -21,11 +21,12 @@ public class OerUint64Codec implements Codec<OerUint64> {
 
   /**
    * ASN.1 64BitUInt: If the lower bound of the value range constraint is not less than 0 and the
-   * upper bound is not greater than 18446744073709551615 and the constraint is not extensible,
-   * the integer value is encoded as an unsigned binary integer in eight octets.
+   * upper bound is not greater than 18446744073709551615 and the constraint is not extensible, the
+   * integer value is encoded as an unsigned binary integer in eight octets.
    *
    * @param context     An instance of {@link CodecContext}.
    * @param inputStream An instance of @link InputStream}.
+   *
    * @throws IOException              If there is a problem writing to the {@code stream}.
    * @throws IllegalArgumentException If the input has a value greater than 18446744073709551615.
    */
@@ -47,26 +48,26 @@ public class OerUint64Codec implements Codec<OerUint64> {
 
   /**
    * ASN.1 64BitUInt: If the lower bound of the value range constraint is not less than 0 and the
-   * upper bound is not greater than 18446744073709551615 and the constraint is not extensible,
-   * the integer value is encoded as an unsigned binary integer in eight octets.
+   * upper bound is not greater than 18446744073709551615 and the constraint is not extensible, the
+   * integer value is encoded as an unsigned binary integer in eight octets.
    *
    * @param context      An instance of {@link CodecContext}.
    * @param instance     An instance of {@link OerUint64}.
    * @param outputStream An instance of {@link OutputStream}.
+   *
    * @throws IOException              If there is a problem writing to the {@code stream}.
    * @throws IllegalArgumentException If the input has a value greater than 18446744073709551615.
    */
   @Override
-  public void write(
-      final CodecContext context, final OerUint64 instance, final OutputStream outputStream
-  ) throws IOException, IllegalArgumentException {
+  public void write(final CodecContext context, final OerUint64 instance,
+      final OutputStream outputStream) throws IOException, IllegalArgumentException {
 
     Objects.requireNonNull(context);
     Objects.requireNonNull(instance);
     Objects.requireNonNull(outputStream);
 
-    
-    byte[] value = instance.getValue().toByteArray();
+    byte[] value = instance.getValue()
+        .toByteArray();
     
     /* BigInteger's toByteArray writes data in two's complement, so positive values requiring 64
      * bits will include a leading byte set to 0 which we don't want. */
@@ -94,6 +95,7 @@ public class OerUint64Codec implements Codec<OerUint64> {
      * Constructs an OerUint64 instance.
      * 
      * @param value The value to read or write as an OER 64-bit int value.
+     *
      * @deprecated OER Uint64 supports values beyond the range of Java long primitives
      */
     @Deprecated 
@@ -130,10 +132,9 @@ public class OerUint64Codec implements Codec<OerUint64> {
 
     @Override
     public String toString() {
-      final StringBuilder sb = new StringBuilder("OerUint64{");
-      sb.append("value=").append(value);
-      sb.append('}');
-      return sb.toString();
+      return "OerUint64{"
+          + "value=" + value
+          + '}';
     }
   }
 }

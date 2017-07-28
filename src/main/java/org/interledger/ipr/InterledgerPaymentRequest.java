@@ -1,11 +1,9 @@
 package org.interledger.ipr;
 
-import org.interledger.InterledgerAddress;
-import org.interledger.cryptoconditions.Condition;
+import org.interledger.Condition;
+import org.interledger.ilp.InterledgerPayment;
 
-import java.time.ZonedDateTime;
-
-import javax.money.MonetaryAmount;
+import java.util.Objects;
 
 /**
  * An Interledger Payment Request as defined in ILP RFC 11.
@@ -13,64 +11,111 @@ import javax.money.MonetaryAmount;
  * @see "https://github.com/interledger/rfcs/blob/master/0011-interledger-payment-request/0011
  * -interledger-payment-request.md"
  */
-//FIXME: The types for getData() and getAdditionalHeaders() are probably wrong for now pending a
-//decision on the ILP packet format
-public class InterledgerPaymentRequest {
 
-  private InterledgerAddress address;
-  private MonetaryAmount amount;
-  private Condition condition;
-  private ZonedDateTime expiresAt;
-  private Object data;
-  private String additionalHeaders;
+public interface InterledgerPaymentRequest {
 
-  public InterledgerAddress getAddress() {
-    return address;
+  /**
+   * Get the default builder.
+   *
+   * @return a {@link Builder} instance.
+   */
+  static Builder builder() {
+    return new Builder();
   }
 
-  public MonetaryAmount getAmount() {
-    return amount;
+  /**
+   * Get the version of this IPR (this interface represents Version 2).
+   *
+   * @return The version of the IPR (currently 2)
+   */
+  default int getVersion() {
+    return 2;
   }
 
-  public Condition getCondition() {
-    return condition;
-  }
+  /**
+   * The Interledger Payment being requested.
+   *
+   * @return an Interledger Payment.
+   */
+  InterledgerPayment getInterledgerPayment();
 
-  public ZonedDateTime getExpiresAt() {
-    return expiresAt;
-  }
+  /**
+   * The {@link Condition} to use when sending the payment.
+   *
+   * @return a Condition
+   */
+  Condition getCondition();
 
-  public Object getData() {
-    return data;
-  }
+  class Builder {
 
-  public String getAdditionalHeaders() {
-    return additionalHeaders;
-  }
+    private InterledgerPayment interledgerPayment;
+    private Condition condition;
 
-  public void setAddress(InterledgerAddress address) {
-    this.address = address;
-  }
+    /**
+     * Set the Interledger Payment packet for this IPR.
+     *
+     * @param interledgerPayment The Interledger Payment packet to use when building this IPR
+     *
+     * @return this builder
+     */
+    public Builder payment(InterledgerPayment interledgerPayment) {
+      this.interledgerPayment = Objects.requireNonNull(interledgerPayment);
+      return this;
+    }
 
-  public void setAmount(MonetaryAmount amount) {
-    this.amount = amount;
-  }
+    /**
+     * Set the Condition for this IPR.
+     *
+     * @param condition The {@link Condition} to use when building this IPR
+     *
+     * @return this builder
+     */
+    public Builder condition(Condition condition) {
+      this.condition = Objects.requireNonNull(condition);
+      return this;
+    }
 
-  public void setCondition(Condition condition) {
-    this.condition = condition;
-  }
+    /**
+     * Get the IPR.
+     *
+     * <p>Calling this will result in the internal PSK message being built (and encrypted unless
+     * encryption is disabled).
+     *
+     * <p>After the PSK message is built the ILP Packet is built and OER encoded before the
+     * Condition is generated.
+     *
+     * @return an Interledger Payment Request.
+     */
+    public InterledgerPaymentRequest build() {
+      return new Impl(interledgerPayment, condition);
+    }
 
-  public void setExpiresAt(ZonedDateTime expiresAt) {
-    this.expiresAt = expiresAt;
-  }
+    private static final class Impl implements InterledgerPaymentRequest {
 
-  public void setData(Object data) {
-    this.data = data;
-  }
+      private static final int VERSION = 2;
 
-  public void setAdditionalHeaders(String additionalHeaders) {
-    this.additionalHeaders = additionalHeaders;
-  }
+      private final InterledgerPayment packet;
+      private final Condition condition;
 
+      public Impl(InterledgerPayment packet, Condition condition) {
+        this.packet = packet;
+        this.condition = condition;
+      }
+
+      public int getVersion() {
+        return VERSION;
+      }
+
+      public InterledgerPayment getInterledgerPayment() {
+        return packet;
+      }
+
+      public Condition getCondition() {
+        return condition;
+      }
+
+    }
+
+  }
 }
 

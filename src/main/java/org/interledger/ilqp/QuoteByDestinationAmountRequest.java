@@ -30,6 +30,10 @@ public interface QuoteByDestinationAmountRequest extends QuoteRequest {
     private long destinationAmount;
     private Duration destinationHoldDuration;
     
+    public static Builder builder() {
+      return new Builder();
+    }
+
     /**
      * Set the destination account address into this builder.
      *
@@ -73,18 +77,14 @@ public interface QuoteByDestinationAmountRequest extends QuoteRequest {
       return new Builder.Impl(this);
     }
     
-    public static Builder builder() {
-      return new Builder();
-    }
-    
     /**
      * A private, immutable implementation of {@link QuoteByDestinationAmountRequest}.
      */
     private static class Impl implements QuoteByDestinationAmountRequest {
 
       private final InterledgerAddress destinationAccount;
-      private long destinationAmount;
       private final Duration destinationHoldDuration;
+      private long destinationAmount;
       
       /**
        * Constructs an instance from the values held in the builder.
@@ -134,19 +134,9 @@ public interface QuoteByDestinationAmountRequest extends QuoteRequest {
 
         Impl impl = (Impl) obj;
 
-        if (!destinationAccount.equals(impl.destinationAccount)) {
-          return false;
-        }
-        
-        if (destinationAmount != impl.destinationAmount) {
-          return false;
-        }
-        
-        if (!destinationHoldDuration.equals(impl.destinationHoldDuration)) {
-          return false;
-        }
-        
-        return true;
+        return destinationAccount.equals(impl.destinationAccount)
+            && destinationAmount == impl.destinationAmount
+            && destinationHoldDuration.equals(impl.destinationHoldDuration);
       }
 
       @Override
@@ -159,12 +149,11 @@ public interface QuoteByDestinationAmountRequest extends QuoteRequest {
 
       @Override
       public String toString() {
-        final StringBuilder sb = new StringBuilder("Impl{");
-        sb.append("destinationAccount=").append(destinationAccount);
-        sb.append(", destinationAmount=").append(destinationAmount);
-        sb.append(", destinationHoldDuration=").append(destinationHoldDuration);
-        sb.append('}');
-        return sb.toString();
+        return "Impl{"
+            + "destinationAccount=" + destinationAccount
+            + ", destinationAmount=" + destinationAmount
+            + ", destinationHoldDuration=" + destinationHoldDuration
+            + '}';
       }
     }
   }

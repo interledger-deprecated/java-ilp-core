@@ -25,6 +25,7 @@ public class OerUint32Codec implements Codec<OerUint32> {
    *
    * @param context     An instance of {@link CodecContext}.
    * @param inputStream An instance of @link InputStream}.
+   *
    * @throws IOException              If there is a problem writing to the {@code stream}.
    * @throws IllegalArgumentException If the input has a value greater than 4294967295.
    */
@@ -50,6 +51,7 @@ public class OerUint32Codec implements Codec<OerUint32> {
    * @param context An instance of {@link CodecContext}.
    * @param instance An instance of {@link OerUint64}.
    * @param outputStream An instance of {@link OutputStream}.
+   *
    * @throws IOException If there is a problem writing to the {@code stream}.
    * @throws IllegalArgumentException If the input is out of range.
    */
@@ -111,10 +113,9 @@ public class OerUint32Codec implements Codec<OerUint32> {
 
     @Override
     public String toString() {
-      final StringBuilder sb = new StringBuilder("OerUint32{");
-      sb.append("value=").append(value);
-      sb.append('}');
-      return sb.toString();
+      return "OerUint32{"
+          + "value=" + value
+          + '}';
     }
   }
 }

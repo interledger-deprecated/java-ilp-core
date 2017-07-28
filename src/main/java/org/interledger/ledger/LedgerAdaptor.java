@@ -1,8 +1,8 @@
 package org.interledger.ledger;
 
+import org.interledger.Fulfillment;
 import org.interledger.InterledgerAddress;
-import org.interledger.InterledgerException;
-import org.interledger.cryptoconditions.Fulfillment;
+import org.interledger.InterledgerProtocolException;
 import org.interledger.ledger.events.LedgerConnectEvent;
 import org.interledger.ledger.events.LedgerEvent;
 import org.interledger.ledger.events.LedgerEventHandler;
@@ -64,14 +64,15 @@ public interface LedgerAdaptor {
    * receiver.
    *
    * @param transfer The transfer being proposed.
-   * @param reason   The reason (InterledgerException) why the transfer should be rejected.
+   * @param reason   The reason (InterledgerProtocolException) why the transfer should be rejected.
    */
-  void rejectTransfer(LedgerTransfer transfer, InterledgerException reason);
+  void rejectTransfer(LedgerTransfer transfer, InterledgerProtocolException reason);
 
   /**
    * Get basic details of an account.
    *
    * @param account The local account identifier
+   *
    * @return Details of the account requested.
    */
   AccountInfo getAccountInfo(InterledgerAddress account);

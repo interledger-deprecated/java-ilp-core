@@ -24,6 +24,13 @@ public interface QuoteBySourceAmountResponse extends QuoteResponse {
     private Duration sourceHoldDuration;
 
     /**
+     * Constructs a new builder.
+     */
+    public static Builder builder() {
+      return new Builder();
+    }
+
+    /**
      * Set the destination amount into this builder.
      *
      * @param destinationAmount The destination amount value.
@@ -53,13 +60,6 @@ public interface QuoteBySourceAmountResponse extends QuoteResponse {
      */
     public QuoteBySourceAmountResponse build() {
       return new Builder.Impl(this);
-    }
-
-    /**
-     * Constructs a new builder.
-     */
-    public static Builder builder() {
-      return new Builder();
     }
 
     /**
@@ -103,15 +103,8 @@ public interface QuoteBySourceAmountResponse extends QuoteResponse {
 
         Impl impl = (Impl) obj;
 
-        if (!sourceHoldDuration.equals(impl.sourceHoldDuration)) {
-          return false;
-        }
-
-        if (destinationAmount != impl.destinationAmount) {
-          return false;
-        }
-
-        return true;
+        return sourceHoldDuration.equals(impl.sourceHoldDuration)
+            && destinationAmount == impl.destinationAmount;
       }
 
       @Override
@@ -123,11 +116,10 @@ public interface QuoteBySourceAmountResponse extends QuoteResponse {
 
       @Override
       public String toString() {
-        final StringBuilder sb = new StringBuilder("Impl{");
-        sb.append("destinationAmount=").append(destinationAmount);
-        sb.append(", sourceHoldDuration=").append(sourceHoldDuration);
-        sb.append('}');
-        return sb.toString();
+        return "Impl{"
+            + "destinationAmount=" + destinationAmount
+            + ", sourceHoldDuration=" + sourceHoldDuration
+            + '}';
       }
     }
   }

@@ -3,10 +3,10 @@ package org.interledger.codecs.oer;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import com.google.common.primitives.Longs;
-
 import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.oer.OerUint64Codec.OerUint64;
+
+import com.google.common.primitives.Longs;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,13 +20,27 @@ import java.util.Arrays;
 import java.util.Collection;
 
 /**
- * Parameterized unit tests for encoding an instance of {@link OerUint8Codec}.
+ * Parameterized unit tests for encoding an instance of {@link OerUint64Codec}.
  */
 @RunWith(Parameterized.class)
 public class OerUint64CodecTest {
 
   private CodecContext codecContext;
   private OerUint64Codec oerUint64Codec;
+  private final BigInteger inputValue;
+  private final byte[] asn1OerBytes;
+
+  /**
+   * Construct an instance of this parameterized test with the supplied inputs.
+   *
+   * @param inputValue   A {@code int} representing the unsigned 8bit integer to write in OER
+   *                     encoding.
+   * @param asn1OerBytes The expected value, in binary, of the supplied {@code intValue}.
+   */
+  public OerUint64CodecTest(final BigInteger inputValue, final byte[] asn1OerBytes) {
+    this.inputValue = inputValue;
+    this.asn1OerBytes = asn1OerBytes;
+  }
 
   /**
    * The data for this test...
@@ -133,22 +147,6 @@ public class OerUint64CodecTest {
     );
   }
 
-  private BigInteger inputValue;
-
-  private byte[] asn1OerBytes;
-
-  /**
-   * Construct an instance of this parameterized test with the supplied inputs.
-   *
-   * @param inputValue   A {@code int} representing the unsigned 8bit integer to write in OER
-   *                     encoding.
-   * @param asn1OerBytes The expected value, in binary, of the supplied {@code intValue}.
-   */
-  public OerUint64CodecTest(final BigInteger inputValue, final byte[] asn1OerBytes) {
-    this.inputValue = inputValue;
-    this.asn1OerBytes = asn1OerBytes;
-  }
-
   /**
    * Test setup.
    */
@@ -183,8 +181,8 @@ public class OerUint64CodecTest {
     assertThat(byteArrayOutputStream.toByteArray(), is(asn1OerBytes));
 
     // Read...
-    final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(
-        byteArrayOutputStream.toByteArray());
+    final ByteArrayInputStream byteArrayInputStream =
+        new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
     final OerUint64 decodedValue = oerUint64Codec.read(codecContext, byteArrayInputStream);
 
     // Write...

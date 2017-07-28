@@ -1,6 +1,8 @@
 package org.interledger.ilqp;
 
-public class InterledgerQuotingException extends RuntimeException {
+import org.interledger.InterledgerRuntimeException;
+
+public class InterledgerQuotingException extends InterledgerRuntimeException {
 
   private static final long serialVersionUID = 6272999499660262013L;
 

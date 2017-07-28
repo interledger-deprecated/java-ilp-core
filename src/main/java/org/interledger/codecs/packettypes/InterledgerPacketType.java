@@ -1,7 +1,8 @@
 package org.interledger.codecs.packettypes;
 
-import java.net.URI;
+import org.interledger.InterledgerRuntimeException;
 
+import java.net.URI;
 import java.util.Objects;
 
 /**
@@ -18,28 +19,14 @@ public interface InterledgerPacketType {
   Integer ILQP_QUOTE_BY_DESTINATION_AMOUNT_RESPONSE_TYPE = 7;
 
   /**
-   * The packet's type identifier, as specified by IL-RFC-3.
-   *
-   * @return An {@link Integer} representing the type of this packet.
-   */
-  Integer getTypeIdentifier();
-
-  /**
-   * A URI representing the formal type of this packet per the Interledger Header Type registry
-   * maintained at IANA.
-   *
-   * @return An instance of {@link String}.
-   * @see "http://www.iana.org/assignments/interledger-header-types"
-   */
-  URI getTypeUri();
-
-  /**
-   * A helper method that will translate an integer into an instance of {@link
-   * InterledgerPacketType}.  Note that this method only handled standard Interledger packets types.
-   * To operate upon non-standard packets, a different method should be used.
+   * A helper method that will translate an integer into an instance of
+   * {@link InterledgerPacketType}. Note that this method only handled standard Interledger packets
+   * types. To operate upon non-standard packets, a different method should be used.
    *
    * @param type The integer type.
+   *
    * @return An instance of {@link InterledgerPacketType}.
+   *
    * @throws InvalidPacketTypeException If the supplied {@code type} is invalid.
    */
   static InterledgerPacketType fromTypeId(final int type) throws InvalidPacketTypeException {
@@ -72,9 +59,28 @@ public interface InterledgerPacketType {
   }
 
   /**
+   * The packet's type identifier, as specified by IL-RFC-3.
+   *
+   * @return An {@link Integer} representing the type of this packet.
+   */
+  Integer getTypeIdentifier();
+
+  /**
+   * A URI representing the formal type of this packet per the Interledger Header Type registry
+   * maintained at IANA.
+   *
+   * @return An instance of {@link String}.
+   *
+   * @see "http://www.iana.org/assignments/interledger-header-types"
+   */
+  URI getTypeUri();
+
+  /**
    * An exception that indicates if a packet type is invalid for the current implementation.
    */
-  class InvalidPacketTypeException extends RuntimeException {
+  class InvalidPacketTypeException extends InterledgerRuntimeException {
+
+    private static final long serialVersionUID = 6086784345849001539L;
 
     public InvalidPacketTypeException(String message) {
       super(message);
@@ -104,11 +110,10 @@ public interface InterledgerPacketType {
 
     @Override
     public String toString() {
-      final StringBuilder sb = new StringBuilder("AbstractInterledgerPacketType{");
-      sb.append("typeIdentifier=").append(typeIdentifier);
-      sb.append(", typeUri=").append(typeUri);
-      sb.append('}');
-      return sb.toString();
+      return "AbstractInterledgerPacketType{"
+          + "typeIdentifier=" + typeIdentifier
+          + ", typeUri=" + typeUri
+          + '}';
     }
 
     @Override
@@ -122,10 +127,8 @@ public interface InterledgerPacketType {
 
       AbstractInterledgerPacketType that = (AbstractInterledgerPacketType) obj;
 
-      if (!typeIdentifier.equals(that.typeIdentifier)) {
-        return false;
-      }
-      return typeUri.equals(that.typeUri);
+      return typeIdentifier.equals(that.typeIdentifier)
+          && typeUri.equals(that.typeUri);
     }
 
     @Override

@@ -1,10 +1,11 @@
 group = 'org.interledger'
-description = 'Interledger Protocol Core'
-version = '0.4.0-SNAPSHOT'
+description = 'Core libraries for implementing the Interledger suite of protocols.'
+version = '0.6.0-SNAPSHOT'
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'maven'
+apply plugin: 'signing'
 apply plugin: 'checkstyle'
 apply plugin: 'jacoco'
 
@@ -12,7 +13,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 
-/* 
+/*
  custom checkstyle properties for the build.
  see https://docs.gradle.org/current/dsl/org.gradle.api.plugins.quality.CheckstyleExtension.html
 */
@@ -21,10 +22,10 @@ checkstyle {
     toolVersion '7.1'
     showViolations = true
     /* 
-       by default, checkstyle warnings dont fail the build. but we want exactly that for circle-ci 
+       by default, checkstyle warnings don't fail the build. but we want exactly that for circle-ci
        pass/fail reporting, so tell the plugin to break the build on the first error 
     */
-	maxWarnings = 0 
+    maxWarnings = 0
 }
 
 jacocoTestReport {
@@ -35,9 +36,12 @@ jacocoTestReport {
 }
 
 jar {
+
+    //Include source in JAR
+    from sourceSets.main.allSource
+
     manifest {
-        attributes 'Implementation-Title': description,
-                'Implementation-Version': version
+        attributes 'Implementation-Title': description, 'Implementation-Version': version
     }
 }
 
@@ -47,7 +51,6 @@ repositories {
 }
 
 dependencies {
-    compile project(':java-crypto-conditions')
 
     //JSR-354 (http://javamoney.org): Better money and currency support in the JDK
     compile('javax.money:money-api:1.0.1')
@@ -58,12 +61,143 @@ dependencies {
     testCompile 'com.google.guava:guava:21.0'
 }
 
+//// Initialize the signing plugin with proper values for CI.
+//gradle.taskGraph.whenReady { taskGraph ->
+//    if (taskGraph.allTasks.any { it instanceof Sign }) {
+//
+//        Console console = System.console()
+//        console.printf "\n\nInitializing GPG Keystore..."
+//
+//        exec {
+//            // Create the GPGP keyring file in keyring.gpg
+//            // 1. Create Key-ring
+//            commandLine "gpg", "--no-default-keyring --keyring ./keyring.gpg --fingerprint"
+//            // 2. Export the private key to a file.
+//            commandLine "env | grep GPG_PRIVATE_KEY | cut -d'=' -f 2 > secret.asc"
+//            // 3. Import private keys.
+//            commandLine "gpg", "--no-default-keyring --keyring ./keyring.gpg --import secret.asc"
+//        }
+//
+//        signing.keyId = "$System.env.GPG_SIGNING_KEY_ID"
+//        signing.password = "$System.env.GPG_SIGNING_PASSWORD"
+//        signing.secretKeyRingFile = "./keyring.gpg"
+//
+//        console.printf "\nSuccess!.\n\n"
+//    }
+//}
+
+if (project.hasProperty('sign')) {
+    signing {
+        sign configurations.archives
+    }
+}
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment {
+                if (project.hasProperty('sign')) {
+                    beforeDeployment {
+                        MavenDeployment deployment -> signing.signPom(deployment)
+                    }
+                }
+            }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2") {
+                authentication(userName: hasProperty('ossrhUsername') ? ossrhUsername : '', password: hasProperty('ossrhPassword') ? ossrhPassword : '')
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots") {
+                authentication(userName: hasProperty('ossrhUsername') ? ossrhUsername : '', password: hasProperty('ossrhPassword') ? ossrhPassword : '')
+            }
+
+            pom {
+                project {
+                    name 'Interledger Core'
+                    packaging 'jar'
+                    description 'Core libraries for implementing the Interledger suite of protocols.'
+                    url 'https://github.com/interledger/java-ilp-core'
+
+                    inceptionYear '2016'
+
+                    properties {
+                        "project.build.sourceEncoding" "UTF-8"
+                        "maven.compiler.source" "1.8"
+                        "maven.compiler.target" "1.8"
+                        "checkstyle.config.location" "google_checks.xml"
+                        "checkstyle.consoleOutput" "true"
+                    }
+                    licenses {
+                        license {
+                            name 'The Apache Software License, Version 2.0'
+                            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                            distribution 'repo'
+                        }
+                    }
+                    developers {
+                        developer {
+                            name 'Adrian Hope-Bailie'
+                            organizationUrl 'https://github.com/adrianhopebailie'
+                        }
+                        developer {
+                            name 'Andrew Gates'
+                            organizationUrl 'https://github.com/andrew-g-za'
+                        }
+                        developer {
+                            name 'Enrique Benito'
+                            organizationUrl 'https://github.com/earizon'
+                        }
+                        developer {
+                            name 'David Fuelling'
+                            organizationUrl 'https://github.com/sappenin'
+                        }
+                    }
+                    scm {
+                        connection 'scm:git:git://github.com/interledger/java-ilp-core.git'
+                        developerConnection 'scm:git:git@github.com:interledger/java-ilp-core.git'
+                        url 'https://github.com/sappenin/objectify-utils'
+                    }
+                    reporting {
+                        plugins {
+                            plugin {
+                                groupId "org.apache.maven.plugins"
+                                artifactId "maven-checkstyle-plugin"
+                                version "2.17"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 //Maven compatibility task:
 task writePom {
     doLast {
         pom {
             project {
+                name 'Interledger Core'
+                packaging 'jar'
+                description 'Core libraries for implementing the Interledger suite of protocols.'
+                url 'https://github.com/interledger/java-ilp-core'
+
                 inceptionYear '2016'
+
                 properties {
                     "project.build.sourceEncoding" "UTF-8"
                     "maven.compiler.source" "1.8"
@@ -77,6 +211,29 @@ task writePom {
                         url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
                         distribution 'repo'
                     }
+                }
+                developers {
+                    developer {
+                        name 'Adrian Hope-Bailie'
+                        organizationUrl 'https://github.com/adrianhopebailie'
+                    }
+                    developer {
+                        name 'Andrew Gates'
+                        organizationUrl 'https://github.com/andrew-g-za'
+                    }
+                    developer {
+                        name 'Enrique Benito'
+                        organizationUrl 'https://github.com/earizon'
+                    }
+                    developer {
+                        name 'David Fuelling'
+                        organizationUrl 'https://github.com/sappenin'
+                    }
+                }
+                scm {
+                    connection 'scm:git:git://github.com/interledger/java-ilp-core.git'
+                    developerConnection 'scm:git:git@github.com:interledger/java-ilp-core.git'
+                    url 'https://github.com/sappenin/objectify-utils'
                 }
                 reporting {
                     plugins {

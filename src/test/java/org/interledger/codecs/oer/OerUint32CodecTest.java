@@ -3,11 +3,11 @@ package org.interledger.codecs.oer;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import com.google.common.primitives.Ints;
-import com.google.common.primitives.Longs;
-
 import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.oer.OerUint32Codec.OerUint32;
+
+import com.google.common.primitives.Ints;
+import com.google.common.primitives.Longs;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,6 +27,20 @@ public class OerUint32CodecTest {
 
   private CodecContext codecContext;
   private OerUint32Codec oerUint32Codec;
+  private final long inputValue;
+  private final byte[] asn1OerBytes;
+
+  /**
+   * Construct an instance of this parameterized test with the supplied inputs.
+   *
+   * @param inputValue   A {@code int} representing the unsigned 8bit integer to write in OER
+   *                     encoding.
+   * @param asn1OerBytes The expected value, in binary, of the supplied {@code intValue}.
+   */
+  public OerUint32CodecTest(final long inputValue, final byte[] asn1OerBytes) {
+    this.inputValue = inputValue;
+    this.asn1OerBytes = asn1OerBytes;
+  }
 
   /**
    * The data for this test...
@@ -78,22 +92,6 @@ public class OerUint32CodecTest {
             {4294967295L, Arrays.copyOfRange(Longs.toByteArray(4294967295L), 4, 8)}
         }
     );
-  }
-
-  private long inputValue;
-
-  private byte[] asn1OerBytes;
-
-  /**
-   * Construct an instance of this parameterized test with the supplied inputs.
-   *
-   * @param inputValue   A {@code int} representing the unsigned 8bit integer to write in OER
-   *                     encoding.
-   * @param asn1OerBytes The expected value, in binary, of the supplied {@code intValue}.
-   */
-  public OerUint32CodecTest(final long inputValue, final byte[] asn1OerBytes) {
-    this.inputValue = inputValue;
-    this.asn1OerBytes = asn1OerBytes;
   }
 
   /**

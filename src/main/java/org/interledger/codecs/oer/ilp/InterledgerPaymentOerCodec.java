@@ -15,27 +15,20 @@ import java.io.OutputStream;
 import java.util.Objects;
 
 /**
- * <p>An implementation of {@link Codec} that reads and writes instances of {@link
- * InterledgerPayment}.</p>
- * <p>The ASN.1 OER definition of an InterledgerPayment defines it as an extensible sequence.
- * Thus, this sequence must have the following:
- * </p>
- * <p><b>Presence Bitmap</b>
- * The presence bitmap is encoded as a "bit string" with a fixed size
- * constraint, and has one bit for each field of the sequence type that has the keyword OPTIONAL or
- * DEFAULT, in specification order.  Because the InterledgerPayment has no optional/default values,
- * there is no presence bitmap.  As an example of this, reference "Overview of OER Encoding" ()
- * example B, which also has no presence bitmap since no fields are optional/default.</p>
- * <p><b>Extension Presence Bitmap</b>
- * This implementation does not currently support extensions, and therefore does not encode or
- * decode an "extension presence bitmpa".  If it did, in order to indicate an extension,
+ * <p>An implementation of {@link Codec} that reads and writes instances of
+ * {@link InterledgerPayment}.</p> <p>The ASN.1 OER definition of an InterledgerPayment defines it
+ * as an extensible sequence. Thus, this sequence must have the following: </p> <p><b>Presence
+ * Bitmap</b> The presence bitmap is encoded as a "bit string" with a fixed size constraint, and has
+ * one bit for each field of the sequence type that has the keyword OPTIONAL or DEFAULT, in
+ * specification order. Because the InterledgerPayment has no optional/default values, there is no
+ * presence bitmap. As an example of this, reference "Overview of OER Encoding" () example B, which
+ * also has no presence bitmap since no fields are optional/default.</p> <p><b>Extension Presence
+ * Bitmap</b> This implementation does not currently support extensions, and therefore does not
+ * encode or decode an "extension presence bitmap". If it did, in order to indicate an extension,
  * the presence bitmap must be present, and the MSB of the bitmap must be 1, and further rules.
- * Reference section 2.8 "Encoding of a Sequence Type" in "Overview of OER" for more details.
- * </p>
- * <p><b>Components</b>
- * The rest of the packet is the concatenation of the encodings of the fields of the sequence type
- * that are present in the value, in specification order.
- * </p>
+ * Reference section 2.8 "Encoding of a Sequence Type" in "Overview of OER" for more details. </p>
+ * <p><b>Components</b> The rest of the packet is the concatenation of the encodings of the fields
+ * of the sequence type that are present in the value, in specification order. </p>
  *
  * @see "http://www.oss.com/asn1/resources/books-whitepapers-pubs/Overview%20of%20OER.pdf"
  */
@@ -47,23 +40,26 @@ public class InterledgerPaymentOerCodec implements InterledgerPaymentCodec {
     Objects.requireNonNull(context);
     Objects.requireNonNull(inputStream);
 
-    // 1. InterledgerPayment has no "presence bitmap".  See javadoc for this class for more details.
+    // 1. InterledgerPayment has no "presence bitmap". See javadoc for this class for more details.
 
-    // 2. InterledgerPayment has no "extension presence bitmap".  See javadoc for this class for
+    // 2. InterledgerPayment has no "extension presence bitmap". See javadoc for this class for
     // more details.
 
     // 3. Read the destinationAmount, which is a UInt64.
     /* NOTE: we don't expect amounts to exceed 2^63 - 1, so we risk the conversion to long */
-    long destinationAmount = context.read(OerUint64.class, inputStream).getValue().longValue();
+    long destinationAmount = context.read(OerUint64.class, inputStream)
+        .getValue()
+        .longValue();
 
     // 4. Read the Interledger Address.
-    final InterledgerAddress destinationAccount = context
-        .read(InterledgerAddress.class, inputStream);
+    final InterledgerAddress destinationAccount =
+        context.read(InterledgerAddress.class, inputStream);
 
     // 5. Read the data portion of the packet.
-    final byte[] data = context.read(OerOctetString.class, inputStream).getValue();
+    final byte[] data = context.read(OerOctetString.class, inputStream)
+        .getValue();
 
-    return InterledgerPayment.Builder.builder()
+    return InterledgerPayment.builder()
         .destinationAmount(destinationAmount) 
         .destinationAccount(destinationAccount)
         .data(data)
@@ -77,9 +73,9 @@ public class InterledgerPaymentOerCodec implements InterledgerPaymentCodec {
     Objects.requireNonNull(instance);
     Objects.requireNonNull(outputStream);
 
-    // 1. InterledgerPayment has no "presence bitmap".  See javadoc for this class for more details.
+    // 1. InterledgerPayment has no "presence bitmap". See javadoc for this class for more details.
 
-    // 2. InterledgerPayment has no "extension presence bitmap".  See javadoc for this class for
+    // 2. InterledgerPayment has no "extension presence bitmap". See javadoc for this class for
     // more details.
 
     // 3. Write the packet type.
