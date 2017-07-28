@@ -3,6 +3,7 @@ package org.interledger.codecs.oer.ilp;
 import org.interledger.InterledgerAddress;
 import org.interledger.codecs.Codec;
 import org.interledger.codecs.CodecContext;
+import org.interledger.codecs.CodecException;
 import org.interledger.codecs.InterledgerPacketTypeCodec;
 import org.interledger.codecs.oer.OerUint8Codec.OerUint8;
 import org.interledger.codecs.packettypes.InterledgerPacketType;
@@ -30,7 +31,7 @@ public class InterledgerPacketTypeOerCodec implements InterledgerPacketTypeCodec
     try {
       return InterledgerPacketType.fromTypeId(typeId);
     } catch (InvalidPacketTypeException e) {
-      throw new RuntimeException("Encountered unsupported Interledger Packet Type.  Please extend "
+      throw new CodecException("Encountered unsupported Interledger Packet Type.  Please extend "
           + "InterledgerPacketTypeCodec and register it with the CodecContext to support this"
           + "new type.", e);
     }

@@ -16,15 +16,15 @@ public class InterledgerError {
   // This way our code can differentiate between a coding error
   // (developer sent a null by mistake) and the real intention of not
   // sending selfAddress.
-  static final InterledgerAddress TRIGGERING_ILP_NODE =
+  private static final InterledgerAddress TRIGGERING_ILP_NODE =
       InterledgerAddress.builder()
-          .value("g.selfAddressNONE")
+          .value("self")
           .build();
-  final ErrorCode errorCode;
-  final InterledgerAddress triggeredBy;
-  final ZonedDateTime triggeredAt;
-  final List<InterledgerAddress> forwardedBy;
-  final String data;
+  private final ErrorCode errorCode;
+  private final InterledgerAddress triggeredBy;
+  private final ZonedDateTime triggeredAt;
+  private final List<InterledgerAddress> forwardedBy;
+  private final String data;
 
   /**
    * Constructor used by ILP Connectors.
@@ -38,8 +38,7 @@ public class InterledgerError {
     this.triggeredAt = Objects.requireNonNull(triggeredAt, "triggeredAt can not be null");
     this.data = Objects.requireNonNull(data, "data        can not be null");
 
-    if (TRIGGERING_ILP_NODE.getValue()
-        .equals(selfAddress.getValue())) {
+    if (TRIGGERING_ILP_NODE.equals(selfAddress)) {
       this.forwardedBy = forwardedBy; // Ignore selfAddress
     } else {
       for (InterledgerAddress forwardedByConnector : forwardedBy) {
