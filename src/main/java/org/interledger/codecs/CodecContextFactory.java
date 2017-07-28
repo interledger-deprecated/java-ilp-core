@@ -1,6 +1,8 @@
 package org.interledger.codecs;
 
 import org.interledger.InterledgerAddress;
+import org.interledger.codecs.oer.OerGeneralizedTimeCodec;
+import org.interledger.codecs.oer.OerGeneralizedTimeCodec.OerGeneralizedTime;
 import org.interledger.codecs.oer.OerIA5StringCodec;
 import org.interledger.codecs.oer.OerIA5StringCodec.OerIA5String;
 import org.interledger.codecs.oer.OerLengthPrefixCodec;
@@ -49,6 +51,7 @@ public class CodecContextFactory {
         .register(OerLengthPrefix.class, new OerLengthPrefixCodec())
         .register(OerIA5String.class, new OerIA5StringCodec())
         .register(OerOctetString.class, new OerOctetStringCodec())
+        .register(OerGeneralizedTime.class, new OerGeneralizedTimeCodec())
 
         // ILP
         .register(InterledgerAddress.class, new InterledgerAddressOerCodec())
