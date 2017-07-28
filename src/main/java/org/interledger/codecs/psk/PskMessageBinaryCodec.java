@@ -33,7 +33,9 @@ public class PskMessageBinaryCodec implements PskMessageCodec {
    * stream is exhausted. Returns the data interpreted as a *UTF-8* string. Note that lines ending
    * with '\n' or '\r\n' are treated the same, the trailing '\r' will be removed if present.
    *
-   * @return A UTF-8 encoded string read of the input stream.
+   * <p>A single '\r' (not followed immediately by a '\n') is not treated as an end of line.
+   *
+   * @return A UTF-8 encoded string read from the input stream.
    */
   private static String readLine(InputStream in) throws IOException {
 
@@ -44,20 +46,21 @@ public class PskMessageBinaryCodec implements PskMessageCodec {
       while ((byteValue = in.read()) != -1) {
 
         if (byteValue == CR) {
-          // Found CR, don't write it unless the next char is NOT a LF
+          // Found CR, only write it if next char is NOT a LF
           readCarriageReturn = true;
           continue;
         }
 
         if (byteValue == LF) {
           break;
-        } else {
-          if (readCarriageReturn) {
-            // Not end of the line but we read a CR previously so write it before the current byte
-            bos.write(CR);
-            readCarriageReturn = false;
-          }
         }
+
+        if (readCarriageReturn) {
+          // Not end of the line but we read a CR previously so write it before the current byte
+          bos.write(CR);
+          readCarriageReturn = false;
+        }
+
         bos.write(byteValue);
       }
 

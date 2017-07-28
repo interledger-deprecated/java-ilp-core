@@ -271,10 +271,8 @@ public interface InterledgerAddress {
 
       @Override
       public String toString() {
-        return "Impl{"
-            + "value='"
-            + value
-            + '\''
+        return "InterledgerAddress.Impl{"
+            + "value='" + value + "'"
             + '}';
       }
     }

@@ -114,6 +114,36 @@ public interface InterledgerPaymentRequest {
         return condition;
       }
 
+      @Override
+      public boolean equals(Object other) {
+        if (this == other) {
+          return true;
+        }
+        if (other == null || getClass() != other.getClass()) {
+          return false;
+        }
+
+        Impl impl = (Impl) other;
+
+        return packet.equals(impl.packet)
+            && condition.equals(impl.condition);
+      }
+
+      @Override
+      public int hashCode() {
+        int result = packet.hashCode();
+        result = 31 * result + condition.hashCode();
+        return result;
+      }
+
+      @Override
+
+      public String toString() {
+        return "InterledgerPaymentRequest.Impl{"
+            + "packet=" + packet
+            + ", condition=" + condition
+            + '}';
+      }
     }
 
   }

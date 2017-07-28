@@ -147,7 +147,7 @@ public interface QuoteBySourceAmountRequest extends QuoteRequest {
 
       @Override
       public String toString() {
-        return "Impl{"
+        return "QuoteBySourceAmountRequest.Impl{"
             + "destinationAccount=" + destinationAccount
             + ", sourceAmount=" + sourceAmount
             + ", destinationHoldDuration=" + destinationHoldDuration

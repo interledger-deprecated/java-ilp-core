@@ -1,8 +1,10 @@
 package org.interledger;
 
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Objects;
 
 /**
@@ -69,13 +71,8 @@ public interface Fulfillment {
     }
 
     public Builder preimage(byte[] preimage) {
-      Objects.requireNonNull(preimage, "Pre-image must not be null!");
-      if (preimage.length != 32) {
-        throw new IllegalArgumentException("Pre-image must be 32 bytes.");
-      }
 
       this.preimage = Arrays.copyOf(preimage, preimage.length);
-
       return this;
 
     }
@@ -91,7 +88,11 @@ public interface Fulfillment {
 
       private Impl(Builder builder) {
 
-        Objects.requireNonNull(builder.preimage, "Preimage cannot be null");
+        Objects.requireNonNull(builder.preimage, "Preimage cannot be null.");
+
+        if (builder.preimage.length != 32) {
+          throw new IllegalArgumentException("Preimage must be 32 bytes.");
+        }
 
         this.preimage = Arrays.copyOf(builder.preimage, 32);
 
@@ -122,13 +123,17 @@ public interface Fulfillment {
       }
 
       @Override
-      public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((condition == null) ? 0 : condition.hashCode());
-        result = prime * result + Arrays.hashCode(preimage);
-        return result;
+      public String toString() {
+        return "Fulfillment.Impl{"
+            + "preimage=" + Arrays.toString(this.preimage)
+            + "}";
       }
+
+      @Override
+      public int hashCode() {
+        return new BigInteger(this.preimage).intValue();
+      }
+
 
       @Override
       public boolean equals(Object obj) {

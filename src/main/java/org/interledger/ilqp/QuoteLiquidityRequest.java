@@ -113,7 +113,7 @@ public interface QuoteLiquidityRequest extends QuoteRequest {
 
       @Override
       public String toString() {
-        return "Impl{"
+        return "QuoteLiquidityRequest.Impl{"
             + "destinationAccount=" + destinationAccount
             + ", destinationHoldDuration=" + destinationHoldDuration
             + '}';
