@@ -175,7 +175,7 @@ public interface InterledgerPayment extends InterledgerPacket {
 
       @Override
       public String toString() {
-        return "Impl{"
+        return "InterledgerPayment.Impl{"
             + "destinationAccount=" + destinationAccount
             + ", destinationAmount=" + destinationAmount
             + ", data=" + Arrays.toString(data)

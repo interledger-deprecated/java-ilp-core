@@ -1,5 +1,7 @@
 package org.interledger.psk;
 
+import org.interledger.InterledgerRuntimeException;
+
 import org.junit.Test;
 
 import java.security.InvalidAlgorithmParameterException;
@@ -49,8 +51,8 @@ public class Aes256BitKeysizeTest {
       cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, "AES"), paramSpec);
       cipher.doFinal(data);
     } catch (InvalidKeyException e) {
-      throw new RuntimeException("Error loading 256bit key. "
-          + "Likey cause is missing Unlimited Strength Jurisdiction Policy Files.", e);
+      throw new InterledgerRuntimeException("Error loading 256bit key. "
+          + "Likley cause is missing Unlimited Strength Jurisdiction Policy Files.", e);
     }
 
   }

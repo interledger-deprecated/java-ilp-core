@@ -19,7 +19,7 @@ public abstract class AbstractCodec<T> implements Codec<T> {
   }
 
   /**
-   * Read an object of the buffer according to the rules defined in the {@link CodecContext}.
+   * Read an object from the buffer according to the rules defined in the {@link CodecContext}.
    *
    * @param context     An instance of {@link CodecContext}.
    * @param inputStream An instance of {@link InputStream} to read data of.

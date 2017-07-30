@@ -33,7 +33,9 @@ public class PskMessageBinaryCodec implements PskMessageCodec {
    * stream is exhausted. Returns the data interpreted as a *UTF-8* string. Note that lines ending
    * with '\n' or '\r\n' are treated the same, the trailing '\r' will be removed if present.
    *
-   * @return A UTF-8 encoded string read of the input stream.
+   * <p>A single '\r' (not followed immediately by a '\n') is not treated as an end of line.
+   *
+   * @return A UTF-8 encoded string read from the input stream.
    */
   private static String readLine(InputStream in) throws IOException {
 
@@ -44,20 +46,21 @@ public class PskMessageBinaryCodec implements PskMessageCodec {
       while ((byteValue = in.read()) != -1) {
 
         if (byteValue == CR) {
-          // Found CR, don't write it unless the next char is NOT a LF
+          // Found CR, only write it if next char is NOT a LF
           readCarriageReturn = true;
           continue;
         }
 
         if (byteValue == LF) {
           break;
-        } else {
-          if (readCarriageReturn) {
-            // Not end of the line but we read a CR previously so write it before the current byte
-            bos.write(CR);
-            readCarriageReturn = false;
-          }
         }
+
+        if (readCarriageReturn) {
+          // Not end of the line but we read a CR previously so write it before the current byte
+          bos.write(CR);
+          readCarriageReturn = false;
+        }
+
         bos.write(byteValue);
       }
 
@@ -85,19 +88,20 @@ public class PskMessageBinaryCodec implements PskMessageCodec {
   @Override
   public PskMessage read(final CodecContext context, final InputStream inputStream)
       throws IOException {
-    return read(context, inputStream, ReadState.STATUS_LINE);
+    return read(inputStream, ReadState.STATUS_LINE);
   }
 
-  private PskMessage read(final CodecContext context, final InputStream inputStream,
+  private PskMessage read(final InputStream inputStream,
       ReadState state) throws IOException {
 
     Objects.requireNonNull(inputStream);
 
     PskMessage.Builder builder = PskMessage.builder();
+    ReadState currentState = state;
 
     while (true) {
 
-      if (state == ReadState.DATA) {
+      if (currentState == ReadState.DATA) {
         builder.data(readRemainingBytes(inputStream));
         break;
       }
@@ -107,19 +111,19 @@ public class PskMessageBinaryCodec implements PskMessageCodec {
         throw new CodecException("Premature end of stream.");
       }
 
-      switch (state) {
+      switch (currentState) {
         case STATUS_LINE:
 
           if (!line.equalsIgnoreCase(PskMessage.STATUS_LINE)) {
             throw new CodecException("Expecting valid status line but got [" + line + "]");
           }
-          state = ReadState.PUBLIC_HEADERS;
+          currentState = ReadState.PUBLIC_HEADERS;
           break;
 
         case PUBLIC_HEADERS:
 
           if (line.length() == 0) {
-            state = builder.usesEncryption() ? ReadState.DATA : ReadState.PRIVATE_HEADERS;
+            currentState = builder.usesEncryption() ? ReadState.DATA : ReadState.PRIVATE_HEADERS;
           } else {
             builder.addPublicHeader(parseHeader(line));
           }
@@ -127,7 +131,7 @@ public class PskMessageBinaryCodec implements PskMessageCodec {
         case PRIVATE_HEADERS:
 
           if (line.length() == 0) {
-            state = ReadState.DATA;
+            currentState = ReadState.DATA;
           } else {
             builder.addPrivateHeader(parseHeader(line));
           }
@@ -193,9 +197,9 @@ public class PskMessageBinaryCodec implements PskMessageCodec {
   public PskMessage parsePrivateData(byte[] data) {
 
     try (ByteArrayInputStream bais = new ByteArrayInputStream(data)) {
-      return read(null, bais, ReadState.PRIVATE_HEADERS);
+      return read(bais, ReadState.PRIVATE_HEADERS);
     } catch (IOException e) {
-      throw new RuntimeException("Error parsing private data.", e);
+      throw new CodecException("Error parsing private data.", e);
     }
 
   }
@@ -250,11 +254,10 @@ public class PskMessageBinaryCodec implements PskMessageCodec {
       return baos.toByteArray();
 
     } catch (IOException e) {
-      throw new RuntimeException("Error writing private data.", e);
+      throw new CodecException("Error writing private data.", e);
     }
 
   }
-
 
   private enum ReadState {
     STATUS_LINE,
