@@ -12,7 +12,7 @@ import org.junit.Test;
 public class InterledgerAddressBuilderTest {
 
   private static final String EXPECTED_ERROR_MESSAGE =
-      "Invalid characters in address.  Reference Interledger RFC-15 for proper format.";
+      "Invalid characters in address: ['%s']. Reference Interledger RFC-15 for proper format.";
 
   private static final String TEST1_US_USD_BOB = "test1.us.usd.bob";
   private static final String TEST1_US_USD = "test1.us.usd.";
@@ -70,40 +70,44 @@ public class InterledgerAddressBuilderTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void test_empty_address() throws Exception {
+    final String value = "";
     try {
-      InterledgerAddress.builder().value("").build();
+      InterledgerAddress.builder().value(value).build();
     } catch (IllegalArgumentException e) {
-      assertThat(e.getMessage(), is(EXPECTED_ERROR_MESSAGE));
+      assertThat(e.getMessage(), is(String.format(EXPECTED_ERROR_MESSAGE, value)));
       throw e;
     }
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void test_blank_address() throws Exception {
+    final String value = "  ";
     try {
-      InterledgerAddress.builder().value("  ").build();
+      InterledgerAddress.builder().value(value).build();
     } catch (IllegalArgumentException e) {
-      assertThat(e.getMessage(), is(EXPECTED_ERROR_MESSAGE));
+      assertThat(e.getMessage(), is(String.format(EXPECTED_ERROR_MESSAGE, value)));
       throw e;
     }
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void test_address_with_space() throws Exception {
+    final String value = TEST1_US_USD_BOB + " space";
     try {
-      InterledgerAddress.builder().value(TEST1_US_USD_BOB + " space").build();
+      InterledgerAddress.builder().value(value).build();
     } catch (IllegalArgumentException e) {
-      assertThat(e.getMessage(), is(EXPECTED_ERROR_MESSAGE));
+      assertThat(e.getMessage(), is(String.format(EXPECTED_ERROR_MESSAGE, value)));
       throw e;
     }
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void test_address_too_long() throws Exception {
+    final String value = TOO_LONG;
     try {
-      InterledgerAddress.builder().value(TOO_LONG).build();
+      InterledgerAddress.builder().value(value).build();
     } catch (IllegalArgumentException e) {
-      assertThat(e.getMessage(), is(EXPECTED_ERROR_MESSAGE));
+      assertThat(e.getMessage(), is(String.format(EXPECTED_ERROR_MESSAGE, value)));
       throw e;
     }
   }
@@ -111,7 +115,7 @@ public class InterledgerAddressBuilderTest {
   @Test
   public void test_address_just_right_length() throws Exception {
     // This is 1023 characters long...
-
+    final String value = "";
     final InterledgerAddress address = InterledgerAddress.builder().value(JUST_RIGHT).build();
     assertThat(address.getValue(), is(JUST_RIGHT));
     assertThat(address.isLedgerPrefix(), is(false));

@@ -17,7 +17,7 @@ import java.util.Arrays;
 public class InterledgerAddressSchemeTest {
 
   private static final String EXPECTED_ERROR_MESSAGE =
-      "Invalid characters in address.  Reference Interledger RFC-15 for proper format.";
+      "Invalid characters in address: ['%s']. Reference Interledger RFC-15 for proper format.";
   private final String scheme;
 
   public InterledgerAddressSchemeTest(final String scheme) {
@@ -94,30 +94,33 @@ public class InterledgerAddressSchemeTest {
    */
   @Test(expected = IllegalArgumentException.class)
   public void test_address_with_only_scheme_address() throws Exception {
+    final String value = this.scheme;
     try {
       InterledgerAddress.builder().value(this.scheme).build();
     } catch (IllegalArgumentException e) {
-      assertThat(e.getMessage(), is(EXPECTED_ERROR_MESSAGE));
+      assertThat(e.getMessage(), is(String.format(EXPECTED_ERROR_MESSAGE, value)));
       throw e;
     }
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void test_destination_address_with_invalid_scheme() throws Exception {
+    final String value = this.scheme + "1.foo";
     try {
-      InterledgerAddress.builder().value(this.scheme + "1.foo").build();
+      InterledgerAddress.builder().value(value).build();
     } catch (IllegalArgumentException e) {
-      assertThat(e.getMessage(), is(EXPECTED_ERROR_MESSAGE));
+      assertThat(e.getMessage(), is(String.format(EXPECTED_ERROR_MESSAGE, value)));
       throw e;
     }
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void test_prefix_with_invalid_scheme() throws Exception {
+    final String value = this.scheme + "1.foo.";
     try {
       InterledgerAddress.builder().value(this.scheme + "1.foo.").build();
     } catch (IllegalArgumentException e) {
-      assertThat(e.getMessage(), is(EXPECTED_ERROR_MESSAGE));
+      assertThat(e.getMessage(), is(String.format(EXPECTED_ERROR_MESSAGE, value)));
       throw e;
     }
   }
