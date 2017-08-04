@@ -148,7 +148,7 @@ public class CodecContext {
       }
       return lookup(type).read(this, bais);
     } catch (IOException e) {
-      throw new RuntimeException("Unable to decode " + type.getCanonicalName(), e);
+      throw new CodecException("Unable to decode " + type.getCanonicalName(), e);
     }
 
   }
@@ -255,7 +255,7 @@ public class CodecContext {
       lookup(type).write(this, instance, baos);
       return baos.toByteArray();
     } catch (IOException e) {
-      throw new RuntimeException("Error encoding " + type.getCanonicalName(), e);
+      throw new CodecException("Error encoding " + type.getCanonicalName(), e);
     }
   }
 

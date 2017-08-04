@@ -1,5 +1,7 @@
 package org.interledger.psk;
 
+import org.interledger.InterledgerRuntimeException;
+
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Arrays;
@@ -35,7 +37,7 @@ public class PskNonceHeader extends PskMessage.Header {
       sr.nextBytes(nonce);
       return new PskNonceHeader(nonce);
     } catch (NoSuchAlgorithmException nsa) {
-      throw new RuntimeException("Could not generate secure nonce", nsa);
+      throw new InterledgerRuntimeException("Could not generate secure nonce", nsa);
     }
   }
 

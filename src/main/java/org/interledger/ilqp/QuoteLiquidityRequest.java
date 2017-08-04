@@ -110,8 +110,10 @@ public interface QuoteLiquidityRequest extends QuoteRequest {
 
       @Override
       public String toString() {
-        return "QuoteLiquidityRequest.Impl{destinationAccount=" + destinationAccount
-            + ", destinationHoldDuration=" + destinationHoldDuration + "}";
+        return "QuoteLiquidityRequest.Impl{"
+            + "destinationAccount=" + destinationAccount
+            + ", destinationHoldDuration=" + destinationHoldDuration
+            + '}';
       }
     }
   }

@@ -136,10 +136,8 @@ We welcome any and all submissions, whether it's a typo, bug fix, or new feature
 This project uses Gradle to manage dependencies and other aspects of the build.  To install Gradle, follow the instructions at [https://gradle.org](https://gradle.org/).
 
 ### Get the Code
-This project depends on [Java Crypto-Conditions](https://github.com/interledger/java-crypto-conditions). To contribute to this library, clone the following two projects to the same folder (the dependency crypto-conditions is not available as a package yet so we use a project dependency).
 
 ```bash
-$ git clone https://github.com/interledger/java-crypto-conditions.git
 $ git clone https://github.com/interledger/java-ilp-core.git
 ```
 

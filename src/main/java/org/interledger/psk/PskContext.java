@@ -2,6 +2,7 @@ package org.interledger.psk;
 
 import org.interledger.Fulfillment;
 import org.interledger.InterledgerAddress;
+import org.interledger.InterledgerRuntimeException;
 import org.interledger.codecs.CodecContextFactory;
 import org.interledger.codecs.psk.PskMessageBinaryCodec;
 import org.interledger.ilp.InterledgerPayment;
@@ -210,7 +211,7 @@ public interface PskContext {
       mac.init(new SecretKeySpec(key, HMAC_ALGORITHM));
       return mac.doFinal(message);
     } catch (InvalidKeyException | NoSuchAlgorithmException | IllegalStateException e) {
-      throw new RuntimeException("Error getting HMAC", e);
+      throw new InterledgerRuntimeException("Error getting HMAC", e);
     }
   }
 
@@ -241,7 +242,7 @@ public interface PskContext {
       sr.nextBytes(token);
       return token;
     } catch (NoSuchAlgorithmException nsa) {
-      throw new RuntimeException("Could not generate token", nsa);
+      throw new InterledgerRuntimeException("Could not generate token", nsa);
     }
   }
 
