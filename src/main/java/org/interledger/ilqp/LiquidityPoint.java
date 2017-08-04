@@ -89,6 +89,33 @@ public interface LiquidityPoint extends Comparable<LiquidityPoint> {
       public BigInteger getOutputAmount() {
         return this.outputAmount;
       }
+
+      @Override
+      public int hashCode() {
+        return Objects.hash(inputAmount, outputAmount);
+      }
+
+      @Override
+      public boolean equals(Object obj) {
+        if (this == obj) {
+          return true;
+        }
+
+        if (obj == null || getClass() != obj.getClass()) {
+          return false;
+        }
+
+        Impl impl = (Impl) obj;
+
+        return Objects.equals(inputAmount, impl.inputAmount)
+            && Objects.equals(outputAmount, impl.outputAmount);
+      }
+
+      @Override
+      public String toString() {
+        return "LiquidityPoint.Impl{inputAmount=" + inputAmount + ", outputAmount=" + outputAmount
+            + "}";
+      }
     }
   }
 }

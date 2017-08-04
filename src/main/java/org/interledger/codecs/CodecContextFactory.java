@@ -27,6 +27,7 @@ import org.interledger.codecs.oer.ilqp.QuoteByDestinationAmountResponseOerCodec;
 import org.interledger.codecs.oer.ilqp.QuoteBySourceAmountRequestOerCodec;
 import org.interledger.codecs.oer.ilqp.QuoteBySourceAmountResponseOerCodec;
 import org.interledger.codecs.oer.ilqp.QuoteLiquidityRequestOerCodec;
+import org.interledger.codecs.oer.ilqp.QuoteLiquidityResponseOerCodec;
 import org.interledger.codecs.oer.ipr.InterledgerPaymentRequestOerCodec;
 import org.interledger.codecs.packettypes.InterledgerPacketType;
 import org.interledger.codecs.psk.PskMessageBinaryCodec;
@@ -78,7 +79,7 @@ public class CodecContextFactory {
         .register(QuoteBySourceAmountRequest.class, new QuoteBySourceAmountRequestOerCodec())
         .register(QuoteBySourceAmountResponse.class, new QuoteBySourceAmountResponseOerCodec())
         .register(QuoteLiquidityRequest.class, new QuoteLiquidityRequestOerCodec())
-        //.register(QuoteLiquidityResponse.class, new QuoteLiquidityResponseOerCodec())
+        .register(QuoteLiquidityResponse.class, new QuoteLiquidityResponseOerCodec())
 
         // PSK
         .register(PskMessage.class, new PskMessageBinaryCodec());

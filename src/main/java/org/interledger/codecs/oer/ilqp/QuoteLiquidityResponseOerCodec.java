@@ -5,17 +5,22 @@ import org.interledger.codecs.Codec;
 import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.QuoteLiquidityResponseCodec;
 import org.interledger.codecs.oer.OerGeneralizedTimeCodec.OerGeneralizedTime;
+import org.interledger.codecs.oer.OerLengthPrefixCodec.OerLengthPrefix;
 import org.interledger.codecs.oer.OerUint32Codec.OerUint32;
+import org.interledger.codecs.oer.OerUint64Codec.OerUint64;
 import org.interledger.codecs.packettypes.InterledgerPacketType;
 import org.interledger.ilqp.LiquidityCurve;
+import org.interledger.ilqp.LiquidityPoint;
 import org.interledger.ilqp.QuoteLiquidityResponse;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigInteger;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Collection;
 import java.util.Objects;
 
 /**
@@ -34,7 +39,19 @@ public class QuoteLiquidityResponseOerCodec implements QuoteLiquidityResponseCod
     Objects.requireNonNull(inputStream);
 
     /* read the Liquidity curve */
-    final LiquidityCurve liquidityCurve = context.read(LiquidityCurve.class, inputStream);
+    int nrLiquidityPoints = context.read(OerLengthPrefix.class, inputStream).getLength();
+    
+    final LiquidityCurve.Builder curveBuilder = LiquidityCurve.Builder.builder();
+    
+    for (int i = 0; i < nrLiquidityPoints; i++) {
+      final BigInteger x = context.read(OerUint64.class, inputStream).getValue();
+      final BigInteger y = context.read(OerUint64.class, inputStream).getValue();
+
+      final LiquidityPoint point =
+          LiquidityPoint.Builder.builder().inputAmount(x).outputAmount(y).build();
+
+      curveBuilder.liquidityPoint(point);
+    }
     
     /* read the applies-to Address. */
     final InterledgerAddress appliesTo = context.read(InterledgerAddress.class, inputStream);
@@ -46,7 +63,7 @@ public class QuoteLiquidityResponseOerCodec implements QuoteLiquidityResponseCod
     ZonedDateTime expiresAt = context.read(OerGeneralizedTime.class, inputStream).getValue();
     
     return QuoteLiquidityResponse.Builder.builder()
-        .liquidityCurve(liquidityCurve)
+        .liquidityCurve(curveBuilder.build())
         .appliesTo(appliesTo)
         .sourceHoldDuration(Duration.of(sourceHoldDuration, ChronoUnit.MILLIS))
         .expiresAt(expiresAt)
@@ -64,10 +81,17 @@ public class QuoteLiquidityResponseOerCodec implements QuoteLiquidityResponseCod
     /* write the packet type. */
     context.write(InterledgerPacketType.class, this.getTypeId(), outputStream);
 
-    /* liquidity curve */
-    context.write(LiquidityCurve.class, instance.getLiquidityCurve(), outputStream);
+    /* the liquidity curve */
+    Collection<LiquidityPoint> points = instance.getLiquidityCurve().getLiquidityPoints();
     
-    /* applies to prefix */
+    context.write(OerLengthPrefix.class, new OerLengthPrefix(points.size()), outputStream);
+    
+    for (LiquidityPoint liquidityPoint : points) {
+      context.write(OerUint64.class, new OerUint64(liquidityPoint.getInputAmount()), outputStream);
+      context.write(OerUint64.class, new OerUint64(liquidityPoint.getOutputAmount()), outputStream);
+    }
+    
+    /* applies-to prefix */
     context.write(InterledgerAddress.class, instance.getAppliesToPrefix(), outputStream);
     
     /* source hold duration, in milliseconds */

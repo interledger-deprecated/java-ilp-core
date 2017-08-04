@@ -94,6 +94,30 @@ public interface LiquidityCurve {
       public Collection<LiquidityPoint> getLiquidityPoints() {
         return this.curve;
       }
+
+      @Override
+      public int hashCode() {
+        return Objects.hashCode(curve);
+      }
+
+      @Override
+      public boolean equals(Object obj) {
+        if (this == obj) {
+          return true;
+        }
+
+        if (obj == null || getClass() != obj.getClass()) {
+          return false;
+        }
+
+        Impl impl = (Impl) obj;
+        return curve.equals(impl.curve);
+      }
+
+      @Override
+      public String toString() {
+        return "LiquidityCurve.Impl{curve=" + curve + "}";
+      }
     }
   }
 }

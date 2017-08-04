@@ -7,8 +7,6 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
 
-import javax.money.convert.ExchangeRate;
-
 /**
  * A response to a quote request with liquidity information regarding transfers between the current
  * ledger and the destination account. This information is sufficient to locally quote any amount
@@ -163,43 +161,32 @@ public interface QuoteLiquidityResponse extends QuoteResponse {
         if (this == obj) {
           return true;
         }
+
         if (obj == null || getClass() != obj.getClass()) {
           return false;
         }
 
         Impl impl = (Impl) obj;
 
-        if (!liquidityCurve.equals(impl.liquidityCurve)) {
-          return false;
-        }
-
-        if (!appliesTo.equals(impl.appliesTo)) {
-          return false;
-        }
-        
-        if (!sourceHoldDuration.equals(impl.sourceHoldDuration)) {
-          return false;
-        }
-        
-        if (!expiresAt.equals(impl.expiresAt)) {
-          return false;
-        }
-
-        return true;
+        /*
+         * compare the quote responses, taking care that the expiration date is compared with
+         * timezone information -> .equals != .isEquals for ZonedDateTime :(
+         */
+        return Objects.equals(liquidityCurve, impl.liquidityCurve)
+            && Objects.equals(appliesTo, impl.appliesTo)
+            && Objects.equals(sourceHoldDuration, impl.sourceHoldDuration)
+            && (expiresAt.isEqual(impl.expiresAt));
       }
 
       @Override
       public int hashCode() {
-        int result = liquidityCurve.hashCode();
-        result = 31 * result + appliesTo.hashCode();
-        result = 31 * result + sourceHoldDuration.hashCode();
-        result = 31 * result + expiresAt.hashCode();
-        return result;
+        return Objects.hash(liquidityCurve.hashCode(), appliesTo.hashCode(),
+            sourceHoldDuration.hashCode(), expiresAt.hashCode());
       }
 
       @Override
       public String toString() {
-        final StringBuilder sb = new StringBuilder("Impl{");
+        final StringBuilder sb = new StringBuilder("QuoteLiquidityResponse.Impl{");
         sb.append("liquidityCurve=").append(liquidityCurve);
         sb.append(", appliesTo=").append(appliesTo);
         sb.append(", sourceHoldDuration=").append(sourceHoldDuration);
@@ -207,6 +194,6 @@ public interface QuoteLiquidityResponse extends QuoteResponse {
         sb.append('}');
         return sb.toString();
       }
-    }    
+    }
   }
 }
