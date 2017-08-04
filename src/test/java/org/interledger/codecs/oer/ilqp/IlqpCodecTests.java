@@ -94,7 +94,5 @@ public class IlqpCodecTests {
     final InterledgerPacket decodedPacket = context.read(byteArrayInputStream);
     assertThat(decodedPacket.getClass().getName(), is(packet.getClass().getName()));
     assertThat(decodedPacket, is(packet));
-    
-    System.out.println(packet);
   }
 }

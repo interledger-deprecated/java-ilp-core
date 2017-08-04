@@ -116,7 +116,7 @@ public interface QuoteBySourceAmountResponse extends QuoteResponse {
 
       @Override
       public String toString() {
-        return "Impl{"
+        return "QuoteBySourceAmountResponse.Impl{"
             + "destinationAmount=" + destinationAmount
             + ", sourceHoldDuration=" + sourceHoldDuration
             + '}';

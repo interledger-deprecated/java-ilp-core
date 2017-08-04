@@ -186,13 +186,9 @@ public interface QuoteLiquidityResponse extends QuoteResponse {
 
       @Override
       public String toString() {
-        final StringBuilder sb = new StringBuilder("QuoteLiquidityResponse.Impl{");
-        sb.append("liquidityCurve=").append(liquidityCurve);
-        sb.append(", appliesTo=").append(appliesTo);
-        sb.append(", sourceHoldDuration=").append(sourceHoldDuration);
-        sb.append(", expiresAt=").append(expiresAt);
-        sb.append('}');
-        return sb.toString();
+        return "QuoteLiquidityResponse.Impl{liquidityCurve=" + liquidityCurve + ", appliesTo="
+            + appliesTo + ", sourceHoldDuration=" + sourceHoldDuration + ", expiresAt=" + expiresAt
+            + "}";
       }
     }
   }
