@@ -3,11 +3,11 @@ package org.interledger.codecs.oer;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertTrue;
 
-import com.google.common.io.BaseEncoding;
-
 import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.CodecContextFactory;
 import org.interledger.codecs.oer.OerGeneralizedTimeCodec.OerGeneralizedTime;
+
+import com.google.common.io.BaseEncoding;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,6 +22,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Parameterized tests for encoding and decoding {@link OerGeneralizedTime} instances.
+ */
 @RunWith(Parameterized.class)
 public class OerGeneralizedTimeCodecTest {
 
@@ -42,9 +45,9 @@ public class OerGeneralizedTimeCodecTest {
          * test parameters are arrays of the form [input string representation] [Zoned date time
          * representation]
          */
-        {"20170630010203.000Z", ZonedDateTime.of(2017, 06, 30, 1, 2, 3, 0, ZoneId.of("Z"))},
+        {"20170630010203.000Z", ZonedDateTime.of(2017, 6, 30, 1, 2, 3, 0, ZoneId.of("Z"))},
         {"20170630010203.100Z",
-            ZonedDateTime.of(2017, 06, 30, 1, 2, 3, (int) TimeUnit.MILLISECONDS.toNanos(100),
+            ZonedDateTime.of(2017, 6, 30, 1, 2, 3, (int) TimeUnit.MILLISECONDS.toNanos(100),
                 ZoneId.of("Z"))},
         {"20170630010203.100Z",
             ZonedDateTime.of(2017, 6, 30, 3, 2, 3, (int) TimeUnit.MILLISECONDS.toNanos(100),

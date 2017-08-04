@@ -12,21 +12,29 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoField;
 import java.util.Objects;
 
 /**
- * An extension of {@link Codec} for reading and writing an ASN.1 OER GeneralizedTime.
- * An ASN.1 GeneralizedTime object is used to represent time values with a higher precision than 
- * done by the UTCTime ASN.1 type (allows a precision down to seconds). 
- * The ASN.1 GeneralizedTime syntax can include fraction-of-second details. The time value is 
- * expressed as a character string in any of the following formats:
+ * An extension of {@link Codec} for reading and writing an ASN.1 OER GeneralizedTime. An ASN.1
+ * GeneralizedTime object is used to represent time values with a higher precision than done by the
+ * UTCTime ASN.1 type (allows a precision down to seconds). The ASN.1 GeneralizedTime syntax can
+ * include fraction-of-second details, and can be expressed in several formats. However, the
+ * interledger specs <b>mandate</b> that time be represented as a string in the format
+ * 'YYYYMMDDHHmmSS.fffZ', where
  * <ul>
- *  <li>YYYYMMDDHH[MM[SS[.fff]]]</li>
- *  <li>YYYYMMDDHH[MM[SS[.fff]]]Z</li>
- *  <li>YYYYMMDDHH[MM[SS[.fff]]]+-HHMM</li>
+ * <li>YYYY - is the four digit year, e.g. 2017</li>
+ * <li>MM - is the two digit month, e.g. 07</li>
+ * <li>DD - is the two digit day, e.g. 04</li>
+ * <li>HH - is the two digit hour of the day, e.g. 21</li>
+ * <li>mm - is the two digit minute, e.g. 09</li>
+ * <li>SS - is the two digit second, e.g. 21</li>
+ * <li>. - is the literal '.' character</li>
+ * <li>fff - is the three digit millisecond, e.g. 000</li>
+ * <li>Z - is the literal 'Z' character indicating that the time is represented in the UTC + 0
+ * timezone</li>
  * </ul>
- * However, the interledger specs <b>mandate</b> that time be represented in YYYYMMDDTHHMMSS.fffZ.
  */
 public class OerGeneralizedTimeCodec implements Codec<OerGeneralizedTime> {
 
@@ -56,11 +64,24 @@ public class OerGeneralizedTimeCodec implements Codec<OerGeneralizedTime> {
   public OerGeneralizedTime read(CodecContext context, InputStream inputStream) throws IOException {
     Objects.requireNonNull(context);
     Objects.requireNonNull(inputStream);
-    
+
     final String timeString = context.read(OerIA5String.class, inputStream).getValue();
-    
-    final ZonedDateTime value = ZonedDateTime.parse(timeString, this.generalizedTimeFormatter);
-    return new OerGeneralizedTime(value);
+
+    if (timeString.length() != 19 || !timeString.endsWith("Z")) {
+      throw new IllegalArgumentException(
+          "Interledger GeneralizedTime only supports values in the format 'YYYYMMDDTHHMMSS.fffZ',"
+              + " value " + timeString + " is invalid.");
+    }
+
+    try {
+      final ZonedDateTime value = ZonedDateTime.parse(timeString, this.generalizedTimeFormatter);
+      return new OerGeneralizedTime(value);
+    } catch (DateTimeParseException dtp) {
+      throw new IllegalArgumentException(
+          "Interledger GeneralizedTime only supports values in the format 'YYYYMMDDTHHMMSS.fffZ', "
+              + "value " + timeString + " is invalid.",
+          dtp);
+    }
   }
 
   @Override

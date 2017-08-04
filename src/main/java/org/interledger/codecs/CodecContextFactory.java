@@ -78,7 +78,7 @@ public class CodecContextFactory {
         .register(QuoteBySourceAmountRequest.class, new QuoteBySourceAmountRequestOerCodec())
         .register(QuoteBySourceAmountResponse.class, new QuoteBySourceAmountResponseOerCodec())
         .register(QuoteLiquidityRequest.class, new QuoteLiquidityRequestOerCodec())
-    //.register(QuoteLiquidityResponse.class, new QuoteLiquidityResponseOerCodec())
+        //.register(QuoteLiquidityResponse.class, new QuoteLiquidityResponseOerCodec())
 
         // PSK
         .register(PskMessage.class, new PskMessageBinaryCodec());

@@ -3,16 +3,19 @@ package org.interledger.codecs.oer;
 import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.CodecContextFactory;
 import org.interledger.codecs.oer.OerGeneralizedTimeCodec.OerGeneralizedTime;
-import org.junit.Ignore;
+
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.time.format.DateTimeParseException;
 
+/**
+ * Test cases specifically dealing with reading badly formatted {@link OerGeneralizedTime}
+ * instances.
+ */
 public class OerGeneralizeTimeCodecTestBadFormat {
 
-  @Test(expected = DateTimeParseException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void test_NoTime() throws IOException {
     final CodecContext context = CodecContextFactory.interledger();
 
@@ -21,7 +24,7 @@ public class OerGeneralizeTimeCodecTestBadFormat {
     context.read(OerGeneralizedTime.class, bis);
   }
 
-  @Test(expected = DateTimeParseException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void test_NoMinutes() throws IOException {
     final CodecContext context = CodecContextFactory.interledger();
 
@@ -30,7 +33,7 @@ public class OerGeneralizeTimeCodecTestBadFormat {
     context.read(OerGeneralizedTime.class, bis);
   }
 
-  @Test(expected = DateTimeParseException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void test_NoSeconds() throws IOException {
     final CodecContext context = CodecContextFactory.interledger();
 
@@ -39,7 +42,7 @@ public class OerGeneralizeTimeCodecTestBadFormat {
     context.read(OerGeneralizedTime.class, bis);
   }
 
-  @Test(expected = DateTimeParseException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void test_NoMillis() throws IOException {
     final CodecContext context = CodecContextFactory.interledger();
 
@@ -48,8 +51,7 @@ public class OerGeneralizeTimeCodecTestBadFormat {
     context.read(OerGeneralizedTime.class, bis);
   }
 
-  @Ignore("It appears that the JDK date parser is not correct :( ")
-  @Test(expected = DateTimeParseException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void test_MillisShort() throws IOException {
     final CodecContext context = CodecContextFactory.interledger();
 
@@ -58,7 +60,7 @@ public class OerGeneralizeTimeCodecTestBadFormat {
     context.read(OerGeneralizedTime.class, bis);
   }
 
-  @Test(expected = DateTimeParseException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void test_MillisLong() throws IOException {
     final CodecContext context = CodecContextFactory.interledger();
 
@@ -67,7 +69,7 @@ public class OerGeneralizeTimeCodecTestBadFormat {
     context.read(OerGeneralizedTime.class, bis);
   }
 
-  @Test(expected = DateTimeParseException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void test_NoZone() throws IOException {
     final CodecContext context = CodecContextFactory.interledger();
 
