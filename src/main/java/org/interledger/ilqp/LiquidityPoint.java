@@ -71,7 +71,7 @@ public interface LiquidityPoint extends Comparable<LiquidityPoint> {
             Objects.requireNonNull(builder.inputAmount, "input amount must not be null!");
 
         this.outputAmount =
-            Objects.requireNonNull(builder.outputAmount, "input amount must not be null!");
+            Objects.requireNonNull(builder.outputAmount, "output amount must not be null!");
       }
 
       @Override

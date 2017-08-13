@@ -39,9 +39,9 @@ public interface LiquidityCurve {
     private Set<LiquidityPoint> points = new HashSet<>();
 
     /**
-     * Sets a liquidity curve into this builder.
+     * Sets a liquidity curve into this builder, clearing any liquidity points already set.
      * 
-     * @param curve An instance of {@link LiquidityCurve}.s
+     * @param curve An instance of {@link LiquidityCurve}.
      */
     public Builder liquidityCurve(final LiquidityCurve curve) {
       Objects.requireNonNull(curve);
