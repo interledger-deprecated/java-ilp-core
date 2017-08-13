@@ -26,7 +26,7 @@ public class OerLengthPrefixCodecTestBadLength {
      */
     byte lengthOfLength = (byte) ((1 << 7) | 2);
 
-    byte[] lengthIndicator = new byte[]{lengthOfLength, 0};
+    byte[] lengthIndicator = new byte[] {lengthOfLength, 0};
 
     final ByteArrayInputStream inputStream = new ByteArrayInputStream(lengthIndicator);
 

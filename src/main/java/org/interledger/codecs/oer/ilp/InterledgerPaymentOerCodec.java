@@ -60,7 +60,7 @@ public class InterledgerPaymentOerCodec implements InterledgerPaymentCodec {
         .getValue();
 
     return InterledgerPayment.builder()
-        .destinationAmount(destinationAmount)
+        .destinationAmount(destinationAmount) 
         .destinationAccount(destinationAccount)
         .data(data)
         .build();

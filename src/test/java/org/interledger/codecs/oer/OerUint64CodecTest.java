@@ -127,22 +127,22 @@ public class OerUint64CodecTest {
             {new BigInteger("9223372036854775806"), Longs.toByteArray(Long.MAX_VALUE - 1L)},
             // 31
             {new BigInteger("9223372036854775807"), Longs.toByteArray(Long.MAX_VALUE)},
-
+            
             // 32 Eight bytes, beyond Long.MAX_VALUE
-            {new BigInteger("9223372036854775808"),
-                new byte[]{(byte) 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}},
-
+            {new BigInteger("9223372036854775808"), 
+                new byte[] {(byte) 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}},
+            
             // 33
-            {new BigInteger("9223372036854775809"),
-                new byte[]{(byte) 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01}},
+            {new BigInteger("9223372036854775809"), 
+                new byte[] {(byte) 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01}},
             // 33
             {new BigInteger("18446744073709551614"),
-                new byte[]{(byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF,
-                    (byte) 0xFF, (byte) 0xFF, (byte) 0xFE}},
+                new byte[] {(byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF,
+                  (byte) 0xFF, (byte) 0xFF, (byte) 0xFE}},
             // 34
-            {new BigInteger("18446744073709551615"),
-                new byte[]{(byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF,
-                    (byte) 0xFF, (byte) 0xFF, (byte) 0xFF}}
+            {new BigInteger("18446744073709551615"), 
+                new byte[] {(byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, 
+                  (byte) 0xFF, (byte) 0xFF, (byte) 0xFF}}
         }
     );
   }
@@ -162,7 +162,7 @@ public class OerUint64CodecTest {
     final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(asn1OerBytes);
     final BigInteger actualValue =
         oerUint64Codec.read(codecContext, byteArrayInputStream).getValue();
-
+    
     assertThat(actualValue, is(inputValue));
   }
 

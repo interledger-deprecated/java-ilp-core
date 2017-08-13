@@ -21,7 +21,6 @@ public interface QuoteLiquidityRequest extends QuoteRequest {
    * A builder for instances of {@link QuoteLiquidityRequest}.
    */
   class Builder {
-
     private InterledgerAddress destinationAccount;
     private Duration destinationHoldDuration;
 
@@ -34,8 +33,7 @@ public interface QuoteLiquidityRequest extends QuoteRequest {
      *
      * @param destinationAccount An instance of {@link InterledgerAddress}.
      */
-    public Builder destinationAccount(
-        final InterledgerAddress destinationAccount) {
+    public Builder destinationAccount(final InterledgerAddress destinationAccount) {
       this.destinationAccount = Objects.requireNonNull(destinationAccount);
       return this;
     }
@@ -52,12 +50,13 @@ public interface QuoteLiquidityRequest extends QuoteRequest {
 
     /**
      * The method that actually constructs a QuoteByLiquidityRequest.
-     *
+     * 
      * @return An instance of {@link QuoteLiquidityRequest}
      */
     public QuoteLiquidityRequest build() {
       return new Builder.Impl(this);
     }
+
 
     private static class Impl implements QuoteLiquidityRequest {
 
@@ -66,7 +65,7 @@ public interface QuoteLiquidityRequest extends QuoteRequest {
 
       /**
        * Constructs an instance from the values held in the builder.
-       *
+       * 
        * @param builder A Builder used to construct {@link QuoteLiquidityRequest} instances.
        */
       private Impl(final Builder builder) {
@@ -100,23 +99,19 @@ public interface QuoteLiquidityRequest extends QuoteRequest {
 
         Impl impl = (Impl) obj;
 
-        return destinationAccount.equals(impl.destinationAccount)
-            && destinationHoldDuration.equals(impl.destinationHoldDuration);
+        return Objects.equals(destinationAccount, impl.destinationAccount)
+            && Objects.equals(destinationHoldDuration, impl.destinationHoldDuration);
       }
 
       @Override
       public int hashCode() {
-        int result = destinationAccount.hashCode();
-        result = 31 * result + destinationHoldDuration.hashCode();
-        return result;
+        return Objects.hash(destinationAccount, destinationHoldDuration);
       }
 
       @Override
       public String toString() {
-        return "QuoteLiquidityRequest.Impl{"
-            + "destinationAccount=" + destinationAccount
-            + ", destinationHoldDuration=" + destinationHoldDuration
-            + '}';
+        return "QuoteLiquidityRequest.Impl{" + "destinationAccount=" + destinationAccount
+            + ", destinationHoldDuration=" + destinationHoldDuration + "}";
       }
     }
   }

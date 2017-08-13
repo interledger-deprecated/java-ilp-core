@@ -19,7 +19,7 @@ import java.util.Objects;
 /**
  * An implementation of {@link Codec} that reads and writes instances of
  * {@link QuoteByDestinationAmountRequest}. in OER format.
- *
+ * 
  * @see "https://github.com/interledger/rfcs/blob/master/asn1/InterledgerQuotingProtocol.asn"
  */
 public class QuoteByDestinationAmountRequestOerCodec

@@ -45,12 +45,12 @@ public class OerLengthPrefixCodec implements Codec<OerLengthPrefix> {
       // Convert the bytes into an integer...
       byte[] ba = new byte[lengthOfLength];
       int read = inputStream.read(ba, 0, lengthOfLength);
-
+      
       if (read != lengthOfLength) {
         throw new IOException(
             "error reading " + lengthOfLength + " bytes from stream, only read " + read);
       }
-
+      
       numEncodedOctets = toInt(ba);
     }
 

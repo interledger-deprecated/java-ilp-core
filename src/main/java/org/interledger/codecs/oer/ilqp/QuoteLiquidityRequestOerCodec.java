@@ -18,7 +18,7 @@ import java.util.Objects;
 /**
  * An implementation of {@link Codec} that reads and writes instances of
  * {@link QuoteLiquidityRequest}. in OER format.
- *
+ * 
  * @see "https://github.com/interledger/rfcs/blob/master/asn1/InterledgerQuotingProtocol.asn"
  */
 public class QuoteLiquidityRequestOerCodec implements QuoteLiquidityRequestCodec {
@@ -46,7 +46,7 @@ public class QuoteLiquidityRequestOerCodec implements QuoteLiquidityRequestCodec
   @Override
   public void write(CodecContext context, QuoteLiquidityRequest instance,
       OutputStream outputStream) throws IOException {
-
+  
     Objects.requireNonNull(context);
     Objects.requireNonNull(instance);
     Objects.requireNonNull(outputStream);
