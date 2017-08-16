@@ -4,7 +4,7 @@ import java.time.Duration;
 import java.util.Objects;
 
 /**
- * A quote sent in response to a request of type {@link QuoteByDestinationAmountresRequest}.
+ * A quote sent in response to a request of type {@link QuoteByDestinationAmountRequest}.
  */
 public interface QuoteByDestinationAmountResponse extends QuoteResponse {
 

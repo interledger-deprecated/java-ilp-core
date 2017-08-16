@@ -88,7 +88,7 @@ public interface InterledgerAddress {
    */
   default boolean startsWith(final InterledgerAddress interledgerAddress) {
     Objects.requireNonNull(interledgerAddress, "interledgerAddress must not be null!");
-    return this.startsWith(interledgerAddress.toString());
+    return this.startsWith(interledgerAddress.getValue());
   }
 
   /**
@@ -275,7 +275,7 @@ public interface InterledgerAddress {
 
       @Override
       public String toString() {
-        return "InterledgerAddress.Impl{value='" + value + "'}";
+        return this.getValue();
       }
     }
   }
