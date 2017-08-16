@@ -2,6 +2,8 @@ package org.interledger.codecs;
 
 import org.interledger.Condition;
 import org.interledger.InterledgerAddress;
+import org.interledger.codecs.oer.OerGeneralizedTimeCodec;
+import org.interledger.codecs.oer.OerGeneralizedTimeCodec.OerGeneralizedTime;
 import org.interledger.codecs.oer.OerIA5StringCodec;
 import org.interledger.codecs.oer.OerIA5StringCodec.OerIA5String;
 import org.interledger.codecs.oer.OerLengthPrefixCodec;
@@ -25,6 +27,7 @@ import org.interledger.codecs.oer.ilqp.QuoteByDestinationAmountResponseOerCodec;
 import org.interledger.codecs.oer.ilqp.QuoteBySourceAmountRequestOerCodec;
 import org.interledger.codecs.oer.ilqp.QuoteBySourceAmountResponseOerCodec;
 import org.interledger.codecs.oer.ilqp.QuoteLiquidityRequestOerCodec;
+import org.interledger.codecs.oer.ilqp.QuoteLiquidityResponseOerCodec;
 import org.interledger.codecs.oer.ipr.InterledgerPaymentRequestOerCodec;
 import org.interledger.codecs.packettypes.InterledgerPacketType;
 import org.interledger.codecs.psk.PskMessageBinaryCodec;
@@ -59,6 +62,7 @@ public class CodecContextFactory {
         .register(OerLengthPrefix.class, new OerLengthPrefixCodec())
         .register(OerIA5String.class, new OerIA5StringCodec())
         .register(OerOctetString.class, new OerOctetStringCodec())
+        .register(OerGeneralizedTime.class, new OerGeneralizedTimeCodec())
 
         // ILP
         .register(InterledgerAddress.class, new InterledgerAddressOerCodec())
@@ -75,7 +79,7 @@ public class CodecContextFactory {
         .register(QuoteBySourceAmountRequest.class, new QuoteBySourceAmountRequestOerCodec())
         .register(QuoteBySourceAmountResponse.class, new QuoteBySourceAmountResponseOerCodec())
         .register(QuoteLiquidityRequest.class, new QuoteLiquidityRequestOerCodec())
-        //.register(QuoteLiquidityResponse.class, new QuoteLiquidityResponseOerCodec())
+        .register(QuoteLiquidityResponse.class, new QuoteLiquidityResponseOerCodec())
 
         // PSK
         .register(PskMessage.class, new PskMessageBinaryCodec());

@@ -17,19 +17,19 @@ public interface QuoteByDestinationAmountRequest extends QuoteRequest {
    * Returns fixed the amount that will arrive at the receiver.
    */
   long getDestinationAmount();
-
+  
   @Override
   Duration getDestinationHoldDuration();
-
+  
   /**
    * A builder for instances of {@link QuoteByDestinationAmountRequest}.
    */
   class Builder {
-
+    
     private InterledgerAddress destinationAccount;
     private long destinationAmount;
     private Duration destinationHoldDuration;
-
+    
     public static Builder builder() {
       return new Builder();
     }
@@ -67,16 +67,16 @@ public interface QuoteByDestinationAmountRequest extends QuoteRequest {
       this.destinationHoldDuration = Objects.requireNonNull(destinationHoldDuration);
       return this;
     }
-
+    
     /**
      * The method that actually constructs a QuoteByDestinationAmountRequest.
-     *
+     * 
      * @return An instance of {@link QuoteByDestinationAmountRequest}
      */
     public QuoteByDestinationAmountRequest build() {
       return new Builder.Impl(this);
     }
-
+    
     /**
      * A private, immutable implementation of {@link QuoteByDestinationAmountRequest}.
      */
@@ -85,29 +85,29 @@ public interface QuoteByDestinationAmountRequest extends QuoteRequest {
       private final InterledgerAddress destinationAccount;
       private final Duration destinationHoldDuration;
       private long destinationAmount;
-
+      
       /**
        * Constructs an instance from the values held in the builder.
-       *
+       * 
        * @param builder A Builder used to construct {@link QuoteByDestinationAmountRequest}
-       *                instances.
+       *        instances.
        */
       private Impl(final Builder builder) {
         Objects.requireNonNull(builder);
-
+        
         this.destinationAccount = Objects.requireNonNull(builder.destinationAccount,
             "destinationAccount must not be null!");
-
+        
         if (builder.destinationAmount < 0) {
           throw new IllegalArgumentException("Destination amount must be at least 0");
         }
 
         this.destinationAmount = builder.destinationAmount;
-
+        
         this.destinationHoldDuration = Objects.requireNonNull(builder.destinationHoldDuration,
             "destinationHoldDuration must not be null!");
       }
-
+      
       @Override
       public InterledgerAddress getDestinationAccount() {
         return this.destinationAccount;
@@ -122,7 +122,7 @@ public interface QuoteByDestinationAmountRequest extends QuoteRequest {
       public Duration getDestinationHoldDuration() {
         return this.destinationHoldDuration;
       }
-
+      
       @Override
       public boolean equals(Object obj) {
         if (this == obj) {

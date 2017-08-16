@@ -266,9 +266,7 @@ public interface InterledgerAddress {
 
       @Override
       public String toString() {
-        return "InterledgerAddress.Impl{"
-            + "value='" + value + "'"
-            + '}';
+        return "InterledgerAddress.Impl{value='" + value + "'}";
       }
     }
   }

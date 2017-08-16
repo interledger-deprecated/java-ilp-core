@@ -17,10 +17,10 @@ public interface QuoteBySourceAmountRequest extends QuoteRequest {
    * Returns the amount the sender wishes to send, denominated in the asset of the source ledger.
    */
   long getSourceAmount();
-
+  
   @Override
   Duration getDestinationHoldDuration();
-
+  
   /**
    * A builder for instances of {@link QuoteBySourceAmountRequest}.
    */
@@ -94,18 +94,18 @@ public interface QuoteBySourceAmountRequest extends QuoteRequest {
 
         this.destinationAccount = Objects.requireNonNull(builder.destinationAccount,
             "destinationAccount must not be null!");
-
+        
         if (builder.sourceAmount < 0) {
           throw new IllegalArgumentException("Source amount must be at least 0");
         }
 
         this.sourceAmount = builder.sourceAmount;
-
+        
         this.destinationHoldDuration = Objects.requireNonNull(builder.destinationHoldDuration,
             "destinationHoldDuration must not be null!");
-
+        
       }
-
+      
       @Override
       public InterledgerAddress getDestinationAccount() {
         return this.destinationAccount;
@@ -115,7 +115,7 @@ public interface QuoteBySourceAmountRequest extends QuoteRequest {
       public long getSourceAmount() {
         return this.sourceAmount;
       }
-
+      
       @Override
       public Duration getDestinationHoldDuration() {
         return this.destinationHoldDuration;
@@ -154,6 +154,6 @@ public interface QuoteBySourceAmountRequest extends QuoteRequest {
             + '}';
       }
     }
-  }
+  }  
 
 }

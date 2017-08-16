@@ -20,7 +20,6 @@ public interface QuoteBySourceAmountResponse extends QuoteResponse {
    * A builder for constructing instances of {@link QuoteBySourceAmountResponse}.
    */
   class Builder {
-
     private long destinationAmount;
     private Duration sourceHoldDuration;
 
@@ -67,7 +66,6 @@ public interface QuoteBySourceAmountResponse extends QuoteResponse {
      * A private, immutable implementation of {@link QuoteBySourceAmountResponse}.
      */
     private static class Impl implements QuoteBySourceAmountResponse {
-
       private final Duration sourceHoldDuration;
       private long destinationAmount;
 
