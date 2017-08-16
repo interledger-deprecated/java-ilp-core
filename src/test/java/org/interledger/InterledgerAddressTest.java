@@ -137,7 +137,7 @@ public class InterledgerAddressTest {
 
   @Test
   public void testToString() throws Exception {
-    assertThat(InterledgerAddress.of("g.foo.bob").getValue().toString(), is("g.foo.bob"));
+    assertThat(InterledgerAddress.of("g.foo.bob").toString(), is("g.foo.bob"));
   }
 
 }
