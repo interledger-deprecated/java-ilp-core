@@ -70,6 +70,7 @@ public interface InterledgerAddress {
    * Tests if this InterledgerAddress starts with the specified {@code addressSegment}.
    *
    * @param addressSegment An {@link String} prefix to compare against.
+   *
    * @return {@code true} if this InterledgerAddress begins with the specified prefix.
    */
   default boolean startsWith(final String addressSegment) {
@@ -82,6 +83,7 @@ public interface InterledgerAddress {
    * Tests if this InterledgerAddress starts with the specified {@code interledgerAddress}.
    *
    * @param interledgerAddress An {@link InterledgerAddress} prefix to compare against.
+   *
    * @return {@code true} if this InterledgerAddress begins with the specified prefix.
    */
   default boolean startsWith(final InterledgerAddress interledgerAddress) {
@@ -104,7 +106,8 @@ public interface InterledgerAddress {
    * prefix.</p>
    *
    * @param addressSegment A {@link String} to be appended to this address as an additional
-   * segment.
+   *                       segment.
+   *
    * @return A new instance representing the original address with a newly specified final segment.
    */
   InterledgerAddress with(String addressSegment);
@@ -116,7 +119,9 @@ public interface InterledgerAddress {
    * String#equals(Object)} method on the object returned of {@link #getValue()}.</p>
    *
    * @param obj object to be compared for equality with this collection
+   *
    * @return <tt>true</tt> if the specified object is equal to this collection
+   *
    * @see Object#equals(Object)
    * @see Set#equals(Object)
    * @see List#equals(Object)
@@ -131,6 +136,7 @@ public interface InterledgerAddress {
    * String#equals(Object)} method on the object returned of {@link #getValue()}.</p>
    *
    * @return the hash code value for this InterledgerAddress.
+   *
    * @see Object#hashCode()
    * @see Object#equals(Object)
    */
@@ -165,7 +171,7 @@ public interface InterledgerAddress {
      * Assign a new value to this builder.
      *
      * @param value A {@link String} representing this builder's "value", which is the string
-     * version of an Interledger Address.
+     *              version of an Interledger Address.
      */
     public Builder value(final String value) {
       this.value = value;
@@ -197,7 +203,8 @@ public interface InterledgerAddress {
         if (!isValidInterledgerAddress(builder.value)) {
           throw new IllegalArgumentException(
               String.format(
-                  "Invalid characters in address: ['%s']. Reference Interledger RFC-15 for proper format.",
+                  "Invalid characters in address: ['%s']. "
+                      + "Reference Interledger RFC-15 for proper format.",
                   builder.value)
           );
         }
@@ -210,8 +217,10 @@ public interface InterledgerAddress {
        * outlined in Interledger RFC #15.
        *
        * @param value A {@link String} representing a potential Interledger Address value.
+       *
        * @return {@code true} if the supplied {@code value} conforms to the requirements of RFC 15;
-       * {@code false} otherwise.
+       *     {@code false} otherwise.
+       *
        * @see "https://github.com/interledger/rfcs/tree/master/0015-ilp-addresses"
        */
       private boolean isValidInterledgerAddress(final String value) {
