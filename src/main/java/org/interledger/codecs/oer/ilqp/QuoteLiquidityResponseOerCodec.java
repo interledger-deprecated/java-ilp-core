@@ -25,9 +25,9 @@ import java.util.Objects;
 
 /**
  * An implementation of {@link Codec} that reads and writes instances of
- * {@link QuoteLiquidityResponse}. in OER format.
- * 
- * @see https://github.com/interledger/rfcs/blob/master/asn1/InterledgerQuotingProtocol.asn
+ * {@link QuoteLiquidityResponse} to/from ASN.1 OER format.
+ *
+ * @see "https://github.com/interledger/rfcs/blob/master/asn1/InterledgerQuotingProtocol.asn"
  */
 public class QuoteLiquidityResponseOerCodec implements QuoteLiquidityResponseCodec {
 
@@ -40,9 +40,9 @@ public class QuoteLiquidityResponseOerCodec implements QuoteLiquidityResponseCod
 
     /* read the Liquidity curve */
     int nrLiquidityPoints = context.read(OerLengthPrefix.class, inputStream).getLength();
-    
+
     final LiquidityCurve.Builder curveBuilder = LiquidityCurve.Builder.builder();
-    
+
     for (int i = 0; i < nrLiquidityPoints; i++) {
       final BigInteger x = context.read(OerUint64.class, inputStream).getValue();
       final BigInteger y = context.read(OerUint64.class, inputStream).getValue();
@@ -61,7 +61,7 @@ public class QuoteLiquidityResponseOerCodec implements QuoteLiquidityResponseCod
 
     /* read the expires-at timestamp */
     ZonedDateTime expiresAt = context.read(OerGeneralizedTime.class, inputStream).getValue();
-    
+
     return QuoteLiquidityResponse.Builder.builder()
         .liquidityCurve(curveBuilder.build())
         .appliesTo(appliesTo)
@@ -73,7 +73,7 @@ public class QuoteLiquidityResponseOerCodec implements QuoteLiquidityResponseCod
   @Override
   public void write(CodecContext context, QuoteLiquidityResponse instance,
       OutputStream outputStream) throws IOException {
-  
+
     Objects.requireNonNull(context);
     Objects.requireNonNull(instance);
     Objects.requireNonNull(outputStream);
@@ -83,9 +83,9 @@ public class QuoteLiquidityResponseOerCodec implements QuoteLiquidityResponseCod
 
     /* the liquidity curve */
     Collection<LiquidityPoint> points = instance.getLiquidityCurve().getLiquidityPoints();
-    
+
     context.write(OerLengthPrefix.class, new OerLengthPrefix(points.size()), outputStream);
-    
+
     for (LiquidityPoint liquidityPoint : points) {
       context.write(OerUint64.class, new OerUint64(liquidityPoint.getInputAmount()), outputStream);
       context.write(OerUint64.class, new OerUint64(liquidityPoint.getOutputAmount()), outputStream);

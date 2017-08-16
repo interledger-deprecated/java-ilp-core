@@ -88,7 +88,7 @@ public interface InterledgerAddress {
    */
   default boolean startsWith(final InterledgerAddress interledgerAddress) {
     Objects.requireNonNull(interledgerAddress, "interledgerAddress must not be null!");
-    return this.startsWith(interledgerAddress.toString());
+    return this.startsWith(interledgerAddress.getValue());
   }
 
   /**
@@ -115,8 +115,8 @@ public interface InterledgerAddress {
   /**
    * <p>Compares the specified object with this <tt>InterledgerAddress</tt> for equality. The
    * <tt>InterledgerAddress</tt> interface is essentially a type-safe wrapper around a String value,
-   * so implementations should take care to forward equality decisions to the
-   * {@link String#equals(Object)} method on the object returned of {@link #getValue()}.</p>
+   * so implementations should take care to forward equality decisions to the {@link
+   * String#equals(Object)} method on the object returned of {@link #getValue()}.</p>
    *
    * @param obj object to be compared for equality with this collection
    *
@@ -132,8 +132,8 @@ public interface InterledgerAddress {
   /**
    * <p> Returns the hash code value for this <tt>InterledgerAddress</tt>. The
    * <tt>InterledgerAddress</tt> interface is essentially a type-safe wrapper around a String value,
-   * so implementations should take care to forward hashcode decisions to the
-   * {@link String#equals(Object)} method on the object returned of {@link #getValue()}.</p>
+   * so implementations should take care to forward hashcode decisions to the {@link
+   * String#equals(Object)} method on the object returned of {@link #getValue()}.</p>
    *
    * @return the hash code value for this InterledgerAddress.
    *
@@ -160,8 +160,8 @@ public interface InterledgerAddress {
     }
 
     /**
-     * Builder method to actually construct an instance of {@link InterledgerAddress} of the data
-     * in this builder.
+     * Builder method to actually construct an instance of {@link InterledgerAddress} of the data in
+     * this builder.
      */
     public InterledgerAddress build() {
       return new Impl(this);
@@ -202,7 +202,11 @@ public interface InterledgerAddress {
 
         if (!isValidInterledgerAddress(builder.value)) {
           throw new IllegalArgumentException(
-              "Invalid characters in address.  Reference Interledger RFC-15 for proper format.");
+              String.format(
+                  "Invalid characters in address: ['%s']. "
+                      + "Reference Interledger RFC-15 for proper format.",
+                  builder.value)
+          );
         }
 
         this.value = builder.value;
@@ -215,7 +219,7 @@ public interface InterledgerAddress {
        * @param value A {@link String} representing a potential Interledger Address value.
        *
        * @return {@code true} if the supplied {@code value} conforms to the requirements of RFC 15;
-       * {@code false} otherwise.
+       *     {@code false} otherwise.
        *
        * @see "https://github.com/interledger/rfcs/tree/master/0015-ilp-addresses"
        */
