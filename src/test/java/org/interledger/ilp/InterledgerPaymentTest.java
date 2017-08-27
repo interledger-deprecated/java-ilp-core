@@ -11,6 +11,8 @@ import static org.mockito.Mockito.mock;
 import org.interledger.InterledgerAddress;
 import org.interledger.ilp.InterledgerPayment.Builder;
 
+import java.math.BigInteger;
+
 import org.junit.Test;
 
 /**
@@ -21,7 +23,7 @@ public class InterledgerPaymentTest {
   @Test
   public void testBuild() throws Exception {
     final InterledgerAddress destinationAccount = mock(InterledgerAddress.class);
-    final Long destinationAmount = 25L;
+    final BigInteger destinationAmount = BigInteger.valueOf(25L);
     byte[] data = new byte[]{127};
 
     final InterledgerPayment interledgerPayment =
@@ -52,7 +54,8 @@ public class InterledgerPaymentTest {
     }
 
     try {
-      new Builder().destinationAccount(mock(InterledgerAddress.class)).destinationAmount(100L)
+      new Builder().destinationAccount(mock(InterledgerAddress.class))
+          .destinationAmount(BigInteger.valueOf(100L))
           .build();
       assertFalse(true);
     } catch (Exception e) {
@@ -62,7 +65,8 @@ public class InterledgerPaymentTest {
     }
 
     final InterledgerPayment interledgerPayment =
-        new Builder().destinationAccount(mock(InterledgerAddress.class)).destinationAmount(100L)
+        new Builder().destinationAccount(mock(InterledgerAddress.class))
+            .destinationAmount(BigInteger.valueOf(100L))
             .data(new byte[]{}).build();
     assertThat(interledgerPayment, is(not(nullValue())));
   }
@@ -74,11 +78,13 @@ public class InterledgerPaymentTest {
     byte[] data = new byte[]{127};
 
     final InterledgerPayment interledgerPayment1 =
-        new Builder().destinationAccount(destinationAccount).destinationAmount(destinationAmount)
+        new Builder().destinationAccount(destinationAccount)
+            .destinationAmount(BigInteger.valueOf(100L))
             .data(data).build();
 
     final InterledgerPayment interledgerPayment2 =
-        new Builder().destinationAccount(destinationAccount).destinationAmount(destinationAmount)
+        new Builder().destinationAccount(destinationAccount)
+            .destinationAmount(BigInteger.valueOf(100L))
             .data(data).build();
 
     assertTrue(interledgerPayment1.equals(interledgerPayment2));
@@ -86,7 +92,8 @@ public class InterledgerPaymentTest {
     assertTrue(interledgerPayment1.hashCode() == interledgerPayment2.hashCode());
 
     final InterledgerPayment interledgerPaymentOther = new Builder()
-        .destinationAccount(destinationAccount).destinationAmount(10L).data(data).build();
+        .destinationAccount(destinationAccount).destinationAmount(BigInteger.valueOf(10L))
+        .data(data).build();
 
     assertFalse(interledgerPayment1.equals(interledgerPaymentOther));
     assertFalse(interledgerPaymentOther.equals(interledgerPayment1));

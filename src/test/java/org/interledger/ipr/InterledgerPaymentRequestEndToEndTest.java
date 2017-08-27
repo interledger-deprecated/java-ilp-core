@@ -16,13 +16,13 @@ import org.interledger.psk.PskMessage;
 
 import org.junit.Test;
 
+import java.math.BigInteger;
 import java.time.Duration;
 import java.time.temporal.TemporalAmount;
 import java.util.UUID;
 
 /**
  * A test case that simulates the full payment flow using IPR and PSK.
- *
  */
 public class InterledgerPaymentRequestEndToEndTest {
 
@@ -39,7 +39,7 @@ public class InterledgerPaymentRequestEndToEndTest {
         .value("private.bob")
         .build();
 
-    long destinationAmount = 100L;
+    BigInteger destinationAmount = BigInteger.valueOf(100L);
     TemporalAmount expiry = Duration.ofSeconds(60);
     UUID paymentId = UUID.randomUUID();
     String secretStuff = "SECRET";

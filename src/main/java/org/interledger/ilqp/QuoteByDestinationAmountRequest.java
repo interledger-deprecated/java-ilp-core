@@ -2,6 +2,7 @@ package org.interledger.ilqp;
 
 import org.interledger.InterledgerAddress;
 
+import java.math.BigInteger;
 import java.time.Duration;
 import java.util.Objects;
 
@@ -16,20 +17,20 @@ public interface QuoteByDestinationAmountRequest extends QuoteRequest {
   /**
    * Returns fixed the amount that will arrive at the receiver.
    */
-  long getDestinationAmount();
-  
+  BigInteger getDestinationAmount();
+
   @Override
   Duration getDestinationHoldDuration();
-  
+
   /**
    * A builder for instances of {@link QuoteByDestinationAmountRequest}.
    */
   class Builder {
-    
+
     private InterledgerAddress destinationAccount;
-    private long destinationAmount;
+    private BigInteger destinationAmount;
     private Duration destinationHoldDuration;
-    
+
     public static Builder builder() {
       return new Builder();
     }
@@ -50,11 +51,9 @@ public interface QuoteByDestinationAmountRequest extends QuoteRequest {
      *
      * @param destinationAmount The source amount value.
      */
-    public Builder destinationAmount(long destinationAmount) {
-      if (destinationAmount < 0) {
-        throw new IllegalArgumentException("Destination amount must be at least 0");
-      }
-      this.destinationAmount = destinationAmount;
+    public Builder destinationAmount(final BigInteger destinationAmount) {
+      this.destinationAmount = Objects
+          .requireNonNull(destinationAmount, "destinationAmount must not be null!");
       return this;
     }
 
@@ -67,54 +66,49 @@ public interface QuoteByDestinationAmountRequest extends QuoteRequest {
       this.destinationHoldDuration = Objects.requireNonNull(destinationHoldDuration);
       return this;
     }
-    
+
     /**
      * The method that actually constructs a QuoteByDestinationAmountRequest.
-     * 
+     *
      * @return An instance of {@link QuoteByDestinationAmountRequest}
      */
     public QuoteByDestinationAmountRequest build() {
       return new Builder.Impl(this);
     }
-    
+
     /**
      * A private, immutable implementation of {@link QuoteByDestinationAmountRequest}.
      */
     private static class Impl implements QuoteByDestinationAmountRequest {
 
       private final InterledgerAddress destinationAccount;
+      private final BigInteger destinationAmount;
       private final Duration destinationHoldDuration;
-      private long destinationAmount;
-      
+
       /**
        * Constructs an instance from the values held in the builder.
-       * 
+       *
        * @param builder A Builder used to construct {@link QuoteByDestinationAmountRequest}
-       *        instances.
+       *                instances.
        */
       private Impl(final Builder builder) {
         Objects.requireNonNull(builder);
-        
+
         this.destinationAccount = Objects.requireNonNull(builder.destinationAccount,
             "destinationAccount must not be null!");
-        
-        if (builder.destinationAmount < 0) {
-          throw new IllegalArgumentException("Destination amount must be at least 0");
-        }
-
-        this.destinationAmount = builder.destinationAmount;
-        
+        this.destinationAmount = Objects
+            .requireNonNull(builder.destinationAmount, "destinationAmount must not be null!");
         this.destinationHoldDuration = Objects.requireNonNull(builder.destinationHoldDuration,
             "destinationHoldDuration must not be null!");
       }
-      
+
       @Override
       public InterledgerAddress getDestinationAccount() {
         return this.destinationAccount;
       }
 
       @Override
-      public long getDestinationAmount() {
+      public BigInteger getDestinationAmount() {
         return this.destinationAmount;
       }
 
@@ -122,27 +116,31 @@ public interface QuoteByDestinationAmountRequest extends QuoteRequest {
       public Duration getDestinationHoldDuration() {
         return this.destinationHoldDuration;
       }
-      
+
       @Override
-      public boolean equals(Object obj) {
-        if (this == obj) {
+      public boolean equals(Object object) {
+        if (this == object) {
           return true;
         }
-        if (obj == null || getClass() != obj.getClass()) {
+        if (object == null || getClass() != object.getClass()) {
           return false;
         }
 
-        Impl impl = (Impl) obj;
+        Impl impl = (Impl) object;
 
-        return destinationAccount.equals(impl.destinationAccount)
-            && destinationAmount == impl.destinationAmount
-            && destinationHoldDuration.equals(impl.destinationHoldDuration);
+        if (!destinationAccount.equals(impl.destinationAccount)) {
+          return false;
+        }
+        if (!destinationAmount.equals(impl.destinationAmount)) {
+          return false;
+        }
+        return destinationHoldDuration.equals(impl.destinationHoldDuration);
       }
 
       @Override
       public int hashCode() {
         int result = destinationAccount.hashCode();
-        result = 31 * result + Long.hashCode(destinationAmount);
+        result = 31 * result + destinationAmount.hashCode();
         result = 31 * result + destinationHoldDuration.hashCode();
         return result;
       }

@@ -17,12 +17,6 @@ import org.interledger.ilqp.QuoteBySourceAmountResponse;
 import org.interledger.ilqp.QuoteLiquidityRequest;
 import org.interledger.ilqp.QuoteLiquidityResponse;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameter;
-import org.junit.runners.Parameterized.Parameters;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.math.BigInteger;
@@ -30,6 +24,12 @@ import java.time.Duration;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameter;
+import org.junit.runners.Parameterized.Parameters;
 
 /**
  * Unit tests to validate the {@link Codec} functionality for all Interledger packets.
@@ -46,34 +46,34 @@ public class IlqpCodecTests {
    */
   @Parameters
   public static Object[] data() {
-    return new Object[] {
+    return new Object[]{
         QuoteBySourceAmountRequest.Builder.builder()
             .destinationAccount(InterledgerAddress.of("test1.foo"))
-            .sourceAmount(100)
+            .sourceAmount(BigInteger.valueOf(100L))
             .destinationHoldDuration(Duration.ofSeconds(30)).build(),
         QuoteBySourceAmountResponse.Builder.builder()
-            .destinationAmount(95)
+            .destinationAmount(BigInteger.valueOf(95L))
             .sourceHoldDuration(Duration.ofSeconds(30)).build(),
         QuoteByDestinationAmountRequest.Builder.builder()
             .destinationAccount(InterledgerAddress.of("test2.foo"))
-            .destinationAmount(100)
+            .destinationAmount(BigInteger.valueOf(100L))
             .destinationHoldDuration(Duration.ofSeconds(35)).build(),
         QuoteByDestinationAmountResponse.Builder.builder()
-            .sourceAmount(105)
+            .sourceAmount(BigInteger.valueOf(105L))
             .sourceHoldDuration(Duration.ofMinutes(1)).build(),
         QuoteLiquidityRequest.Builder.builder()
             .destinationAccount(InterledgerAddress.of("test3.foo"))
-        .destinationHoldDuration(Duration.ofMinutes(5)).build(),
+            .destinationHoldDuration(Duration.ofMinutes(5)).build(),
         QuoteLiquidityResponse.Builder.builder()
             .liquidityCurve(
                 LiquidityCurve.Builder
                     .builder()
-                      .liquidityPoint(LiquidityPoint.Builder.builder()
+                    .liquidityPoint(LiquidityPoint.Builder.builder()
                         .inputAmount(BigInteger.ZERO).outputAmount(BigInteger.ZERO).build())
-                      .liquidityPoint(LiquidityPoint.Builder.builder()
-                          .inputAmount(BigInteger.ONE).outputAmount(BigInteger.ONE).build())
-                      .liquidityPoint(LiquidityPoint.Builder.builder()
-                          .inputAmount(BigInteger.valueOf(5)).outputAmount(BigInteger.TEN).build())
+                    .liquidityPoint(LiquidityPoint.Builder.builder()
+                        .inputAmount(BigInteger.ONE).outputAmount(BigInteger.ONE).build())
+                    .liquidityPoint(LiquidityPoint.Builder.builder()
+                        .inputAmount(BigInteger.valueOf(5)).outputAmount(BigInteger.TEN).build())
                     .build())
             .appliesTo(InterledgerAddress.of("test1.foo"))
             .sourceHoldDuration(Duration.of(10, ChronoUnit.MINUTES))

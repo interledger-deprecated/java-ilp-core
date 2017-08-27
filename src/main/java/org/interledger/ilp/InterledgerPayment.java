@@ -3,6 +3,7 @@ package org.interledger.ilp;
 import org.interledger.InterledgerAddress;
 import org.interledger.InterledgerPacket;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Objects;
 import javax.money.MonetaryAmount;
@@ -55,7 +56,7 @@ public interface InterledgerPayment extends InterledgerPacket {
    *
    * @return An instance of {@link MonetaryAmount}.
    */
-  Long getDestinationAmount();
+  BigInteger getDestinationAmount();
 
   /**
    * Arbitrary data for the receiver that is set by the transport layer of a payment (for example,
@@ -71,7 +72,7 @@ public interface InterledgerPayment extends InterledgerPacket {
   class Builder {
 
     private InterledgerAddress destinationAccount;
-    private Long destinationAmount;
+    private BigInteger destinationAmount;
     private byte[] data;
 
     /**
@@ -87,9 +88,9 @@ public interface InterledgerPayment extends InterledgerPacket {
     /**
      * Set the destination amount into this builder.
      *
-     * @param destinationAmount An instance of {@link MonetaryAmount}.
+     * @param destinationAmount An instance of {@link BigInteger}.
      */
-    public Builder destinationAmount(final Long destinationAmount) {
+    public Builder destinationAmount(final BigInteger destinationAmount) {
       this.destinationAmount = Objects.requireNonNull(destinationAmount);
       return this;
     }
@@ -119,7 +120,7 @@ public interface InterledgerPayment extends InterledgerPacket {
     private static final class Impl implements InterledgerPayment {
 
       private final InterledgerAddress destinationAccount;
-      private final Long destinationAmount;
+      private final BigInteger destinationAmount;
       private final byte[] data;
 
       /**
@@ -140,7 +141,7 @@ public interface InterledgerPayment extends InterledgerPacket {
       }
 
       @Override
-      public Long getDestinationAmount() {
+      public BigInteger getDestinationAmount() {
         return this.destinationAmount;
       }
 
