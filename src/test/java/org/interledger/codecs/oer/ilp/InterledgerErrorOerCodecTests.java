@@ -2,17 +2,7 @@ package org.interledger.codecs.oer.ilp;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertTrue;
 
-import com.google.common.collect.ImmutableList;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.time.Instant;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Random;
-import java.util.stream.IntStream;
 import org.interledger.InterledgerAddress;
 import org.interledger.InterledgerPacket;
 import org.interledger.codecs.Codec;
@@ -20,11 +10,25 @@ import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.CodecContextFactory;
 import org.interledger.ilp.InterledgerProtocolError;
 import org.interledger.ilp.InterledgerProtocolError.ErrorCode;
+
+import com.google.common.collect.ImmutableList;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
+import java.time.Instant;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Random;
+import java.util.stream.IntStream;
 
 /**
  * Unit tests to validate the {@link Codec} functionality for all {@link InterledgerProtocolError}
@@ -56,50 +60,50 @@ public class InterledgerErrorOerCodecTests {
     // This ByteArrayOutputStream contains a random amount of 32kb for testing purposes.
     final ByteArrayOutputStream byteArrayOutputStream1 = new ByteArrayOutputStream();
     IntStream.range(1, 32769)
-      .map(r::nextInt)
-      .forEach(byteArrayOutputStream1::write);
+        .map(r::nextInt)
+        .forEach(byteArrayOutputStream1::write);
 
     // This ByteArrayOutputStream contains a random amount of 32kb for testing purposes.
     final ByteArrayOutputStream byteArrayOutputStream2 = new ByteArrayOutputStream();
     IntStream.range(1, 32769)
-      .map(r::nextInt)
-      .forEach(byteArrayOutputStream2::write);
+        .map(r::nextInt)
+        .forEach(byteArrayOutputStream2::write);
 
     // This ByteArrayOutputStream contains a random amount of 32kb for testing purposes.
     final ByteArrayOutputStream byteArrayOutputStream3 = new ByteArrayOutputStream();
     IntStream.range(1, 32769)
-      .map(r::nextInt)
-      .forEach(byteArrayOutputStream3::write);
+        .map(r::nextInt)
+        .forEach(byteArrayOutputStream3::write);
 
     return Arrays.asList(new Object[][]{
-      {new InterledgerProtocolError.Builder()
-        .errorCode(ErrorCode.T00_INTERNAL_ERROR)
-        .triggeredByAddress(FOO)
-        .forwardedByAddresses(ImmutableList.of(BAR, BAZ))
-        .triggeredAt(NOW1)
-        .data(byteArrayOutputStream1.toByteArray())
-        .build()
-      },
+        {new InterledgerProtocolError.Builder()
+            .errorCode(ErrorCode.T00_INTERNAL_ERROR)
+            .triggeredByAddress(FOO)
+            .forwardedByAddresses(ImmutableList.of(BAR, BAZ))
+            .triggeredAt(NOW1)
+            .data(byteArrayOutputStream1.toByteArray())
+            .build()
+        },
 
-      {
-        new InterledgerProtocolError.Builder()
-          .errorCode(ErrorCode.T01_LEDGER_UNREACHABLE)
-          .triggeredByAddress(BAR)
-          .forwardedByAddresses(ImmutableList.of(FOO, BAZ))
-          .triggeredAt(NOW2)
-          .data(byteArrayOutputStream2.toByteArray())
-          .build()
-      },
+        {
+            new InterledgerProtocolError.Builder()
+                .errorCode(ErrorCode.T01_LEDGER_UNREACHABLE)
+                .triggeredByAddress(BAR)
+                .forwardedByAddresses(ImmutableList.of(FOO, BAZ))
+                .triggeredAt(NOW2)
+                .data(byteArrayOutputStream2.toByteArray())
+                .build()
+        },
 
-      {
-        new InterledgerProtocolError.Builder()
-          .errorCode(ErrorCode.T02_LEDGER_BUSY)
-          .triggeredByAddress(BAZ)
-          .forwardedByAddresses(ImmutableList.of(FOO, BAR))
-          .triggeredAt(NOW3)
-          .data(byteArrayOutputStream3.toByteArray())
-          .build()
-      },
+        {
+            new InterledgerProtocolError.Builder()
+                .errorCode(ErrorCode.T02_LEDGER_BUSY)
+                .triggeredByAddress(BAZ)
+                .forwardedByAddresses(ImmutableList.of(FOO, BAR))
+                .triggeredAt(NOW3)
+                .data(byteArrayOutputStream3.toByteArray())
+                .build()
+        },
 
     });
   }
@@ -114,7 +118,7 @@ public class InterledgerErrorOerCodecTests {
     final ByteArrayInputStream asn1OerErrorBytes = constructInterledgerProtocolErrorAsn1OerBytes();
 
     final InterledgerProtocolError error = context
-      .read(InterledgerProtocolError.class, asn1OerErrorBytes);
+        .read(InterledgerProtocolError.class, asn1OerErrorBytes);
     assertThat(error, is(packet));
   }
 

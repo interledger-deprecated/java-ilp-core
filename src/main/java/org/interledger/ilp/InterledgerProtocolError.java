@@ -76,7 +76,7 @@ public interface InterledgerProtocolError extends InterledgerPacket {
    * <p>Constructs an {@link InterledgerProtocolError} that wraps an existing error and adds a new
    * forwardedBy address to the list.</p>
    *
-   * </p>Per IL-RFC-3, when a node receives an Interledger error, it SHOULD not change any of the
+   * <p>Per IL-RFC-3, when a node receives an Interledger error, it SHOULD not change any of the
    * details about the error, except for adding itself to the forwarded-by list, if desired.</p>
    *
    * @param interledgerProtocolError An existing error that will eventually be forwarded.
@@ -420,15 +420,15 @@ public interface InterledgerProtocolError extends InterledgerPacket {
         }
 
         @Override
-        public boolean equals(Object o) {
-          if (this == o) {
+        public boolean equals(Object obj) {
+          if (this == obj) {
             return true;
           }
-          if (o == null || getClass() != o.getClass()) {
+          if (obj == null || getClass() != obj.getClass()) {
             return false;
           }
 
-          Impl impl = (Impl) o;
+          Impl impl = (Impl) obj;
 
           return code.equals(impl.code);
         }

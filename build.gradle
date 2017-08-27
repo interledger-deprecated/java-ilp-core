@@ -1,6 +1,6 @@
 group = 'org.interledger'
 description = 'Core libraries for implementing the Interledger suite of protocols.'
-version = '0.6.1-SNAPSHOT'
+version = '0.7.0-SNAPSHOT'
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
@@ -11,7 +11,6 @@ apply plugin: 'jacoco'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-
 
 /*
  custom checkstyle properties for the build.

@@ -12,8 +12,7 @@ import javax.money.MonetaryAmount;
  * <p>Interledger Payments moves assets of one party to another that consists of one or more ledger
  * transfers, potentially across multiple ledgers.</p>
  *
- * <p>Interledger Payments have three major consumers:
- * <pre>
+ * <p>Interledger Payments have three major consumers:</p>
  *   <ul>
  *     <li>Connectors utilize the Interledger Address contained in the payment to route the
  * payment.</li>
@@ -22,7 +21,6 @@ import javax.money.MonetaryAmount;
  *     <li>Interledger sub-protocols utilize custom data encoded in a payment to facilitate
  * sub-protocol operations.</li>
  *   </ul>
- * </pre>
  *
  * <p>When a sender prepares a transfer to start a payment, the sender attaches an ILP Payment to
  * the transfer, in the memo field if possible. If a ledger does not support attaching the entire

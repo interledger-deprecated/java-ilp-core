@@ -6,16 +6,19 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertFalse;
 
-import com.google.common.collect.ImmutableList;
-import java.time.Instant;
-import java.util.List;
 import org.interledger.InterledgerAddress;
 import org.interledger.ilp.InterledgerProtocolError.Builder;
 import org.interledger.ilp.InterledgerProtocolError.ErrorCode;
+
+import com.google.common.collect.ImmutableList;
 import org.junit.Test;
 
+import java.time.Instant;
+
+import java.util.List;
+
 /**
- * Unit tests for {@link InterledgerProtocolError} and {@link Builder}
+ * Unit tests for {@link InterledgerProtocolError} and {@link Builder}.
  */
 public class InterledgerProtocolErrorTest {
 
@@ -32,13 +35,13 @@ public class InterledgerProtocolErrorTest {
     final byte[] data = new byte[]{127};
 
     final InterledgerProtocolError interledgerProtocolError =
-      InterledgerProtocolError.builder()
-        .errorCode(errorCode)
-        .triggeredByAddress(triggeredBy)
-        .forwardedByAddresses(forwardedByAddresses)
-        .triggeredAt(triggeredAt)
-        .data(data)
-        .build();
+        InterledgerProtocolError.builder()
+            .errorCode(errorCode)
+            .triggeredByAddress(triggeredBy)
+            .forwardedByAddresses(forwardedByAddresses)
+            .triggeredAt(triggeredAt)
+            .data(data)
+            .build();
 
     assertThat(interledgerProtocolError.getErrorCode(), is(errorCode));
     assertThat(interledgerProtocolError.getTriggeredByAddress(), is(triggeredBy));
@@ -54,11 +57,11 @@ public class InterledgerProtocolErrorTest {
     final Instant triggeredAt = Instant.now();
 
     final InterledgerProtocolError interledgerProtocolError =
-      InterledgerProtocolError.builder()
-        .errorCode(errorCode)
-        .triggeredByAddress(triggeredBy)
-        .triggeredAt(triggeredAt)
-        .build();
+        InterledgerProtocolError.builder()
+            .errorCode(errorCode)
+            .triggeredByAddress(triggeredBy)
+            .triggeredAt(triggeredAt)
+            .build();
 
     assertThat(interledgerProtocolError.getErrorCode(), is(errorCode));
     assertThat(interledgerProtocolError.getTriggeredByAddress(), is(triggeredBy));
@@ -71,7 +74,7 @@ public class InterledgerProtocolErrorTest {
   public void testBuildWithUnintializedValues() throws Exception {
     try {
       new Builder()
-        .build();
+          .build();
       fail();
     } catch (Exception e) {
       assertTrue(e instanceof NullPointerException);
@@ -80,8 +83,8 @@ public class InterledgerProtocolErrorTest {
 
     try {
       new Builder()
-        .errorCode(ErrorCode.T00_INTERNAL_ERROR)
-        .build();
+          .errorCode(ErrorCode.T00_INTERNAL_ERROR)
+          .build();
       fail();
     } catch (Exception e) {
       assertTrue(e instanceof NullPointerException);
@@ -90,9 +93,9 @@ public class InterledgerProtocolErrorTest {
 
     try {
       new Builder()
-        .errorCode(ErrorCode.T00_INTERNAL_ERROR)
-        .triggeredByAddress(FOO)
-        .build();
+          .errorCode(ErrorCode.T00_INTERNAL_ERROR)
+          .triggeredByAddress(FOO)
+          .build();
       fail();
     } catch (Exception e) {
       assertTrue(e instanceof NullPointerException);
@@ -160,18 +163,18 @@ public class InterledgerProtocolErrorTest {
 
     final Instant now = Instant.now();
     final InterledgerProtocolError interledgerProtocolError1 = new Builder()
-      .errorCode(ErrorCode.T00_INTERNAL_ERROR)
-      .triggeredByAddress(FOO)
-      .forwardedByAddresses(ImmutableList.of())
-      .triggeredAt(now)
-      .build();
+        .errorCode(ErrorCode.T00_INTERNAL_ERROR)
+        .triggeredByAddress(FOO)
+        .forwardedByAddresses(ImmutableList.of())
+        .triggeredAt(now)
+        .build();
 
     final InterledgerProtocolError interledgerProtocolError2 = new Builder()
-      .errorCode(ErrorCode.T00_INTERNAL_ERROR)
-      .triggeredByAddress(FOO)
-      .forwardedByAddresses(ImmutableList.of())
-      .triggeredAt(now)
-      .build();
+        .errorCode(ErrorCode.T00_INTERNAL_ERROR)
+        .triggeredByAddress(FOO)
+        .forwardedByAddresses(ImmutableList.of())
+        .triggeredAt(now)
+        .build();
 
     assertThat(interledgerProtocolError1, is(interledgerProtocolError2));
     assertThat(interledgerProtocolError2, is(interledgerProtocolError1));
@@ -180,11 +183,11 @@ public class InterledgerProtocolErrorTest {
     assertTrue(interledgerProtocolError1.hashCode() == interledgerProtocolError2.hashCode());
 
     final InterledgerProtocolError interledgerProtocolErrorOther = new Builder()
-      .errorCode(ErrorCode.T99_APPLICATION_ERROR)
-      .triggeredByAddress(FOO)
-      .forwardedByAddresses(ImmutableList.of())
-      .triggeredAt(Instant.now())
-      .build();
+        .errorCode(ErrorCode.T99_APPLICATION_ERROR)
+        .triggeredByAddress(FOO)
+        .forwardedByAddresses(ImmutableList.of())
+        .triggeredAt(Instant.now())
+        .build();
 
     assertFalse(interledgerProtocolError1.equals(interledgerProtocolErrorOther));
     assertFalse(interledgerProtocolErrorOther.equals(interledgerProtocolError1));
@@ -194,25 +197,25 @@ public class InterledgerProtocolErrorTest {
   @Test
   public void testCopyBuilder() throws Exception {
     final InterledgerProtocolError interledgerProtocolError1 = new Builder()
-      .errorCode(ErrorCode.T00_INTERNAL_ERROR)
-      .triggeredByAddress(FOO)
-      .forwardedByAddresses(ImmutableList.of())
-      .triggeredAt(Instant.now())
-      .build();
+        .errorCode(ErrorCode.T00_INTERNAL_ERROR)
+        .triggeredByAddress(FOO)
+        .forwardedByAddresses(ImmutableList.of())
+        .triggeredAt(Instant.now())
+        .build();
 
     final InterledgerProtocolError interledgerProtocolError2 = new Builder(
-      interledgerProtocolError1).build();
+        interledgerProtocolError1).build();
 
     assertTrue(interledgerProtocolError1.equals(interledgerProtocolError2));
     assertTrue(interledgerProtocolError2.equals(interledgerProtocolError1));
     assertTrue(interledgerProtocolError1.hashCode() == interledgerProtocolError2.hashCode());
 
     final InterledgerProtocolError interledgerProtocolErrorOther = new Builder()
-      .errorCode(ErrorCode.T99_APPLICATION_ERROR)
-      .triggeredByAddress(FOO)
-      .forwardedByAddresses(ImmutableList.of())
-      .triggeredAt(Instant.now())
-      .build();
+        .errorCode(ErrorCode.T99_APPLICATION_ERROR)
+        .triggeredByAddress(FOO)
+        .forwardedByAddresses(ImmutableList.of())
+        .triggeredAt(Instant.now())
+        .build();
 
     assertFalse(interledgerProtocolError1.equals(interledgerProtocolErrorOther));
     assertFalse(interledgerProtocolErrorOther.equals(interledgerProtocolError1));
@@ -223,16 +226,16 @@ public class InterledgerProtocolErrorTest {
   public void testAddForwardedByAddress() throws Exception {
 
     final InterledgerProtocolError interledgerProtocolError1 = new Builder()
-      .errorCode(ErrorCode.T00_INTERNAL_ERROR)
-      .triggeredByAddress(FOO)
-      .forwardedByAddresses(ImmutableList.of(BAR))
-      .triggeredAt(Instant.now())
-      .build();
+        .errorCode(ErrorCode.T00_INTERNAL_ERROR)
+        .triggeredByAddress(FOO)
+        .forwardedByAddresses(ImmutableList.of(BAR))
+        .triggeredAt(Instant.now())
+        .build();
 
     final InterledgerProtocolError interledgerProtocolError2 = new Builder(
-      interledgerProtocolError1)
-      .addForwardedByAddress(BAZ)
-      .build();
+        interledgerProtocolError1)
+        .addForwardedByAddress(BAZ)
+        .build();
 
     assertThat(interledgerProtocolError1.equals(interledgerProtocolError2), is(false));
 
@@ -249,15 +252,16 @@ public class InterledgerProtocolErrorTest {
   public void testTriggeredByNotInForwardedByAddress() throws Exception {
     try {
       new Builder()
-        .errorCode(ErrorCode.T00_INTERNAL_ERROR)
-        .triggeredByAddress(FOO)
-        .forwardedByAddresses(ImmutableList.of(FOO, BAR))
-        .triggeredAt(Instant.now())
-        .build();
+          .errorCode(ErrorCode.T00_INTERNAL_ERROR)
+          .triggeredByAddress(FOO)
+          .forwardedByAddresses(ImmutableList.of(FOO, BAR))
+          .triggeredAt(Instant.now())
+          .build();
       fail();
     } catch (IllegalArgumentException e) {
       assertThat(e.getMessage(), is(
-        "TriggeredByAddress \"test1.foo\" was found in the ForwardedByAddresses list, which indicates an Interledger packet loop!"));
+          "TriggeredByAddress \"test1.foo\" was found in the ForwardedByAddresses list, which"
+              + " indicates an Interledger packet loop!"));
     }
   }
 }

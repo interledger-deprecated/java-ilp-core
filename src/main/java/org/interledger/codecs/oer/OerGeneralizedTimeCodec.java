@@ -25,20 +25,18 @@ import java.util.Objects;
  * interledger specs <b>mandate</b> that time be represented as a string in the format
  * 'YYYYMMDDHHmmSS.fffZ', where the following hold true:</p>
  *
- * <pre>
  *  <ul>
- *    <li>YYYY - is the four digit year, e.g. 2017</li>
- *    <li>MM - is the two digit month, e.g. 07</li>
- *    <li>DD - is the two digit day, e.g. 04</li>
- *    <li>HH - is the two digit hour of the day, e.g. 21</li>
+ *    <li>yyyy - is the four digit year, e.g. 2017</li>
+ *    <li>mm - is the two digit month, e.g. 07</li>
+ *    <li>dd - is the two digit day, e.g. 04</li>
+ *    <li>hh - is the two digit hour of the day, e.g. 21</li>
  *    <li>mm - is the two digit minute, e.g. 09</li>
- *    <li>SS - is the two digit second, e.g. 21</li>
+ *    <li>ss - is the two digit second, e.g. 21</li>
  *    <li>. - is the literal '.' character</li>
  *    <li>fff - is the three digit millisecond, e.g. 000</li>
- *    <li>Z - is the literal 'Z' character indicating that the time is represented in the UTC + 0
+ *    <li>z - is the literal 'z' character indicating that the time is represented in the utc + 0
  *        timezone</li>
  *  </ul>
- * </pre>
  */
 public class OerGeneralizedTimeCodec implements Codec<OerGeneralizedTime> {
 
