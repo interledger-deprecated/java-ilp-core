@@ -1,11 +1,11 @@
 package org.interledger.ledger.model;
 
+import org.interledger.InterledgerAddress;
+
 import java.security.PublicKey;
 
 import javax.money.CurrencyUnit;
 import javax.money.format.MonetaryAmountFormat;
-
-import org.interledger.InterledgerAddress;
 
 
 public interface LedgerInfo {

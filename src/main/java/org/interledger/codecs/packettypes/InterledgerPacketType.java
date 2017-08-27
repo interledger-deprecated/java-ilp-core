@@ -1,9 +1,9 @@
 package org.interledger.codecs.packettypes;
 
+import org.interledger.InterledgerRuntimeException;
+
 import java.net.URI;
 import java.util.Objects;
-
-import org.interledger.InterledgerRuntimeException;
 
 /**
  * An interface that defines how Interledger Packets are typed using ASN.1 OER encoding.
@@ -50,7 +50,7 @@ public interface InterledgerPacketType {
         return new InterledgerErrorPacketType();
       default:
         throw new InvalidPacketTypeException(
-            String.format("%s is an unsupported Packet Type!", type));
+          String.format("%s is an unsupported Packet Type!", type));
     }
   }
 
@@ -107,9 +107,9 @@ public interface InterledgerPacketType {
     @Override
     public String toString() {
       return "AbstractInterledgerPacketType{"
-          + "typeIdentifier=" + typeIdentifier
-          + ", typeUri=" + typeUri
-          + '}';
+        + "typeIdentifier=" + typeIdentifier
+        + ", typeUri=" + typeUri
+        + '}';
     }
 
     @Override
@@ -124,7 +124,7 @@ public interface InterledgerPacketType {
       AbstractInterledgerPacketType that = (AbstractInterledgerPacketType) obj;
 
       return typeIdentifier.equals(that.typeIdentifier)
-          && typeUri.equals(that.typeUri);
+        && typeUri.equals(that.typeUri);
     }
 
     @Override

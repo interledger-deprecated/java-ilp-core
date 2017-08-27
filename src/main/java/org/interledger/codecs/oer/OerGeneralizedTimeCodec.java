@@ -1,5 +1,10 @@
 package org.interledger.codecs.oer;
 
+import org.interledger.codecs.Codec;
+import org.interledger.codecs.CodecContext;
+import org.interledger.codecs.oer.OerGeneralizedTimeCodec.OerGeneralizedTime;
+import org.interledger.codecs.oer.OerIA5StringCodec.OerIA5String;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -11,11 +16,6 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoField;
 import java.util.Objects;
-
-import org.interledger.codecs.Codec;
-import org.interledger.codecs.CodecContext;
-import org.interledger.codecs.oer.OerGeneralizedTimeCodec.OerGeneralizedTime;
-import org.interledger.codecs.oer.OerIA5StringCodec.OerIA5String;
 
 /**
  * <p>An extension of {@link Codec} for reading and writing an ASN.1 OER GeneralizedTime. An ASN.1

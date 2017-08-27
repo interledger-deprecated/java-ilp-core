@@ -1,12 +1,12 @@
 package org.interledger.ilp;
 
+import org.interledger.InterledgerAddress;
+import org.interledger.InterledgerPacket;
+
 import java.util.Arrays;
 import java.util.Objects;
 
 import javax.money.MonetaryAmount;
-
-import org.interledger.InterledgerAddress;
-import org.interledger.InterledgerPacket;
 
 /**
  * <p>Interledger Payments moves assets of one party to another that consists of one or more ledger

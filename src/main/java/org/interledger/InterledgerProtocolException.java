@@ -1,8 +1,8 @@
 package org.interledger;
 
-import java.util.Objects;
-
 import org.interledger.ilp.InterledgerProtocolError;
+
+import java.util.Objects;
 
 /**
  * Base ILP exception, see RFC REF: https://interledger.org/rfcs/0003-interledger-protocol/#errors
@@ -22,8 +22,8 @@ public class InterledgerProtocolException extends InterledgerRuntimeException {
   public InterledgerProtocolException(final InterledgerProtocolError interledgerProtocolError) {
     super("Interledger protocol error.");
     this.interledgerProtocolError =
-        Objects
-            .requireNonNull(interledgerProtocolError, "interledgerProtocolError must not be null");
+      Objects
+        .requireNonNull(interledgerProtocolError, "interledgerProtocolError must not be null");
   }
 
   public InterledgerProtocolError getInterledgerProtocolError() {

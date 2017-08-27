@@ -4,6 +4,10 @@ import static org.interledger.ilp.InterledgerProtocolError.ErrorCode.ErrorFamily
 import static org.interledger.ilp.InterledgerProtocolError.ErrorCode.ErrorFamily.RELATIVE;
 import static org.interledger.ilp.InterledgerProtocolError.ErrorCode.ErrorFamily.TEMPORARY;
 
+import org.interledger.InterledgerAddress;
+import org.interledger.InterledgerPacket;
+import org.interledger.InterledgerRuntimeException;
+
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -11,10 +15,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import org.interledger.InterledgerAddress;
-import org.interledger.InterledgerPacket;
-import org.interledger.InterledgerRuntimeException;
 
 /**
  * <p>Interledger errors may be generated at any point during an Interledger payment.</p>
@@ -87,7 +87,8 @@ public interface InterledgerProtocolError extends InterledgerPacket {
       final InterledgerProtocolError interledgerProtocolError,
       final InterledgerAddress forwardedByAddress
   ) {
-    return new Builder(interledgerProtocolError).addForwardedByAddress(forwardedByAddress).build();
+    return new Builder(interledgerProtocolError).addForwardedByAddress(forwardedByAddress)
+        .build();
   }
 
   /**
@@ -154,7 +155,8 @@ public interface InterledgerProtocolError extends InterledgerPacket {
 
     public Builder addForwardedByAddress(final InterledgerAddress forwardedByAddress) {
       this.forwardedByAddresses
-          .add(Objects.requireNonNull(forwardedByAddress, "forwardedByAddress must not be null!"));
+          .add(Objects
+              .requireNonNull(forwardedByAddress, "forwardedByAddress must not be null!"));
       return this;
     }
 
@@ -185,24 +187,28 @@ public interface InterledgerProtocolError extends InterledgerPacket {
       private Impl(final Builder builder) {
         Objects.requireNonNull(builder);
 
-        this.errorCode = Objects.requireNonNull(builder.errorCode, "errorCode must not be null!");
+        this.errorCode = Objects
+            .requireNonNull(builder.errorCode, "errorCode must not be null!");
         this.triggeredByAddress = Objects
-            .requireNonNull(builder.triggeredByAddress, "triggeredByAddress must not be null!");
+            .requireNonNull(builder.triggeredByAddress,
+                "triggeredByAddress must not be null!");
 
         // Disallow the triggeredBy from being included in the forwardedBy. The rationale is that
         // the triggering node should not accidentally add itself to the forwarding addresses.
         // Likewise, if that ever happens with an incoming error, then we should throw an exception.
         builder.forwardedByAddresses.stream()
-            .filter(interledgerAddress -> interledgerAddress.equals(builder.triggeredByAddress))
+            .filter(
+                interledgerAddress -> interledgerAddress.equals(builder.triggeredByAddress))
             .findFirst().ifPresent(interledgerAddress -> {
-          // Throw an exception here because if this occurs, it indicates a packet loop, and we
-          // don't want to simply remove the address from the ForwardedBy list and send the packet
-          // on, because doing so would likely mean it will come back to us.
-          throw new IllegalArgumentException(
-              String.format(
-                  "TriggeredByAddress \"%s\" was found in the ForwardedByAddresses list, which "
-                      + "indicates an Interledger packet loop!", triggeredByAddress));
-        });
+              // Throw an exception here because if this occurs, it indicates a packet loop, and we
+              // don't want to simply remove the address from the ForwardedBy list and send the
+              // packet on, because doing so would likely mean it will come back to us.
+              throw new IllegalArgumentException(
+                  String.format(
+                      "TriggeredByAddress \"%s\" was found in the ForwardedByAddresses list, "
+                          + "which indicates an Interledger packet loop!", triggeredByAddress));
+            }
+          );
 
         // Defensively copy the list of addresses so that mutating the builder doesn't affect this.
         this.forwardedByAddresses = Objects.requireNonNull(
@@ -241,15 +247,15 @@ public interface InterledgerProtocolError extends InterledgerPacket {
       }
 
       @Override
-      public boolean equals(Object o) {
-        if (this == o) {
+      public boolean equals(Object object) {
+        if (this == object) {
           return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (object == null || getClass() != object.getClass()) {
           return false;
         }
 
-        Impl impl = (Impl) o;
+        Impl impl = (Impl) object;
 
         if (!errorCode.equals(impl.errorCode)) {
           return false;
@@ -393,7 +399,8 @@ public interface InterledgerProtocolError extends InterledgerPacket {
               this.errorFamily = RELATIVE;
               break;
             default:
-              throw new IllegalArgumentException("code must start with 'F', 'T' or 'R'.");
+              throw new IllegalArgumentException(
+                  "code must start with 'F', 'T' or 'R'.");
           }
         }
 
@@ -589,7 +596,8 @@ public interface InterledgerProtocolError extends InterledgerPacket {
      * was prepared. The sender MAY try again with a higher amount, but they SHOULD NOT do this
      * indefinitely or a malicious connector could steal money from them.
      */
-    ErrorCode R01_INSUFFICIENT_SOURCE_AMOUNT = ErrorCode.of("R01", "INSUFFICIENT SOURCE AMOUNT");
+    ErrorCode R01_INSUFFICIENT_SOURCE_AMOUNT = ErrorCode
+        .of("R01", "INSUFFICIENT SOURCE AMOUNT");
 
     /**
      * The connector could not forward the payment, because the timeout was too low to subtract its

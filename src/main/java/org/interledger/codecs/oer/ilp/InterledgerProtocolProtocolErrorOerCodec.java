@@ -1,12 +1,5 @@
 package org.interledger.codecs.oer.ilp;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.time.Instant;
-import java.util.List;
-import java.util.Objects;
-
 import org.interledger.InterledgerAddress;
 import org.interledger.codecs.Codec;
 import org.interledger.codecs.CodecContext;
@@ -18,6 +11,13 @@ import org.interledger.codecs.oer.OerSequenceOfAddressCodec.OerSequenceOfAddress
 import org.interledger.codecs.packettypes.InterledgerPacketType;
 import org.interledger.ilp.InterledgerProtocolError;
 import org.interledger.ilp.InterledgerProtocolError.ErrorCode;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.time.Instant;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * <p>An implementation of {@link Codec} that reads and writes instances of {@link

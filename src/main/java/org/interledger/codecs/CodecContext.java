@@ -1,5 +1,10 @@
 package org.interledger.codecs;
 
+import org.interledger.InterledgerPacket;
+import org.interledger.InterledgerPacket.Handler;
+import org.interledger.InterledgerPacket.VoidHandler;
+import org.interledger.codecs.packettypes.InterledgerPacketType;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -9,11 +14,6 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.interledger.InterledgerPacket;
-import org.interledger.InterledgerPacket.Handler;
-import org.interledger.InterledgerPacket.VoidHandler;
-import org.interledger.codecs.packettypes.InterledgerPacketType;
 
 /**
  * A contextual object for matching instances of {@link Codec} to specific class types.

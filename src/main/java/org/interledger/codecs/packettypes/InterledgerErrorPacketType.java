@@ -1,8 +1,8 @@
 package org.interledger.codecs.packettypes;
 
-import java.net.URI;
-
 import org.interledger.codecs.packettypes.InterledgerPacketType.AbstractInterledgerPacketType;
+
+import java.net.URI;
 
 /**
  * An implementation of {@link InterledgerPacketType} for ILP Error packets.

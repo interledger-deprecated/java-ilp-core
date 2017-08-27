@@ -1,5 +1,11 @@
 package org.interledger.codecs.oer;
 
+import org.interledger.InterledgerAddress;
+import org.interledger.codecs.Codec;
+import org.interledger.codecs.CodecContext;
+import org.interledger.codecs.oer.OerSequenceOfAddressCodec.OerSequenceOfAddress;
+import org.interledger.codecs.oer.OerUint8Codec.OerUint8;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -7,12 +13,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
-import org.interledger.InterledgerAddress;
-import org.interledger.codecs.Codec;
-import org.interledger.codecs.CodecContext;
-import org.interledger.codecs.oer.OerSequenceOfAddressCodec.OerSequenceOfAddress;
-import org.interledger.codecs.oer.OerUint8Codec.OerUint8;
 
 /**
  * <p>A sequence-of type is encoded as a quantity field followed by the encoding of each occurrence
@@ -78,15 +78,15 @@ public class OerSequenceOfAddressCodec implements Codec<OerSequenceOfAddress> {
     }
 
     @Override
-    public boolean equals(Object o) {
-      if (this == o) {
+    public boolean equals(Object object) {
+      if (this == object) {
         return true;
       }
-      if (o == null || getClass() != o.getClass()) {
+      if (object == null || getClass() != object.getClass()) {
         return false;
       }
 
-      OerSequenceOfAddress that = (OerSequenceOfAddress) o;
+      OerSequenceOfAddress that = (OerSequenceOfAddress) object;
 
       return interledgerAddresses.equals(that.interledgerAddresses);
     }
@@ -98,9 +98,9 @@ public class OerSequenceOfAddressCodec implements Codec<OerSequenceOfAddress> {
 
     @Override
     public String toString() {
-      return "OerSequenceOf{" +
-          "interledgerAddresses=" + interledgerAddresses +
-          '}';
+      return "OerSequenceOf{"
+          + "interledgerAddresses=" + interledgerAddresses
+          + '}';
     }
   }
 
