@@ -1,8 +1,8 @@
 package org.interledger.codecs.packettypes;
 
-import org.interledger.codecs.packettypes.InterledgerPacketType.AbstractInterledgerPacketType;
-
 import java.net.URI;
+
+import org.interledger.codecs.packettypes.InterledgerPacketType.AbstractInterledgerPacketType;
 
 /**
  * An implementation of {@link InterledgerPacketType} for ILP Payment packets.

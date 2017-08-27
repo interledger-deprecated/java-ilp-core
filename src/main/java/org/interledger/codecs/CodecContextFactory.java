@@ -10,6 +10,8 @@ import org.interledger.codecs.oer.OerLengthPrefixCodec;
 import org.interledger.codecs.oer.OerLengthPrefixCodec.OerLengthPrefix;
 import org.interledger.codecs.oer.OerOctetStringCodec;
 import org.interledger.codecs.oer.OerOctetStringCodec.OerOctetString;
+import org.interledger.codecs.oer.OerSequenceOfAddressCodec;
+import org.interledger.codecs.oer.OerSequenceOfAddressCodec.OerSequenceOfAddress;
 import org.interledger.codecs.oer.OerUint256Codec;
 import org.interledger.codecs.oer.OerUint256Codec.OerUint256;
 import org.interledger.codecs.oer.OerUint32Codec;
@@ -22,6 +24,7 @@ import org.interledger.codecs.oer.ilp.ConditionOerCodec;
 import org.interledger.codecs.oer.ilp.InterledgerAddressOerCodec;
 import org.interledger.codecs.oer.ilp.InterledgerPacketTypeOerCodec;
 import org.interledger.codecs.oer.ilp.InterledgerPaymentOerCodec;
+import org.interledger.codecs.oer.ilp.InterledgerProtocolProtocolErrorOerCodec;
 import org.interledger.codecs.oer.ilqp.QuoteByDestinationAmountRequestOerCodec;
 import org.interledger.codecs.oer.ilqp.QuoteByDestinationAmountResponseOerCodec;
 import org.interledger.codecs.oer.ilqp.QuoteBySourceAmountRequestOerCodec;
@@ -32,6 +35,7 @@ import org.interledger.codecs.oer.ipr.InterledgerPaymentRequestOerCodec;
 import org.interledger.codecs.packettypes.InterledgerPacketType;
 import org.interledger.codecs.psk.PskMessageBinaryCodec;
 import org.interledger.ilp.InterledgerPayment;
+import org.interledger.ilp.InterledgerProtocolError;
 import org.interledger.ilqp.QuoteByDestinationAmountRequest;
 import org.interledger.ilqp.QuoteByDestinationAmountResponse;
 import org.interledger.ilqp.QuoteBySourceAmountRequest;
@@ -55,34 +59,36 @@ public class CodecContextFactory {
 
     // OER Base...
     return new CodecContext()
-        .register(OerUint8.class, new OerUint8Codec())
-        .register(OerUint32.class, new OerUint32Codec())
-        .register(OerUint64.class, new OerUint64Codec())
-        .register(OerUint256.class, new OerUint256Codec())
-        .register(OerLengthPrefix.class, new OerLengthPrefixCodec())
-        .register(OerIA5String.class, new OerIA5StringCodec())
-        .register(OerOctetString.class, new OerOctetStringCodec())
-        .register(OerGeneralizedTime.class, new OerGeneralizedTimeCodec())
+      .register(OerUint8.class, new OerUint8Codec())
+      .register(OerUint32.class, new OerUint32Codec())
+      .register(OerUint64.class, new OerUint64Codec())
+      .register(OerUint256.class, new OerUint256Codec())
+      .register(OerLengthPrefix.class, new OerLengthPrefixCodec())
+      .register(OerIA5String.class, new OerIA5StringCodec())
+      .register(OerOctetString.class, new OerOctetStringCodec())
+      .register(OerGeneralizedTime.class, new OerGeneralizedTimeCodec())
+      .register(OerSequenceOfAddress.class, new OerSequenceOfAddressCodec())
 
-        // ILP
-        .register(InterledgerAddress.class, new InterledgerAddressOerCodec())
-        .register(InterledgerPacketType.class, new InterledgerPacketTypeOerCodec())
-        .register(InterledgerPayment.class, new InterledgerPaymentOerCodec())
-        .register(InterledgerPaymentRequest.class, new InterledgerPaymentRequestOerCodec())
-        .register(Condition.class, new ConditionOerCodec())
+      // ILP
+      .register(InterledgerAddress.class, new InterledgerAddressOerCodec())
+      .register(InterledgerPacketType.class, new InterledgerPacketTypeOerCodec())
+      .register(InterledgerPayment.class, new InterledgerPaymentOerCodec())
+      .register(InterledgerProtocolError.class, new InterledgerProtocolProtocolErrorOerCodec())
+      .register(InterledgerPaymentRequest.class, new InterledgerPaymentRequestOerCodec())
+      .register(Condition.class, new ConditionOerCodec())
 
-        // ILQP
-        .register(QuoteByDestinationAmountRequest.class,
-            new QuoteByDestinationAmountRequestOerCodec())
-        .register(QuoteByDestinationAmountResponse.class,
-            new QuoteByDestinationAmountResponseOerCodec())
-        .register(QuoteBySourceAmountRequest.class, new QuoteBySourceAmountRequestOerCodec())
-        .register(QuoteBySourceAmountResponse.class, new QuoteBySourceAmountResponseOerCodec())
-        .register(QuoteLiquidityRequest.class, new QuoteLiquidityRequestOerCodec())
-        .register(QuoteLiquidityResponse.class, new QuoteLiquidityResponseOerCodec())
+      // ILQP
+      .register(QuoteByDestinationAmountRequest.class,
+        new QuoteByDestinationAmountRequestOerCodec())
+      .register(QuoteByDestinationAmountResponse.class,
+        new QuoteByDestinationAmountResponseOerCodec())
+      .register(QuoteBySourceAmountRequest.class, new QuoteBySourceAmountRequestOerCodec())
+      .register(QuoteBySourceAmountResponse.class, new QuoteBySourceAmountResponseOerCodec())
+      .register(QuoteLiquidityRequest.class, new QuoteLiquidityRequestOerCodec())
+      .register(QuoteLiquidityResponse.class, new QuoteLiquidityResponseOerCodec())
 
-        // PSK
-        .register(PskMessage.class, new PskMessageBinaryCodec());
+      // PSK
+      .register(PskMessage.class, new PskMessageBinaryCodec());
   }
 
   public static CodecContext interledgerJson() {

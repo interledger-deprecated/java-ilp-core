@@ -1,27 +1,28 @@
 package org.interledger.codecs.packettypes;
 
-import org.interledger.InterledgerRuntimeException;
-
 import java.net.URI;
 import java.util.Objects;
+
+import org.interledger.InterledgerRuntimeException;
 
 /**
  * An interface that defines how Interledger Packets are typed using ASN.1 OER encoding.
  */
 public interface InterledgerPacketType {
 
-  Integer ILP_PAYMENT_TYPE = 1;
-  Integer ILQP_QUOTE_LIQUIDITY_REQUEST_TYPE = 2;
-  Integer ILQP_QUOTE_LIQUIDITY_RESPONSE_TYPE = 3;
-  Integer ILQP_QUOTE_BY_SOURCE_AMOUNT_REQUEST_TYPE = 4;
-  Integer ILQP_QUOTE_BY_SOURCE_AMOUNT_RESPONSE_TYPE = 5;
-  Integer ILQP_QUOTE_BY_DESTINATION_AMOUNT_REQUEST_TYPE = 6;
-  Integer ILQP_QUOTE_BY_DESTINATION_AMOUNT_RESPONSE_TYPE = 7;
+  int ILP_PAYMENT_TYPE = 1;
+  int ILQP_QUOTE_LIQUIDITY_REQUEST_TYPE = 2;
+  int ILQP_QUOTE_LIQUIDITY_RESPONSE_TYPE = 3;
+  int ILQP_QUOTE_BY_SOURCE_AMOUNT_REQUEST_TYPE = 4;
+  int ILQP_QUOTE_BY_SOURCE_AMOUNT_RESPONSE_TYPE = 5;
+  int ILQP_QUOTE_BY_DESTINATION_AMOUNT_REQUEST_TYPE = 6;
+  int ILQP_QUOTE_BY_DESTINATION_AMOUNT_RESPONSE_TYPE = 7;
+  int INTERLEDGER_PROTOCOL_ERROR = 8;
 
   /**
-   * A helper method that will translate an integer into an instance of
-   * {@link InterledgerPacketType}. Note that this method only handled standard Interledger packets
-   * types. To operate upon non-standard packets, a different method should be used.
+   * A helper method that will translate an integer into an instance of {@link
+   * InterledgerPacketType}. Note that this method only handled standard Interledger packets types.
+   * To operate upon non-standard packets, a different method should be used.
    *
    * @param type The integer type.
    *
@@ -31,27 +32,22 @@ public interface InterledgerPacketType {
    */
   static InterledgerPacketType fromTypeId(final int type) throws InvalidPacketTypeException {
     switch (type) {
-      case 1:
-        // ILP_PAYMENT_TYPE
+      case ILP_PAYMENT_TYPE:
         return new PaymentPacketType();
-      case 2:
-        // ILQP_QUOTE_LIQUIDITY_REQUEST_TYPE
+      case ILQP_QUOTE_LIQUIDITY_REQUEST_TYPE:
         return new QuoteLiquidityRequestPacketType();
-      case 3:
-        // ILQP_QUOTE_LIQUIDITY_RESPONSE_TYPE;
+      case ILQP_QUOTE_LIQUIDITY_RESPONSE_TYPE:
         return new QuoteLiquidityResponsePacketType();
-      case 4:
-        // ILQP_QUOTE_BY_SOURCE_AMOUNT_REQUEST_TYPE
+      case ILQP_QUOTE_BY_SOURCE_AMOUNT_REQUEST_TYPE:
         return new QuoteBySourceAmountRequestPacketType();
-      case 5:
-        // ILQP_QUOTE_BY_SOURCE_AMOUNT_RESPONSE_TYPE
+      case ILQP_QUOTE_BY_SOURCE_AMOUNT_RESPONSE_TYPE:
         return new QuoteBySourceAmountResponsePacketType();
-      case 6:
-        // ILQP_QUOTE_BY_DESTINATION_AMOUNT_REQUEST_TYPE;
+      case ILQP_QUOTE_BY_DESTINATION_AMOUNT_REQUEST_TYPE:
         return new QuoteByDestinationAmountRequestPacketType();
-      case 7:
+      case ILQP_QUOTE_BY_DESTINATION_AMOUNT_RESPONSE_TYPE:
         return new QuoteByDestinationAmountResponsePacketType();
-      case 0:
+      case INTERLEDGER_PROTOCOL_ERROR:
+        return new InterledgerErrorPacketType();
       default:
         throw new InvalidPacketTypeException(
             String.format("%s is an unsupported Packet Type!", type));
