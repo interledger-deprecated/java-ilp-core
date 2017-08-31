@@ -8,6 +8,7 @@ import org.interledger.codecs.oer.OerIA5StringCodec.OerIA5String;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -17,30 +18,31 @@ import java.time.temporal.ChronoField;
 import java.util.Objects;
 
 /**
- * An extension of {@link Codec} for reading and writing an ASN.1 OER GeneralizedTime. An ASN.1
+ * <p>An extension of {@link Codec} for reading and writing an ASN.1 OER GeneralizedTime. An ASN.1
  * GeneralizedTime object is used to represent time values with a higher precision than done by the
  * UTCTime ASN.1 type (allows a precision down to seconds). The ASN.1 GeneralizedTime syntax can
  * include fraction-of-second details, and can be expressed in several formats. However, the
  * interledger specs <b>mandate</b> that time be represented as a string in the format
- * 'YYYYMMDDHHmmSS.fffZ', where
- * <ul>
- * <li>YYYY - is the four digit year, e.g. 2017</li>
- * <li>MM - is the two digit month, e.g. 07</li>
- * <li>DD - is the two digit day, e.g. 04</li>
- * <li>HH - is the two digit hour of the day, e.g. 21</li>
- * <li>mm - is the two digit minute, e.g. 09</li>
- * <li>SS - is the two digit second, e.g. 21</li>
- * <li>. - is the literal '.' character</li>
- * <li>fff - is the three digit millisecond, e.g. 000</li>
- * <li>Z - is the literal 'Z' character indicating that the time is represented in the UTC + 0
- * timezone</li>
- * </ul>
+ * 'YYYYMMDDHHmmSS.fffZ', where the following hold true:</p>
+ *
+ *  <ul>
+ *    <li>yyyy - is the four digit year, e.g. 2017</li>
+ *    <li>mm - is the two digit month, e.g. 07</li>
+ *    <li>dd - is the two digit day, e.g. 04</li>
+ *    <li>hh - is the two digit hour of the day, e.g. 21</li>
+ *    <li>mm - is the two digit minute, e.g. 09</li>
+ *    <li>ss - is the two digit second, e.g. 21</li>
+ *    <li>. - is the literal '.' character</li>
+ *    <li>fff - is the three digit millisecond, e.g. 000</li>
+ *    <li>z - is the literal 'z' character indicating that the time is represented in the utc + 0
+ *        timezone</li>
+ *  </ul>
  */
 public class OerGeneralizedTimeCodec implements Codec<OerGeneralizedTime> {
 
   protected DateTimeFormatter generalizedTimeFormatter;
   protected ZoneId zoneIdZ;
-  
+
   /**
    * Constructs a new instance of {@link OerGeneralizedTimeCodec}.
    */
@@ -56,10 +58,10 @@ public class OerGeneralizedTimeCodec implements Codec<OerGeneralizedTime> {
         .appendFraction(ChronoField.MILLI_OF_SECOND, 3, 3, true)
         .appendZoneId()
         .toFormatter();
-    
+
     this.zoneIdZ = ZoneId.of("Z");
   }
-  
+
   @Override
   public OerGeneralizedTime read(CodecContext context, InputStream inputStream) throws IOException {
     Objects.requireNonNull(context);
@@ -90,28 +92,33 @@ public class OerGeneralizedTimeCodec implements Codec<OerGeneralizedTime> {
     Objects.requireNonNull(context);
     Objects.requireNonNull(instance);
     Objects.requireNonNull(outputStream);
-    
+
     final String formattedTime =
         instance.getValue().withZoneSameInstant(this.zoneIdZ).format(this.generalizedTimeFormatter);
     context.write(new OerIA5String(formattedTime), outputStream);
   }
-  
-  
+
+
   /**
    * A typing mechanism for registering multiple codecs that operate on the same type, in this case
    * {@link ZonedDateTime}.
    */
   public static class OerGeneralizedTime {
+
     private final ZonedDateTime value;
-    
+
     public OerGeneralizedTime(final ZonedDateTime value) {
       this.value = Objects.requireNonNull(value);
     }
-    
+
+    public OerGeneralizedTime(final Instant instant) {
+      this(instant.atZone(ZoneId.of("UTC")));
+    }
+
     public ZonedDateTime getValue() {
       return this.value;
     }
-    
+
     @Override
     public boolean equals(Object obj) {
       if (this == obj) {
