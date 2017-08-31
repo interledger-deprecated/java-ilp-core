@@ -12,7 +12,6 @@ apply plugin: 'jacoco'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-
 /*
  custom checkstyle properties for the build.
  see https://docs.gradle.org/current/dsl/org.gradle.api.plugins.quality.CheckstyleExtension.html
@@ -241,10 +240,40 @@ task writePom {
                             groupId "org.apache.maven.plugins"
                             artifactId "maven-checkstyle-plugin"
                             version "2.17"
+                            configuration {
+                                configLocation "google_checks.xml"
+                                maxAllowedViolations "0"
+                            }
                         }
                     }
                 }
             }
-        }.writeTo("pom.xml")
+        }
+        .withXml {
+            asNode().appendNode('build').appendNode('plugins').appendNode('plugin').with {
+                appendNode('groupId', 'org.apache.maven.plugins')
+                appendNode('artifactId', 'maven-checkstyle-plugin')
+                appendNode('version', '2.17')
+                appendNode('executions').appendNode('execution').with {
+                    appendNode('id', 'validate')
+                    appendNode('phase', 'validate')
+                    appendNode('configuration').with {
+                        appendNode('configLocation', 'google_checks.xml')
+                        appendNode('encoding', 'UTF-8')
+                        appendNode('includeTestSourceDirectory', true)
+                        appendNode('consoleOutput', true)
+                        appendNode('failsOnError', true)
+                        appendNode('failOnViolation', true)
+                        appendNode('maxAllowedViolations', 0)
+                        appendNode('violationSeverity', 'warning')
+                        appendNode('linkXRef', false)
+                    }
+                    appendNode('goals').with {
+                        appendNode('goal', 'check')
+                    }
+                }
+            }
+        }
+        .writeTo("pom.xml")
     }
 }

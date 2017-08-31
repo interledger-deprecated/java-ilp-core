@@ -12,8 +12,8 @@ import java.util.Objects;
  * Interledger packet using some sort of encoding, such as ANS.1, JSON, Protobuf or some other
  * encoding. Not all POJOs in this library are considered Interledger "packets". For example, an
  * {@link InterledgerAddress} is used in many packet implementations, but is not something that is
- * sent by itself "on the wire" to facilitate Interledger operations. Conversely,
- * {@link InterledgerPayment} is an Interledger packet because it is sent by itself "on the wire" to
+ * sent by itself "on the wire" to facilitate Interledger operations. Conversely, {@link
+ * InterledgerPayment} is an Interledger packet because it is sent by itself "on the wire" to
  * facilitate Interledger operations.</p>
  */
 public interface InterledgerPacket {
@@ -123,19 +123,19 @@ public interface InterledgerPacket {
         @Override
         protected R handle(InterledgerPayment interledgerPayment) {
           throw new InterledgerRuntimeException(
-              "Not yet implemented. Override this method to provide a useful implementation!");
+            "Not yet implemented. Override this method to provide a useful implementation!");
         }
 
         @Override
         protected R handle(QuoteLiquidityRequest quoteLiquidityRequest) {
           throw new InterledgerRuntimeException(
-              "Not yet implemented. Override this method to provide a useful implementation!");
+            "Not yet implemented. Override this method to provide a useful implementation!");
         }
 
         @Override
         protected R handle(QuoteLiquidityResponse quoteLiquidityResponse) {
           throw new InterledgerRuntimeException(
-              "Not yet implemented. Override this method to provide a useful implementation!");
+            "Not yet implemented. Override this method to provide a useful implementation!");
         }
       }
     }
@@ -221,29 +221,29 @@ public interface InterledgerPacket {
        * methods so that a caller is only forced to implement the handlers that are of interest. The
        * idea behind this class is that an implementor will only override the methods that are
        * desired to be handled, and if any unimplemented methods are called, an exception will be
-       * thrown. For example, if a caller knows that the result is going to be of type
-       * {@link InterledgerPayment}, then it is not useful to add boilerplate implementations of the
-       * other handler methods that do nothing, just to satisfy the abstract-class requirements of
-       * {@link AbstractHandler}.
+       * thrown. For example, if a caller knows that the result is going to be of type {@link
+       * InterledgerPayment}, then it is not useful to add boilerplate implementations of the other
+       * handler methods that do nothing, just to satisfy the abstract-class requirements of {@link
+       * AbstractHandler}.
        */
       public static class HelperHandler extends AbstractVoidHandler {
 
         @Override
         protected void handle(InterledgerPayment interledgerPayment) {
           throw new InterledgerRuntimeException(
-              "Not yet implemented. Override this method to provide a useful implementation!");
+            "Not yet implemented. Override this method to provide a useful implementation!");
         }
 
         @Override
         protected void handle(QuoteLiquidityRequest quoteLiquidityRequest) {
           throw new InterledgerRuntimeException(
-              "Not yet implemented. Override this method to provide a useful implementation!");
+            "Not yet implemented. Override this method to provide a useful implementation!");
         }
 
         @Override
         protected void handle(QuoteLiquidityResponse quoteLiquidityResponse) {
           throw new InterledgerRuntimeException(
-              "Not yet implemented. Override this method to provide a useful implementation!");
+            "Not yet implemented. Override this method to provide a useful implementation!");
         }
       }
     }
