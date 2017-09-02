@@ -62,8 +62,7 @@ public class QuoteBySourceAmountResponseTest {
     try {
       QuoteBySourceAmountResponse.builder().build();
       fail();
-    } catch (Exception e) {
-      assertTrue(e instanceof NullPointerException);
+    } catch (NullPointerException e) {
       assertThat(e.getMessage(), is("destinationAmount must not be null!"));
     }
 
@@ -72,18 +71,13 @@ public class QuoteBySourceAmountResponseTest {
           .destinationAmount(destinationAmount)
           .build();
       fail();
-    } catch (Exception e) {
-      assertTrue(e instanceof NullPointerException);
+    } catch (NullPointerException e) {
       assertThat(e.getMessage(), is("sourceHoldDuration must not be null!"));
-
     }
   }
 
   @Test
   public void testEqualsHashCode() throws Exception {
-    final QuoteBySourceAmountResponse quoteRequest = mock(
-        QuoteBySourceAmountResponse.class);
-
     final QuoteBySourceAmountResponse quoteRequest1 =
         QuoteBySourceAmountResponse.builder()
             .destinationAmount(destinationAmount)

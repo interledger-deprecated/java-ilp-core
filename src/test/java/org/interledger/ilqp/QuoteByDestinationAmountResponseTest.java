@@ -5,7 +5,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
-import static org.mockito.Mockito.mock;
 
 import org.junit.Test;
 
@@ -61,8 +60,7 @@ public class QuoteByDestinationAmountResponseTest {
     try {
       QuoteByDestinationAmountResponse.builder().build();
       fail();
-    } catch (Exception e) {
-      assertTrue(e instanceof NullPointerException);
+    } catch (NullPointerException e) {
       assertThat(e.getMessage(), is("sourceAmount must not be null!"));
     }
 
@@ -71,18 +69,13 @@ public class QuoteByDestinationAmountResponseTest {
           .sourceAmount(sourceAmount)
           .build();
       fail();
-    } catch (Exception e) {
-      assertTrue(e instanceof NullPointerException);
+    } catch (NullPointerException e) {
       assertThat(e.getMessage(), is("sourceHoldDuration must not be null!"));
-
     }
   }
 
   @Test
   public void testEqualsHashCode() throws Exception {
-    final QuoteByDestinationAmountResponse quoteResponse = mock(
-        QuoteByDestinationAmountResponse.class);
-
     final QuoteByDestinationAmountResponse quoteResponse1 =
         QuoteByDestinationAmountResponse.builder()
             .sourceAmount(sourceAmount)

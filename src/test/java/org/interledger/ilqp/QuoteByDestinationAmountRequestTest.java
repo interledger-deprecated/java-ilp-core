@@ -98,9 +98,6 @@ public class QuoteByDestinationAmountRequestTest {
 
   @Test
   public void testEqualsHashCode() throws Exception {
-    final QuoteByDestinationAmountRequest quoteRequest = mock(
-        QuoteByDestinationAmountRequest.class);
-
     final QuoteByDestinationAmountRequest quoteRequest1 =
         QuoteByDestinationAmountRequest.builder()
             .destinationAccount(destinationAccount)
