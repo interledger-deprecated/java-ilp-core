@@ -32,6 +32,31 @@ public class QuoteBySourceAmountResponseTest {
     assertThat(quoteResponse.getSourceHoldDuration(), is(sourceHoldDuration));
   }
 
+
+  @Test
+  public void testZeroAmount() throws Exception {
+    final QuoteBySourceAmountResponse quoteRequest =
+        QuoteBySourceAmountResponse.builder()
+            .destinationAmount(BigInteger.ZERO)
+            .sourceHoldDuration(sourceHoldDuration).build();
+
+    assertThat(quoteRequest.getDestinationAmount(), is(BigInteger.ZERO));
+    assertThat(quoteRequest.getSourceHoldDuration(), is(sourceHoldDuration));
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testNegativeAmount() throws Exception {
+    try {
+      QuoteBySourceAmountResponse.builder()
+          .destinationAmount(BigInteger.valueOf(-11L))
+          .sourceHoldDuration(sourceHoldDuration).build();
+      fail();
+    } catch (IllegalArgumentException e) {
+      assertThat(e.getMessage(), is("destinationAmount must be at least 0!"));
+      throw e;
+    }
+  }
+
   @Test
   public void testBuildWithNullValues() throws Exception {
     try {

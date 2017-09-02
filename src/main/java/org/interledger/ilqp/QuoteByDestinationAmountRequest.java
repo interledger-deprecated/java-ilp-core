@@ -109,7 +109,7 @@ public interface QuoteByDestinationAmountRequest extends QuoteRequest {
         this.destinationAmount = Objects
             .requireNonNull(builder.destinationAmount, "destinationAmount must not be null!");
         if (this.destinationAmount.compareTo(BigInteger.ZERO) < 0) {
-          throw new IllegalArgumentException("Destination amount must be at least 0!");
+          throw new IllegalArgumentException("destinationAmount must be at least 0!");
         }
 
         this.destinationHoldDuration = Objects.requireNonNull(builder.destinationHoldDuration,

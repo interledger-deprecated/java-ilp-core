@@ -84,7 +84,7 @@ public interface QuoteBySourceAmountResponse extends QuoteResponse {
         this.destinationAmount = Objects
             .requireNonNull(builder.destinationAmount, "destinationAmount must not be null!");
         if (this.destinationAmount.compareTo(BigInteger.ZERO) < 0) {
-          throw new IllegalArgumentException("Destination amount must be at least 0!");
+          throw new IllegalArgumentException("destinationAmount must be at least 0!");
         }
 
         this.sourceHoldDuration = Objects.requireNonNull(builder.sourceHoldDuration,
