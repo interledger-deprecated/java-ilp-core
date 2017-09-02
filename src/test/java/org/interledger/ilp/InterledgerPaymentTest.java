@@ -13,7 +13,6 @@ import org.interledger.InterledgerAddress;
 import org.interledger.ilp.InterledgerPayment.Builder;
 
 import org.junit.Test;
-import org.mockito.internal.matchers.Null;
 
 import java.math.BigInteger;
 
