@@ -13,6 +13,7 @@ import org.interledger.InterledgerAddress;
 import org.interledger.ilp.InterledgerPayment.Builder;
 
 import org.junit.Test;
+import org.mockito.internal.matchers.Null;
 
 import java.math.BigInteger;
 
@@ -49,8 +50,7 @@ public class InterledgerPaymentTest {
     try {
       new Builder().destinationAccount(mock(InterledgerAddress.class)).build();
       fail();
-    } catch (Exception e) {
-      assertTrue(e instanceof NullPointerException);
+    } catch (NullPointerException e) {
       assertThat(e.getMessage(), is("destinationAmount must not be null!"));
     }
 
@@ -59,10 +59,8 @@ public class InterledgerPaymentTest {
           .destinationAmount(BigInteger.valueOf(100L))
           .build();
       fail();
-    } catch (Exception e) {
-      assertTrue(e instanceof NullPointerException);
+    } catch (NullPointerException e) {
       assertThat(e.getMessage(), is("data must not be null!"));
-
     }
 
     final InterledgerPayment interledgerPayment =
