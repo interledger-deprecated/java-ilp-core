@@ -23,6 +23,15 @@ public interface QuoteBySourceAmountRequest extends QuoteRequest {
   Duration getDestinationHoldDuration();
 
   /**
+   * Helper-method to access a new {@link Builder} instance.
+   *
+   * @return A {@link Builder}.
+   */
+  static Builder builder() {
+    return new Builder();
+  }
+
+  /**
    * A builder for instances of {@link QuoteBySourceAmountRequest}.
    */
   class Builder {
@@ -95,6 +104,9 @@ public interface QuoteBySourceAmountRequest extends QuoteRequest {
 
         this.sourceAmount = Objects
             .requireNonNull(builder.sourceAmount, "sourceAmount must not be null!");
+        if (this.sourceAmount.compareTo(BigInteger.ZERO) < 0) {
+          throw new IllegalArgumentException("Destination amount must be at least 0!");
+        }
 
         this.destinationHoldDuration = Objects.requireNonNull(builder.destinationHoldDuration,
             "destinationHoldDuration must not be null!");

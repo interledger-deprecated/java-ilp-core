@@ -18,6 +18,15 @@ public interface QuoteBySourceAmountResponse extends QuoteResponse {
   BigInteger getDestinationAmount();
 
   /**
+   * Helper-method to access a new {@link Builder} instance.
+   *
+   * @return A {@link Builder}.
+   */
+  static Builder builder() {
+    return new Builder();
+  }
+
+  /**
    * A builder for constructing instances of {@link QuoteBySourceAmountResponse}.
    */
   class Builder {
@@ -74,6 +83,10 @@ public interface QuoteBySourceAmountResponse extends QuoteResponse {
 
         this.destinationAmount = Objects
             .requireNonNull(builder.destinationAmount, "destinationAmount must not be null!");
+        if (this.destinationAmount.compareTo(BigInteger.ZERO) < 0) {
+          throw new IllegalArgumentException("Destination amount must be at least 0!");
+        }
+
         this.sourceHoldDuration = Objects.requireNonNull(builder.sourceHoldDuration,
             "sourceHoldDuration must not be null!");
 

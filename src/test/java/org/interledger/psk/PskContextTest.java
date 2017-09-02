@@ -8,11 +8,11 @@ import org.interledger.InterledgerAddress;
 import org.interledger.ilp.InterledgerPayment;
 import org.interledger.mocks.DeterministicSecureRandomProvider;
 
-import java.math.BigInteger;
-import java.util.UUID;
-
 import com.google.common.io.BaseEncoding;
 import org.junit.Test;
+
+import java.math.BigInteger;
+import java.util.UUID;
 
 public class PskContextTest {
 

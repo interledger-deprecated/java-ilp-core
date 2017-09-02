@@ -11,12 +11,12 @@ import static org.mockito.Mockito.mock;
 import org.interledger.InterledgerAddress;
 import org.interledger.ilp.InterledgerPayment.Builder;
 
-import java.math.BigInteger;
-
 import org.junit.Test;
 
+import java.math.BigInteger;
+
 /**
- * Unit tests for {@link InterledgerPayment} and {@link InterledgerPayment.Builder}
+ * Unit tests for {@link InterledgerPayment} and {@link InterledgerPayment.Builder}.
  */
 public class InterledgerPaymentTest {
 

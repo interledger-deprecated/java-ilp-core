@@ -5,9 +5,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.interledger.InterledgerAddress;
 import org.interledger.InterledgerPacket;
+
 import org.interledger.codecs.Codec;
 import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.CodecContextFactory;
+
 import org.interledger.ilqp.LiquidityCurve;
 import org.interledger.ilqp.LiquidityPoint;
 import org.interledger.ilqp.QuoteByDestinationAmountRequest;
@@ -17,6 +19,12 @@ import org.interledger.ilqp.QuoteBySourceAmountResponse;
 import org.interledger.ilqp.QuoteLiquidityRequest;
 import org.interledger.ilqp.QuoteLiquidityResponse;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameter;
+import org.junit.runners.Parameterized.Parameters;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.math.BigInteger;
@@ -24,12 +32,6 @@ import java.time.Duration;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameter;
-import org.junit.runners.Parameterized.Parameters;
 
 /**
  * Unit tests to validate the {@link Codec} functionality for all Interledger packets.

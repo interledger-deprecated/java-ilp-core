@@ -27,7 +27,7 @@ public interface Condition {
   }
 
   /**
-   * Build a new Condition using the provided hash
+   * Build a new Condition using the provided hash.
    *
    * @param hash A SHA-256 hash representing a Condition.
    *
