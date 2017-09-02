@@ -5,11 +5,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
-import static org.mockito.Mockito.mock;
 
 import org.interledger.InterledgerAddress;
 
 import org.junit.Test;
+import org.mockito.internal.matchers.Null;
 
 import java.math.BigInteger;
 import java.time.Duration;
@@ -70,16 +70,14 @@ public class QuoteByDestinationAmountRequestTest {
     try {
       QuoteByDestinationAmountRequest.builder().build();
       fail();
-    } catch (Exception e) {
-      assertTrue(e instanceof NullPointerException);
+    } catch (NullPointerException e) {
       assertThat(e.getMessage(), is("destinationAccount must not be null!"));
     }
 
     try {
       QuoteByDestinationAmountRequest.builder().destinationAccount(destinationAccount).build();
       fail();
-    } catch (Exception e) {
-      assertTrue(e instanceof NullPointerException);
+    } catch (NullPointerException e) {
       assertThat(e.getMessage(), is("destinationAmount must not be null!"));
     }
 
@@ -89,10 +87,8 @@ public class QuoteByDestinationAmountRequestTest {
           .destinationAmount(destinationAmount)
           .build();
       fail();
-    } catch (Exception e) {
-      assertTrue(e instanceof NullPointerException);
+    } catch (NullPointerException e) {
       assertThat(e.getMessage(), is("destinationHoldDuration must not be null!"));
-
     }
   }
 
