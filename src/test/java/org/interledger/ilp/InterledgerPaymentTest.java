@@ -41,8 +41,7 @@ public class InterledgerPaymentTest {
     try {
       new Builder().build();
       fail();
-    } catch (Exception e) {
-      assertTrue(e instanceof NullPointerException);
+    } catch (NullPointerException e) {
       assertThat(e.getMessage(), is("destinationAccount must not be null!"));
     }
 
