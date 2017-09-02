@@ -12,6 +12,7 @@ import org.interledger.ilp.InterledgerPayment;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigInteger;
 import java.util.Objects;
 
 /**
@@ -52,10 +53,7 @@ public class InterledgerPaymentOerCodec implements InterledgerPaymentCodec {
     // more details.
 
     // 3. Read the destinationAmount, which is a UInt64.
-    /* NOTE: we don't expect amounts to exceed 2^63 - 1, so we risk the conversion to long */
-    long destinationAmount = context.read(OerUint64.class, inputStream)
-        .getValue()
-        .longValue();
+    final BigInteger destinationAmount = context.read(OerUint64.class, inputStream).getValue();
 
     // 4. Read the Interledger Address.
     final InterledgerAddress destinationAccount =

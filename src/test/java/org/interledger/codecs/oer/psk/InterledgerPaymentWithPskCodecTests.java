@@ -24,6 +24,7 @@ import org.junit.runners.Parameterized.Parameters;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -76,13 +77,13 @@ public class InterledgerPaymentWithPskCodecTests {
 
     return Arrays.asList(new Object[][]{
         {new InterledgerPayment.Builder().destinationAccount(InterledgerAddress.of("test1.foo"))
-            .destinationAmount(100L).data(pskMessageBytes).build(), pskMessage},
+            .destinationAmount(BigInteger.valueOf(100L)).data(pskMessageBytes).build(), pskMessage},
 
         {new InterledgerPayment.Builder().destinationAccount(InterledgerAddress.of("test2.bar"))
-            .destinationAmount(1L).data(pskMessageBytes).build(), pskMessage},
+            .destinationAmount(BigInteger.valueOf(1L)).data(pskMessageBytes).build(), pskMessage},
 
         {new InterledgerPayment.Builder().destinationAccount(InterledgerAddress.of("test3.bar"))
-            .destinationAmount(0L).data(pskMessageBytes).build(), pskMessage},
+            .destinationAmount(BigInteger.ZERO).data(pskMessageBytes).build(), pskMessage},
 
     });
   }

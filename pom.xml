@@ -43,7 +43,7 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.target>1.8</maven.compiler.target>
-    <checkstyle.config.location>google_checks.xml</checkstyle.config.location>
+    <checkstyle.config.location>./google_checks.xml</checkstyle.config.location>
   </properties>
   <dependencies>
     <dependency>
@@ -83,7 +83,7 @@
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>2.17</version>
         <configuration>
-          <configLocation>google_checks.xml</configLocation>
+          <configLocation>./google_checks.xml</configLocation>
           <maxAllowedViolations>0</maxAllowedViolations>
         </configuration>
       </plugin>
@@ -100,7 +100,7 @@
             <id>validate</id>
             <phase>validate</phase>
             <configuration>
-              <configLocation>google_checks.xml</configLocation>
+              <configLocation>./google_checks.xml</configLocation>
               <encoding>UTF-8</encoding>
               <includeTestSourceDirectory>true</includeTestSourceDirectory>
               <consoleOutput>true</consoleOutput>
