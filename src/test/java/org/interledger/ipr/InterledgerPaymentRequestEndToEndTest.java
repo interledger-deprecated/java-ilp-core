@@ -35,9 +35,6 @@ public class InterledgerPaymentRequestEndToEndTest {
     /* Step 1 - Build IPR at receiver. */
 
     InterledgerAddress destinationAddress = InterledgerAddress.of("private.bob");
-    InterledgerAddress address = InterledgerAddress.builder()
-        .value("private.bob")
-        .build();
 
     BigInteger destinationAmount = BigInteger.valueOf(100L);
     TemporalAmount expiry = Duration.ofSeconds(60);

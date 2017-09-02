@@ -6,6 +6,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 
 import org.interledger.InterledgerAddress;
@@ -39,7 +40,7 @@ public class InterledgerPaymentTest {
   public void testBuildWithNullValues() throws Exception {
     try {
       new Builder().build();
-      assertFalse(true);
+      fail();
     } catch (Exception e) {
       assertTrue(e instanceof NullPointerException);
       assertThat(e.getMessage(), is("destinationAccount must not be null!"));
@@ -47,7 +48,7 @@ public class InterledgerPaymentTest {
 
     try {
       new Builder().destinationAccount(mock(InterledgerAddress.class)).build();
-      assertFalse(true);
+      fail();
     } catch (Exception e) {
       assertTrue(e instanceof NullPointerException);
       assertThat(e.getMessage(), is("destinationAmount must not be null!"));
@@ -57,7 +58,7 @@ public class InterledgerPaymentTest {
       new Builder().destinationAccount(mock(InterledgerAddress.class))
           .destinationAmount(BigInteger.valueOf(100L))
           .build();
-      assertFalse(true);
+      fail();
     } catch (Exception e) {
       assertTrue(e instanceof NullPointerException);
       assertThat(e.getMessage(), is("data must not be null!"));
@@ -74,7 +75,6 @@ public class InterledgerPaymentTest {
   @Test
   public void testEqualsHashCode() throws Exception {
     final InterledgerAddress destinationAccount = mock(InterledgerAddress.class);
-    final Long destinationAmount = 25L;
     byte[] data = new byte[]{127};
 
     final InterledgerPayment interledgerPayment1 =
