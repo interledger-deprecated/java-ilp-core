@@ -9,7 +9,6 @@ import static org.junit.Assert.fail;
 import org.interledger.InterledgerAddress;
 
 import org.junit.Test;
-import org.mockito.internal.matchers.Null;
 
 import java.math.BigInteger;
 import java.time.Duration;
