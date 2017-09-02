@@ -110,7 +110,36 @@ public interface InterledgerAddress {
    *
    * @return A new instance representing the original address with a newly specified final segment.
    */
-  InterledgerAddress with(String addressSegment);
+  default InterledgerAddress with(String addressSegment) {
+    Objects.requireNonNull(addressSegment, "addressSegment must not be null!");
+
+    final StringBuilder sb = new StringBuilder(this.getValue());
+    if (!this.isLedgerPrefix()) {
+      sb.append(".");
+    }
+    sb.append(addressSegment);
+
+    return builder().value(sb.toString()).build();
+  }
+
+  /**
+   * <p>Return this address's prefix, which is a new {@link InterledgerAddress} containing the
+   * characters inside of {@link #getValue()}, up-to and including the last period. If this address
+   * is already a prefix, then this instance is instead returned unchanged.</p>
+   *
+   * <p>For example, calling this method on an address 'g.example.alice' would yield a new address
+   * containing 'g.example.'. Conversely, calling this method on an address that is already a
+   * prefix, like 'g.example.' would yield the same instance, 'g.example.'.</p>
+   *
+   * @return A potentially new {@link InterledgerAddress} representing the prefix of this address.
+   */
+  default InterledgerAddress getPrefix() {
+    if (this.isLedgerPrefix()) {
+      return this;
+    } else {
+      return InterledgerAddress.of(getValue().substring(0, this.getValue().lastIndexOf(".") + 1));
+    }
+  }
 
   /**
    * <p>Compares the specified object with this <tt>InterledgerAddress</tt> for equality. The
@@ -239,19 +268,6 @@ public interface InterledgerAddress {
       @Override
       public String getValue() {
         return this.value;
-      }
-
-      @Override
-      public InterledgerAddress with(String segment) {
-        Objects.requireNonNull(segment, "Segment String must not be null!");
-        final StringBuilder sb = new StringBuilder(this.getValue());
-        if (!this.isLedgerPrefix()) {
-          sb.append(".");
-        }
-        sb.append(segment);
-
-        return new Builder().value(sb.toString())
-            .build();
       }
 
       @Override

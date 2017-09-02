@@ -55,7 +55,7 @@ public class InterledgerAddressTest {
     try {
       addressPrefix.with(null);
     } catch (NullPointerException e) {
-      assertThat(e.getMessage(), is("Segment String must not be null!"));
+      assertThat(e.getMessage(), is("addressSegment must not be null!"));
       throw e;
     }
   }
@@ -116,6 +116,42 @@ public class InterledgerAddressTest {
     final InterledgerAddress destinationAddress = InterledgerAddress.of("g.foo");
     final String additionalDestinationAddress = "bob.";
     assertThat(destinationAddress.with(additionalDestinationAddress).getValue(), is("g.foo.bob."));
+  }
+
+  @Test
+  public void testGetPrefixFromShortPrefix() {
+    final InterledgerAddress address = InterledgerAddress.of("g.");
+    assertThat(address.getPrefix().getValue(), is("g."));
+  }
+
+  @Test
+  public void testGetPrefixFromLongPrefix() {
+    final InterledgerAddress address = InterledgerAddress.of("g.alpha.beta.charlie.delta.echo.");
+    assertThat(address.getPrefix().getValue(), is("g.alpha.beta.charlie.delta.echo."));
+  }
+
+  @Test
+  public void testGetPrefixFromPrefix() {
+    final InterledgerAddress address = InterledgerAddress.of("g.example.");
+    assertThat(address.getPrefix().getValue(), is("g.example."));
+  }
+
+  @Test
+  public void testGetPrefixFromAddress() {
+    final InterledgerAddress address = InterledgerAddress.of("g.example.bob");
+    assertThat(address.getPrefix().getValue(), is("g.example."));
+  }
+
+  @Test
+  public void testGetPrefixFromShortAddress() {
+    final InterledgerAddress address = InterledgerAddress.of("g.bob");
+    assertThat(address.getPrefix().getValue(), is("g."));
+  }
+
+  @Test
+  public void testGetPrefixFromLongAddress() {
+    final InterledgerAddress address = InterledgerAddress.of("g.alpha.beta.charlie.delta.echo");
+    assertThat(address.getPrefix().getValue(), is("g.alpha.beta.charlie.delta."));
   }
 
   @Test
