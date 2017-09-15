@@ -2,8 +2,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.interledger</groupId>
-  <artifactId>java-ilp-core</artifactId>
-  <version>0.7.1-SNAPSHOT</version>
+  <artifactId>ilp-core</artifactId>
+  <version>0.8.0-SNAPSHOT</version>
   <name>Interledger Core</name>
   <description>Core libraries for implementing the Interledger suite of protocols.</description>
   <url>https://github.com/interledger/java-ilp-core</url>
