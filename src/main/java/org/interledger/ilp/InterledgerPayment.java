@@ -7,8 +7,6 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Objects;
 
-import javax.money.MonetaryAmount;
-
 /**
  * <p>Interledger Payments moves assets of one party to another that consists of one or more ledger
  * transfers, potentially across multiple ledgers.</p>
@@ -65,7 +63,7 @@ public interface InterledgerPayment extends InterledgerPacket {
    * The amount to deliver, in discrete units of the destination ledger's asset type. The scale of
    * the units is determined by the destination ledger's smallest indivisible unit.
    *
-   * @return An instance of {@link MonetaryAmount}.
+   * @return An instance of {@link BigInteger}.
    */
   BigInteger getDestinationAmount();
 
