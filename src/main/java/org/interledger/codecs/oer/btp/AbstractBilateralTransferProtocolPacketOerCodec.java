@@ -1,4 +1,9 @@
-package org.interledger.codecs;
+package org.interledger.codecs.oer.btp;
+
+import org.interledger.btp.BilateralTransferProtocolPacket;
+import org.interledger.codecs.Codec;
+import org.interledger.codecs.CodecContext;
+import org.interledger.codecs.btp.BilateralTransferProtocolPacketCodec;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -6,15 +11,18 @@ import java.io.OutputStream;
 import java.util.Objects;
 
 /**
- * An abstract implementation of {@link Codec} that works with typed packets.
+ * An abstract implementation of {@link Codec} that works with typed BTP packets.
  *
  * @param <T> The type of object that this codec
  */
-public abstract class AbstractCodec<T> implements Codec<T> {
+public abstract class AbstractBilateralTransferProtocolPacketOerCodec<T
+    extends BilateralTransferProtocolPacket> implements
+    BilateralTransferProtocolPacketCodec<T> {
 
   private final int typeId;
+  private int requestId;
 
-  public AbstractCodec(final int typeId) {
+  public AbstractBilateralTransferProtocolPacketOerCodec(final int typeId) {
     this.typeId = typeId;
   }
 
