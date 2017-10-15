@@ -2,6 +2,7 @@ package org.interledger;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
@@ -176,4 +177,62 @@ public class InterledgerAddressTest {
     assertThat(InterledgerAddress.of("g.foo.bob").toString(), is("g.foo.bob"));
   }
 
+  /**
+   * Assert that a non-ledger prefix fails the
+   * {@link InterledgerAddress#requireLedgerPrefix(InterledgerAddress)} check.
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testRequireLedgerPrefix_NotLedgerPrefix() {
+    try {
+      InterledgerAddress.requireLedgerPrefix(InterledgerAddress.of("example.bar"));
+      fail("Should have thrown an IllegalArgumentException!");
+    } catch (IllegalArgumentException e) {
+      assertThat(e.getMessage(),
+          is("InterledgerAddress 'example.bar' must be a Ledger Prefix ending with a dot (.)"));
+      throw e;
+    }
+  }
+
+  /**
+   * Assert that a ledger prefix passes the
+   * {@link InterledgerAddress#requireLedgerPrefix(InterledgerAddress)} check.
+   */
+  @Test
+  public void testRequireLedgerPrefix_IsLedgerPrefix() {
+    final InterledgerAddress controlPrefix = InterledgerAddress.of("example.bar.");
+    final InterledgerAddress checkedLedgerPrefix = InterledgerAddress
+        .requireLedgerPrefix(controlPrefix);
+
+    assertThat(checkedLedgerPrefix, is(controlPrefix));
+  }
+
+  /**
+   * Assert that a non-ledger prefix passes the
+   * {@link InterledgerAddress#requireNotLedgerPrefix(InterledgerAddress)} check.
+   */
+  @Test
+  public void testRequireNotLedgerPrefix_NotLedgerPrefix() {
+    final InterledgerAddress controlPrefix = InterledgerAddress.of("example.bar");
+    final InterledgerAddress checkedLedgerPrefix = InterledgerAddress
+        .requireNotLedgerPrefix(controlPrefix);
+
+    assertThat(checkedLedgerPrefix, is(controlPrefix));
+  }
+
+  /**
+   * Assert that a ledger prefix fails the
+   * {@link InterledgerAddress#requireNotLedgerPrefix(InterledgerAddress)} check.
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testRequireNotLedgerPrefix_IsLedgerPrefix() {
+    try {
+      InterledgerAddress.requireNotLedgerPrefix(InterledgerAddress.of("example.bar."));
+      fail("Should have thrown an IllegalArgumentException!");
+    } catch (IllegalArgumentException e) {
+      assertThat(e.getMessage(), is(
+          "InterledgerAddress 'example.bar.' must NOT be a Ledger Prefix ending with a dot (.)")
+      );
+      throw e;
+    }
+  }
 }
