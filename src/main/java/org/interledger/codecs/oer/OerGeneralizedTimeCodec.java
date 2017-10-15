@@ -41,7 +41,6 @@ import java.util.Objects;
 public class OerGeneralizedTimeCodec implements Codec<OerGeneralizedTime> {
 
   protected DateTimeFormatter generalizedTimeFormatter;
-  protected ZoneId zoneIdZ;
 
   /**
    * Constructs a new instance of {@link OerGeneralizedTimeCodec}.
@@ -57,9 +56,8 @@ public class OerGeneralizedTimeCodec implements Codec<OerGeneralizedTime> {
         .parseStrict()
         .appendFraction(ChronoField.MILLI_OF_SECOND, 3, 3, true)
         .appendZoneId()
-        .toFormatter();
-
-    this.zoneIdZ = ZoneId.of("Z");
+        .toFormatter()
+        .withZone(ZoneId.of("Z"));
   }
 
   @Override
@@ -76,7 +74,7 @@ public class OerGeneralizedTimeCodec implements Codec<OerGeneralizedTime> {
     }
 
     try {
-      final ZonedDateTime value = ZonedDateTime.parse(timeString, this.generalizedTimeFormatter);
+      final Instant value = Instant.from(generalizedTimeFormatter.parse(timeString));
       return new OerGeneralizedTime(value);
     } catch (DateTimeParseException dtp) {
       throw new IllegalArgumentException(
@@ -93,8 +91,7 @@ public class OerGeneralizedTimeCodec implements Codec<OerGeneralizedTime> {
     Objects.requireNonNull(instance);
     Objects.requireNonNull(outputStream);
 
-    final String formattedTime =
-        instance.getValue().withZoneSameInstant(this.zoneIdZ).format(this.generalizedTimeFormatter);
+    final String formattedTime = generalizedTimeFormatter.format(instance.getValue());
     context.write(new OerIA5String(formattedTime), outputStream);
   }
 
@@ -105,17 +102,13 @@ public class OerGeneralizedTimeCodec implements Codec<OerGeneralizedTime> {
    */
   public static class OerGeneralizedTime {
 
-    private final ZonedDateTime value;
+    private final Instant value;
 
-    public OerGeneralizedTime(final ZonedDateTime value) {
+    public OerGeneralizedTime(final Instant value) {
       this.value = Objects.requireNonNull(value);
     }
 
-    public OerGeneralizedTime(final Instant instant) {
-      this(instant.atZone(ZoneId.of("UTC")));
-    }
-
-    public ZonedDateTime getValue() {
+    public Instant getValue() {
       return this.value;
     }
 

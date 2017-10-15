@@ -5,11 +5,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.interledger.InterledgerAddress;
 import org.interledger.InterledgerPacket;
-
 import org.interledger.codecs.Codec;
 import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.CodecContextFactory;
-
 import org.interledger.ilqp.LiquidityCurve;
 import org.interledger.ilqp.LiquidityPoint;
 import org.interledger.ilqp.QuoteByDestinationAmountRequest;
@@ -29,8 +27,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.math.BigInteger;
 import java.time.Duration;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
 /**
@@ -79,7 +76,7 @@ public class IlqpCodecTests {
                     .build())
             .appliesTo(InterledgerAddress.of("test1.foo"))
             .sourceHoldDuration(Duration.of(10, ChronoUnit.MINUTES))
-            .expiresAt(ZonedDateTime.of(2017, 8, 4, 13, 41, 27, 0, ZoneId.of("+02:00")))
+            .expiresAt(Instant.now())
             .build()};
   }
 
