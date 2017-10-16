@@ -11,6 +11,7 @@ import org.interledger.mocks.DeterministicSecureRandomProvider;
 import com.google.common.io.BaseEncoding;
 import org.junit.Test;
 
+import java.math.BigInteger;
 import java.util.UUID;
 
 public class PskContextTest {
@@ -147,7 +148,7 @@ public class PskContextTest {
 
     InterledgerPayment payment = InterledgerPayment.builder()
         .destinationAccount(TEST_ADDRESS)
-        .destinationAmount(100L)
+        .destinationAmount(BigInteger.valueOf(100L))
         .data(TEST_MESSAGE)
         .build();
 

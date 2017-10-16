@@ -2,6 +2,7 @@ package org.interledger.ilqp;
 
 import org.interledger.InterledgerAddress;
 
+import java.math.BigInteger;
 import java.time.Duration;
 import java.util.Objects;
 
@@ -16,18 +17,27 @@ public interface QuoteBySourceAmountRequest extends QuoteRequest {
   /**
    * Returns the amount the sender wishes to send, denominated in the asset of the source ledger.
    */
-  long getSourceAmount();
-  
+  BigInteger getSourceAmount();
+
   @Override
   Duration getDestinationHoldDuration();
-  
+
+  /**
+   * Helper-method to access a new {@link Builder} instance.
+   *
+   * @return A {@link Builder}.
+   */
+  static Builder builder() {
+    return new Builder();
+  }
+
   /**
    * A builder for instances of {@link QuoteBySourceAmountRequest}.
    */
   class Builder {
 
     private InterledgerAddress destinationAccount;
-    private long sourceAmount;
+    private BigInteger sourceAmount;
     private Duration destinationHoldDuration;
 
     public static Builder builder() {
@@ -50,11 +60,8 @@ public interface QuoteBySourceAmountRequest extends QuoteRequest {
      *
      * @param sourceAmount The source amount value.
      */
-    public Builder sourceAmount(long sourceAmount) {
-      if (sourceAmount < 0) {
-        throw new IllegalArgumentException("Source amount must be at least 0");
-      }
-      this.sourceAmount = sourceAmount;
+    public Builder sourceAmount(final BigInteger sourceAmount) {
+      this.sourceAmount = Objects.requireNonNull(sourceAmount);
       return this;
     }
 
@@ -83,7 +90,7 @@ public interface QuoteBySourceAmountRequest extends QuoteRequest {
     private static class Impl implements QuoteBySourceAmountRequest {
 
       private final InterledgerAddress destinationAccount;
-      private final long sourceAmount;
+      private final BigInteger sourceAmount;
       private final Duration destinationHoldDuration;
 
       /**
@@ -94,28 +101,28 @@ public interface QuoteBySourceAmountRequest extends QuoteRequest {
 
         this.destinationAccount = Objects.requireNonNull(builder.destinationAccount,
             "destinationAccount must not be null!");
-        
-        if (builder.sourceAmount < 0) {
-          throw new IllegalArgumentException("Source amount must be at least 0");
+
+        this.sourceAmount = Objects
+            .requireNonNull(builder.sourceAmount, "sourceAmount must not be null!");
+        if (this.sourceAmount.compareTo(BigInteger.ZERO) < 0) {
+          throw new IllegalArgumentException("destinationAmount must be at least 0!");
         }
 
-        this.sourceAmount = builder.sourceAmount;
-        
         this.destinationHoldDuration = Objects.requireNonNull(builder.destinationHoldDuration,
             "destinationHoldDuration must not be null!");
-        
+
       }
-      
+
       @Override
       public InterledgerAddress getDestinationAccount() {
         return this.destinationAccount;
       }
 
       @Override
-      public long getSourceAmount() {
+      public BigInteger getSourceAmount() {
         return this.sourceAmount;
       }
-      
+
       @Override
       public Duration getDestinationHoldDuration() {
         return this.destinationHoldDuration;
@@ -132,15 +139,19 @@ public interface QuoteBySourceAmountRequest extends QuoteRequest {
 
         Impl impl = (Impl) obj;
 
-        return destinationAccount.equals(impl.destinationAccount)
-            && sourceAmount == impl.sourceAmount
-            && destinationHoldDuration.equals(impl.destinationHoldDuration);
+        if (!destinationAccount.equals(impl.destinationAccount)) {
+          return false;
+        }
+        if (!sourceAmount.equals(impl.sourceAmount)) {
+          return false;
+        }
+        return destinationHoldDuration.equals(impl.destinationHoldDuration);
       }
 
       @Override
       public int hashCode() {
         int result = destinationAccount.hashCode();
-        result = 31 * result + Long.hashCode(sourceAmount);
+        result = 31 * result + sourceAmount.hashCode();
         result = 31 * result + destinationHoldDuration.hashCode();
         return result;
       }
@@ -154,6 +165,6 @@ public interface QuoteBySourceAmountRequest extends QuoteRequest {
             + '}';
       }
     }
-  }  
+  }
 
 }

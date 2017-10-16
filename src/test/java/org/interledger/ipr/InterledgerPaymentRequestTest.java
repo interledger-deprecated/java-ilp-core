@@ -18,6 +18,7 @@ import org.junit.runners.Parameterized.Parameters;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -42,7 +43,7 @@ public class InterledgerPaymentRequestTest {
 
     InterledgerPayment payment1 =
         new InterledgerPayment.Builder().destinationAccount(InterledgerAddress.of("test1.foo"))
-            .destinationAmount(100L).data("test data".getBytes()).build();
+            .destinationAmount(BigInteger.valueOf(100L)).data("test data".getBytes()).build();
 
     Condition condition1 = Condition.builder().hash(new byte[32]).build();
 
@@ -51,7 +52,7 @@ public class InterledgerPaymentRequestTest {
 
     InterledgerPayment payment2 =
         new InterledgerPayment.Builder().destinationAccount(InterledgerAddress.of("test2.bar"))
-            .destinationAmount(0L).data("other data".getBytes()).build();
+            .destinationAmount(BigInteger.ZERO).data("other data".getBytes()).build();
 
     Condition condition2 = Condition.builder().hash(new byte[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2,
         3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2}).build();

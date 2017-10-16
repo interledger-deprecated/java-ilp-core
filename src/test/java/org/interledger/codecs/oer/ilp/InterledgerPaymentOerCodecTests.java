@@ -19,6 +19,7 @@ import org.junit.runners.Parameterized.Parameters;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -47,15 +48,17 @@ public class InterledgerPaymentOerCodecTests {
 
     return Arrays.asList(new Object[][]{{new InterledgerPayment.Builder()
         .destinationAccount(InterledgerAddress.builder().value("test3.foo").build())
-        .destinationAmount(100L).data(new byte[]{}).build()},
+        .destinationAmount(BigInteger.valueOf(100L)).data(new byte[]{}).build()},
 
         {new InterledgerPayment.Builder()
             .destinationAccount(InterledgerAddress.builder().value("test1.bar").build())
-            .destinationAmount(50L).data(new byte[]{1, 2, 3, 4, 5, 6, 7, 8}).build()},
+            .destinationAmount(BigInteger.valueOf(50L))
+            .data(new byte[]{1, 2, 3, 4, 5, 6, 7, 8}).build()},
 
         {new InterledgerPayment.Builder()
             .destinationAccount(InterledgerAddress.builder().value("test1.bar").build())
-            .destinationAmount(50L).data(byteArrayOutputStream.toByteArray()).build()},
+            .destinationAmount(BigInteger.valueOf(50L))
+            .data(byteArrayOutputStream.toByteArray()).build()},
 
     });
   }

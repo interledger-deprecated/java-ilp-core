@@ -12,14 +12,15 @@ import org.interledger.ilqp.QuoteByDestinationAmountRequest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigInteger;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 /**
- * An implementation of {@link Codec} that reads and writes instances of
- * {@link QuoteByDestinationAmountRequest}. in OER format.
- * 
+ * An implementation of {@link Codec} that reads and writes instances of {@link
+ * QuoteByDestinationAmountRequest}. in OER format.
+ *
  * @see "https://github.com/interledger/rfcs/blob/master/asn1/InterledgerQuotingProtocol.asn"
  */
 public class QuoteByDestinationAmountRequestOerCodec
@@ -37,11 +38,10 @@ public class QuoteByDestinationAmountRequestOerCodec
         context.read(InterledgerAddress.class, inputStream);
 
     /* read the destination amount, which is a uint64 */
-    /* NOTE: we don't expect amounts to exceed 2^63 - 1, so we risk the down-cast */
-    long destinationAmount = context.read(OerUint64.class, inputStream).getValue().longValue();
+    final BigInteger destinationAmount = context.read(OerUint64.class, inputStream).getValue();
 
     /* read the destination hold duration which is a unit32 */
-    long destinationHoldDuration = context.read(OerUint32.class, inputStream).getValue();
+    final long destinationHoldDuration = context.read(OerUint32.class, inputStream).getValue();
 
     return QuoteByDestinationAmountRequest.Builder.builder().destinationAccount(destinationAccount)
         .destinationAmount(destinationAmount)

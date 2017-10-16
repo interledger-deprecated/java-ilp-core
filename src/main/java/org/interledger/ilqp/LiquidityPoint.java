@@ -8,15 +8,25 @@ import java.util.Objects;
  * output amount (Y).
  */
 public interface LiquidityPoint extends Comparable<LiquidityPoint> {
+
   /**
    * Returns the input amount associated with a point on the liquidity curve.
    */
-  public BigInteger getInputAmount();
+  BigInteger getInputAmount();
 
   /**
    * Returns the output amount associated with a point on the liquidity curve.
    */
-  public BigInteger getOutputAmount();
+  BigInteger getOutputAmount();
+
+  /**
+   * Helper-method to access a new {@link Builder} instance.
+   *
+   * @return A {@link Builder}.
+   */
+  static Builder builder() {
+    return new Builder();
+  }
 
   class Builder {
 
@@ -25,7 +35,7 @@ public interface LiquidityPoint extends Comparable<LiquidityPoint> {
 
     /**
      * Sets the input amount into the builder.
-     * 
+     *
      * @param inputAmount An instance of {@link BigInteger}.
      */
     public Builder inputAmount(BigInteger inputAmount) {
@@ -35,7 +45,7 @@ public interface LiquidityPoint extends Comparable<LiquidityPoint> {
 
     /**
      * Sets the output amount into the builder.
-     * 
+     *
      * @param outputAmount An instance of {@link BigInteger}.
      */
     public Builder outputAmount(BigInteger outputAmount) {
@@ -45,7 +55,7 @@ public interface LiquidityPoint extends Comparable<LiquidityPoint> {
 
     /**
      * The method that actually constructs a {@link LiquidityPoint} instance.
-     * 
+     *
      * @return An instance of {@link LiquidityPoint}.
      */
     public LiquidityPoint build() {
@@ -68,10 +78,10 @@ public interface LiquidityPoint extends Comparable<LiquidityPoint> {
         Objects.requireNonNull(builder);
 
         this.inputAmount =
-            Objects.requireNonNull(builder.inputAmount, "input amount must not be null!");
+            Objects.requireNonNull(builder.inputAmount, "inputAmount must not be null!");
 
         this.outputAmount =
-            Objects.requireNonNull(builder.outputAmount, "output amount must not be null!");
+            Objects.requireNonNull(builder.outputAmount, "outputAmount must not be null!");
       }
 
       @Override

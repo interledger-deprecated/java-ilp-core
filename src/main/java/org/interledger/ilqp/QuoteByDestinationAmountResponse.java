@@ -1,5 +1,6 @@
 package org.interledger.ilqp;
 
+import java.math.BigInteger;
 import java.time.Duration;
 import java.util.Objects;
 
@@ -16,14 +17,23 @@ public interface QuoteByDestinationAmountResponse extends QuoteResponse {
    *
    * @return The amount the sender needs to send.
    */
-  long getSourceAmount();
+  BigInteger getSourceAmount();
+
+  /**
+   * Helper-method to access a new {@link Builder} instance.
+   *
+   * @return A {@link Builder}.
+   */
+  static Builder builder() {
+    return new Builder();
+  }
 
   /**
    * A builder for instances of {@link QuoteByDestinationAmountRequest}.
    */
   class Builder {
 
-    private long sourceAmount;
+    private BigInteger sourceAmount;
     private Duration sourceHoldDuration;
 
     /**
@@ -38,11 +48,8 @@ public interface QuoteByDestinationAmountResponse extends QuoteResponse {
      *
      * @param sourceAmount The source amount value.
      */
-    public Builder sourceAmount(long sourceAmount) {
-      if (sourceAmount < 0) {
-        throw new IllegalArgumentException("Source amount must be at least 0");
-      }
-      this.sourceAmount = sourceAmount;
+    public Builder sourceAmount(final BigInteger sourceAmount) {
+      this.sourceAmount = Objects.requireNonNull(sourceAmount);
       return this;
     }
 
@@ -69,20 +76,21 @@ public interface QuoteByDestinationAmountResponse extends QuoteResponse {
      * A private, immutable implementation of {@link QuoteByDestinationAmountResponse}.
      */
     public static class Impl implements QuoteByDestinationAmountResponse {
+
+      private final BigInteger sourceAmount;
       private final Duration sourceHoldDuration;
-      private long sourceAmount;
 
       private Impl(final Builder builder) {
         Objects.requireNonNull(builder);
 
-        this.sourceHoldDuration = Objects.requireNonNull(builder.sourceHoldDuration,
-            "sourceHoldDuration must not be null!");
-
-        if (builder.sourceAmount < 0) {
-          throw new IllegalArgumentException("source amount must be at least 0");
+        this.sourceAmount = Objects
+            .requireNonNull(builder.sourceAmount, "sourceAmount must not be null!");
+        if (this.sourceAmount.compareTo(BigInteger.ZERO) < 0) {
+          throw new IllegalArgumentException("destinationAmount must be at least 0!");
         }
 
-        this.sourceAmount = builder.sourceAmount;
+        this.sourceHoldDuration = Objects.requireNonNull(builder.sourceHoldDuration,
+            "sourceHoldDuration must not be null!");
       }
 
 
@@ -92,10 +100,9 @@ public interface QuoteByDestinationAmountResponse extends QuoteResponse {
       }
 
       @Override
-      public long getSourceAmount() {
+      public BigInteger getSourceAmount() {
         return this.sourceAmount;
       }
-
 
       @Override
       public boolean equals(Object obj) {
@@ -108,13 +115,15 @@ public interface QuoteByDestinationAmountResponse extends QuoteResponse {
 
         Impl impl = (Impl) obj;
 
-        return sourceHoldDuration.equals(impl.sourceHoldDuration)
-            && sourceAmount == impl.sourceAmount;
+        if (!sourceAmount.equals(impl.sourceAmount)) {
+          return false;
+        }
+        return sourceHoldDuration.equals(impl.sourceHoldDuration);
       }
 
       @Override
       public int hashCode() {
-        int result = Long.hashCode(sourceAmount);
+        int result = sourceAmount.hashCode();
         result = 31 * result + sourceHoldDuration.hashCode();
         return result;
       }

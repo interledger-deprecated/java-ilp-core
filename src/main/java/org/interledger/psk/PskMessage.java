@@ -12,7 +12,8 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
- * This interface represents the message format as defined in the Pre-Shared Key Transport Protocol.
+ * This interface represents the message format as defined in the Pre-Shared Key Transport
+ * Protocol.
  */
 public interface PskMessage {
 
@@ -253,7 +254,7 @@ public interface PskMessage {
 
     /**
      * Adds a public "Expires-At" header with the timestamp set to the current time plus the expiry
-     * duration
+     * duration.
      *
      * @param expiry The amount of time of now to set the expiry
      *

@@ -11,14 +11,15 @@ import org.interledger.ilqp.QuoteBySourceAmountResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigInteger;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 /**
- * An implementation of {@link Codec} that reads and writes instances of
- * {@link QuoteBySourceAmountResponse}. in OER format.
- * 
+ * An implementation of {@link Codec} that reads and writes instances of {@link
+ * QuoteBySourceAmountResponse}. in OER format.
+ *
  * @see "https://github.com/interledger/rfcs/blob/master/asn1/InterledgerQuotingProtocol.asn"
  */
 public class QuoteBySourceAmountResponseOerCodec implements QuoteBySourceAmountResponseCodec {
@@ -31,9 +32,7 @@ public class QuoteBySourceAmountResponseOerCodec implements QuoteBySourceAmountR
     Objects.requireNonNull(inputStream);
 
     /* read the destination amount, which is a uint64 */
-    /* NOTE: we don't expect amounts to exceed 2^63 - 1, so we risk the down-cast */
-    // TODO: should we change this?
-    long destinationAmount = context.read(OerUint64.class, inputStream).getValue().longValue();
+    final BigInteger destinationAmount = context.read(OerUint64.class, inputStream).getValue();
 
     /* read the source hold duration which is a unit32 */
     long sourceHoldDuration = context.read(OerUint32.class, inputStream).getValue();

@@ -76,7 +76,7 @@ public class OerUint256Codec implements Codec<OerUint256> {
     private final byte[] value;
 
     /**
-     * Create a new OerUint256 from the given byte array
+     * Create a new OerUint256 from the given byte array.
      *
      * @param value a byte array of 32 bytes.
      */

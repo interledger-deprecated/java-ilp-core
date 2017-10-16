@@ -11,11 +11,11 @@ import java.math.BigInteger;
 import java.util.Objects;
 
 /**
- * <p>An extension of {@link Codec} for reading and writing an ASN.1 OER 64-Bit unsigned integer 
- * type as defined by the Interledger ASN.1 definitions.</p>
- * <p>All Interledger ASN.1 integer types are encoded as fixed-size, non-extensible numbers. Thus,
- * for a UInt64 type, the integer value is encoded as an unsigned binary integer in 8 octets, and
- * supports values in the range (0..18446744073709551615). </p>
+ * <p>An extension of {@link Codec} for reading and writing an ASN.1 OER 64-Bit unsigned integer
+ * type as defined by the Interledger ASN.1 definitions.</p> <p>All Interledger ASN.1 integer types
+ * are encoded as fixed-size, non-extensible numbers. Thus, for a UInt64 type, the integer value is
+ * encoded as an unsigned binary integer in 8 octets, and supports values in the range
+ * (0..18446744073709551615). </p>
  */
 public class OerUint64Codec implements Codec<OerUint64> {
 
@@ -38,11 +38,11 @@ public class OerUint64Codec implements Codec<OerUint64> {
 
     byte[] value = new byte[8];
     int read = inputStream.read(value);
-    
+
     if (read != 8) {
       throw new IOException("unexpected end of stream. expected 8 bytes, read " + read);
     }
-    
+
     return new OerUint64(new BigInteger(1, value));
   }
 
@@ -93,16 +93,9 @@ public class OerUint64Codec implements Codec<OerUint64> {
 
     /**
      * Constructs an OerUint64 instance.
-     * 
-     * @param value The value to read or write as an OER 64-bit int value.
      *
-     * @deprecated OER Uint64 supports values beyond the range of Java long primitives
-     */
-    @Deprecated 
-    public OerUint64(final long value) {
-      this.value = new BigInteger(Long.toString(value));
-    }
-    
+     * @param value The value to read or write as an OER 64-bit int value.
+     **/
     public OerUint64(final BigInteger value) {
       this.value = value;
     }
