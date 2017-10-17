@@ -54,6 +54,8 @@ public class CodecContextFactory {
   /**
    * Create an instance of {@link CodecContext} that encodes and decodes Interledger packets using
    * ASN.1 OER encoding.
+   *
+   * @return A new instance of {@link CodecContext}.
    */
   public static CodecContext interledger() {
 
@@ -90,6 +92,7 @@ public class CodecContextFactory {
       // PSK
       .register(PskMessage.class, new PskMessageBinaryCodec());
   }
+
 
   public static CodecContext interledgerJson() {
     throw new RuntimeException("Not yet implemented!");

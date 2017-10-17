@@ -11,6 +11,8 @@ public interface InterledgerPacketCodec<T extends InterledgerPacket> extends Cod
 
   /**
    * Accessor for the {@link InterledgerPacketType} of this {@link Codec}.
+   *
+   * @return The {@link InterledgerPacketType} instance.
    */
   InterledgerPacketType getTypeId();
 }

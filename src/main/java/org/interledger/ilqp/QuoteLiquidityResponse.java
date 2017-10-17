@@ -62,6 +62,7 @@ public interface QuoteLiquidityResponse extends QuoteResponse {
      * Set the liquidity curve into this builder.
      *
      * @param liquidityCurve To An instance of {@link LiquidityCurve}.
+     * @return This {@link Builder} instance.
      */
     public Builder liquidityCurve(final LiquidityCurve liquidityCurve) {
       this.liquidityCurve = Objects.requireNonNull(liquidityCurve);
@@ -72,6 +73,7 @@ public interface QuoteLiquidityResponse extends QuoteResponse {
      * Set the applies-to address into this builder.
      *
      * @param appliesTo An instance of {@link InterledgerAddress}.
+     * @return This {@link Builder} instance.
      */
     public Builder appliesTo(final InterledgerAddress appliesTo) {
       this.appliesTo = Objects.requireNonNull(appliesTo);
@@ -82,6 +84,7 @@ public interface QuoteLiquidityResponse extends QuoteResponse {
      * Set the source hold duration into this builder.
      *
      * @param sourceHoldDuration An instance of {@link Duration}.
+     * @return This {@link Builder} instance.
      */
     public Builder sourceHoldDuration(final Duration sourceHoldDuration) {
       this.sourceHoldDuration = Objects.requireNonNull(sourceHoldDuration);
@@ -92,6 +95,7 @@ public interface QuoteLiquidityResponse extends QuoteResponse {
      * Set the expires-at into this builder.
      * 
      * @param expiresAt An instance of {@link ZonedDateTime}
+     * @return This {@link Builder} instance.
      */
     public Builder expiresAt(final ZonedDateTime expiresAt) {
       this.expiresAt = Objects.requireNonNull(expiresAt);
@@ -109,6 +113,7 @@ public interface QuoteLiquidityResponse extends QuoteResponse {
 
     /**
      * Constructs a new builder.
+     * @return A new instance of {@link Builder}
      */
     public static Builder builder() {
       return new Builder();

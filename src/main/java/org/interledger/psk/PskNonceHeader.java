@@ -45,6 +45,7 @@ public class PskNonceHeader extends PskMessage.Header {
    * Constructs an instance of the header with the given nonce value.
    *
    * @param nonce The nonce value.
+   * @return a {@link PskNonceHeader} instance.
    */
   public static PskNonceHeader fromNonce(byte[] nonce) {
     Objects.requireNonNull(nonce);
@@ -62,6 +63,7 @@ public class PskNonceHeader extends PskMessage.Header {
    * encoded nonce.
    *
    * @param header The header value.
+   * @return a {@link PskNonceHeader} instance.
    */
   public static PskNonceHeader fromHeader(PskMessage.Header header) {
     Objects.requireNonNull(header);
@@ -73,6 +75,7 @@ public class PskNonceHeader extends PskMessage.Header {
 
   /**
    * Convenience method to retrieve the nonce value.
+   * @return The none in {@link byte[]} format.
    */
   public byte[] getNonce() {
     return Arrays.copyOf(nonce, nonce.length);
