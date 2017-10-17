@@ -16,6 +16,7 @@ public interface QuoteByDestinationAmountRequest extends QuoteRequest {
 
   /**
    * Returns fixed the amount that will arrive at the receiver.
+   * @return A {@link BigInteger} amount
    */
   BigInteger getDestinationAmount();
 
@@ -48,6 +49,7 @@ public interface QuoteByDestinationAmountRequest extends QuoteRequest {
      * Set the destination account address into this builder.
      *
      * @param destinationAccount An instance of {@link InterledgerAddress}.
+     * @return This {@link Builder} instance.
      */
     public Builder destinationAccount(
         final InterledgerAddress destinationAccount) {
@@ -59,6 +61,7 @@ public interface QuoteByDestinationAmountRequest extends QuoteRequest {
      * Set the destination amount into this builder.
      *
      * @param destinationAmount The source amount value.
+     * @return This {@link Builder} instance.
      */
     public Builder destinationAmount(final BigInteger destinationAmount) {
       this.destinationAmount = Objects
@@ -70,6 +73,7 @@ public interface QuoteByDestinationAmountRequest extends QuoteRequest {
      * Set the destination hold duration into this builder.
      *
      * @param destinationHoldDuration An instance of {@link Duration}.
+     * @return This {@link Builder} instance.
      */
     public Builder destinationHoldDuration(final Duration destinationHoldDuration) {
       this.destinationHoldDuration = Objects.requireNonNull(destinationHoldDuration);

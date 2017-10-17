@@ -31,6 +31,7 @@ public interface PskMessage {
   /**
    * Returns a list of all public headers in the message. Note that all parties may view the public
    * headers.
+   * @return all of the <b>public</b> headers, or an empty list.
    */
   List<Header> getPublicHeaders();
 
@@ -80,6 +81,8 @@ public interface PskMessage {
   /**
    * Returns the application data included in the private portion of the message, provided that
    * either the message is not encrypted, or has already been decrypted by the receiver.
+   *
+   * @return a {@link byte[]} data
    */
   byte[] getData();
 
@@ -95,6 +98,8 @@ public interface PskMessage {
 
     /**
      * Returns the name of the header.
+     *
+     * @return A {@link String} instance.
      */
     public String getName() {
       return name;
@@ -102,6 +107,8 @@ public interface PskMessage {
 
     /**
      * Returns the value associated with the header.
+     *
+     * @return A {@link String} instance.
      */
     public String getValue() {
       return value;
@@ -183,6 +190,7 @@ public interface PskMessage {
      * visible to all parties transmitting the message.
      *
      * @param header The header to add to the public header portion of the message.
+     * @return This {@link Builder} instance.
      */
     public Builder addPublicHeader(final Header header) {
       Objects.requireNonNull(header, "Cannot add null header");
@@ -214,6 +222,7 @@ public interface PskMessage {
      *
      * @param name  The name of the header.
      * @param value The value associated with the header.
+     * @return This {@link Builder} instance.
      */
     public Builder addPublicHeader(final String name, final String value) {
       Objects.requireNonNull(name, "Cannot add null header name");
@@ -229,6 +238,7 @@ public interface PskMessage {
      * visible to all parties transmitting the message.
      *
      * @param header The header to add to the public headers in the message.
+     * @return This {@link Builder} instance.
      */
     public Builder addPrivateHeader(final Header header) {
       Objects.requireNonNull(header, "Cannot add null header");
@@ -242,6 +252,7 @@ public interface PskMessage {
      *
      * @param name  The name of the header.
      * @param value The value associated with the header.
+     * @return This {@link Builder} instance.
      */
     public Builder addPrivateHeader(final String name, final String value) {
       Objects.requireNonNull(name, "Cannot add null header name");
@@ -258,7 +269,7 @@ public interface PskMessage {
      *
      * @param expiry The amount of time of now to set the expiry
      *
-     * @return this.
+     * @return This {@link Builder} instance.
      */
     public Builder expiry(TemporalAmount expiry) {
       Objects.requireNonNull(expiry);
@@ -273,7 +284,7 @@ public interface PskMessage {
      *
      * @param id The payment id to add asa public header
      *
-     * @return this.
+     * @return This {@link Builder} instance.
      */
     public Builder paymentId(UUID id) {
       Objects.requireNonNull(id);
@@ -285,6 +296,7 @@ public interface PskMessage {
      * Sets the decrypted data contained in the body of the PSK message.
      *
      * @param data The data to store in the message.
+     * @return This {@link Builder} instance.
      */
     public Builder data(final byte[] data) {
       Objects.requireNonNull(data, "Cannot add null data");
@@ -311,6 +323,7 @@ public interface PskMessage {
     /**
      * Builds the PSK message with the data provided, including adding a Nonce header if none is
      * present.
+     * @return A new {@link PskMessage} instance.
      */
     public PskMessage build() {
       return new Impl(this);

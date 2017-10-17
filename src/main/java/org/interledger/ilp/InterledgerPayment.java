@@ -88,6 +88,7 @@ public interface InterledgerPayment extends InterledgerPacket {
      * Set the destination account address into this builder.
      *
      * @param destinationAccount An instance of {@link InterledgerAddress}.
+     * @return This {@link Builder} instance.
      */
     public Builder destinationAccount(final InterledgerAddress destinationAccount) {
       this.destinationAccount = Objects.requireNonNull(destinationAccount);
@@ -98,6 +99,8 @@ public interface InterledgerPayment extends InterledgerPacket {
      * Set the destination amount into this builder.
      *
      * @param destinationAmount An instance of {@link BigInteger}.
+     *
+     * @return This {@link Builder} instance.
      */
     public Builder destinationAmount(final BigInteger destinationAmount) {
       this.destinationAmount = Objects.requireNonNull(destinationAmount);
@@ -108,6 +111,7 @@ public interface InterledgerPayment extends InterledgerPacket {
      * Set the data payload for this payment.
      *
      * @param data An instance of {@link byte[]}. May be empty but may not be null.
+     * @return This {@link Builder} instance.
      */
     public Builder data(final byte[] data) {
       this.data = Objects.requireNonNull(data);
