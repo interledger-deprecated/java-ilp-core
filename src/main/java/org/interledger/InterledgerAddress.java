@@ -33,6 +33,7 @@ public interface InterledgerAddress {
    * Constructor to allow quick create of String.
    *
    * @param value String representation of an Interledger Address
+   * @return a {@link InterledgerAddress} instance.
    */
   static InterledgerAddress of(final String value) {
     return new Builder()
@@ -191,6 +192,7 @@ public interface InterledgerAddress {
     /**
      * Builder method to actually construct an instance of {@link InterledgerAddress} of the data in
      * this builder.
+     * @return An {@link InterledgerAddress} instance
      */
     public InterledgerAddress build() {
       return new Impl(this);
@@ -201,6 +203,7 @@ public interface InterledgerAddress {
      *
      * @param value A {@link String} representing this builder's "value", which is the string
      *              version of an Interledger Address.
+     * @return This {@link Builder} instance.
      */
     public Builder value(final String value) {
       this.value = value;

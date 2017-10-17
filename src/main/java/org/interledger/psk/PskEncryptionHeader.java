@@ -34,6 +34,7 @@ public class PskEncryptionHeader extends PskMessage.Header {
 
   /**
    * Constructs an instance of the header with the encryption type NONE.
+   * @return A {@link PskEncryptionHeader} of no encryption type.
    */
   public static PskEncryptionHeader none() {
     return new PskEncryptionHeader();
@@ -44,6 +45,7 @@ public class PskEncryptionHeader extends PskMessage.Header {
    * authentication tag value.
    *
    * @param authenticationTag The authentication tag value. May be null.
+   * @return A {@link PskEncryptionHeader} instance based on the authentication tag if present.
    */
   public static PskEncryptionHeader aesGcm(final byte[] authenticationTag) {
     Objects.requireNonNull(authenticationTag);
@@ -82,6 +84,7 @@ public class PskEncryptionHeader extends PskMessage.Header {
 
   /**
    * Convenience method to retrieve the authentication tag value, if it is present in the header.
+   * @return the authentication tag in {@link byte[]} format.
    */
   public byte[] getAuthenticationTag() {
     if (type == PskEncryptionType.NONE) {
@@ -92,6 +95,7 @@ public class PskEncryptionHeader extends PskMessage.Header {
 
   /**
    * Returns the encryption type indicated in the header.
+   * @return The {@link PskEncryptionType} from the header.
    */
   public PskEncryptionType getEncryptionType() {
     return type;
