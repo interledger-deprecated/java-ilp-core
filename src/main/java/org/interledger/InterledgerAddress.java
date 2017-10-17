@@ -44,8 +44,7 @@ public interface InterledgerAddress {
    * Checks that the specified {@code ledgerPrefix} is a ledger-prefix.
    *
    * <p>This method is designed primarily for doing parameter validation in methods and
-   * constructors, as demonstrated below:</p>
-   * <blockquote>
+   * constructors, as demonstrated below:</p> <blockquote>
    * <pre>
    * public Foo(InterledgerAddress bar) {
    *     this.ledgerPrefix = InterledgerAddress.requireLedgerPrefix(bar);
@@ -60,7 +59,7 @@ public interface InterledgerAddress {
    * @throws IllegalArgumentException if the supplied Interledger address is not a ledger-prefix.
    */
   static InterledgerAddress requireLedgerPrefix(final InterledgerAddress ledgerPrefix) {
-    if (ledgerPrefix.isLedgerPrefix() == false) {
+    if (!ledgerPrefix.isLedgerPrefix()) {
       throw new IllegalArgumentException(
           String.format("InterledgerAddress '%s' must be a Ledger Prefix ending with a dot (.)",
               ledgerPrefix
@@ -75,8 +74,7 @@ public interface InterledgerAddress {
    * Checks that the specified {@code ledgerPrefix} is not a ledger-prefix.
    *
    * <p>This method is designed primarily for doing parameter validation in methods and
-   * constructors, as demonstrated below:</p>
-   * <blockquote>
+   * constructors, as demonstrated below:</p> <blockquote>
    * <pre>
    * public Foo(InterledgerAddress bar) {
    *     this.nonLedgerPrefix = InterledgerAddress.requireNotLedgerPrefix(bar);
@@ -91,7 +89,7 @@ public interface InterledgerAddress {
    * @throws IllegalArgumentException if the supplied Interledger address is not a ledger-prefix.
    */
   static InterledgerAddress requireNotLedgerPrefix(final InterledgerAddress ledgerPrefix) {
-    if (ledgerPrefix.isLedgerPrefix() == true) {
+    if (ledgerPrefix.isLedgerPrefix()) {
       throw new IllegalArgumentException(
           String.format("InterledgerAddress '%s' must NOT be a Ledger Prefix ending with a dot (.)",
               ledgerPrefix

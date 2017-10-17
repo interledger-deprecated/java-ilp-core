@@ -182,7 +182,7 @@ public class InterledgerAddressTest {
    * {@link InterledgerAddress#requireLedgerPrefix(InterledgerAddress)} check.
    */
   @Test(expected = IllegalArgumentException.class)
-  public void testRequireLedgerPrefix_NotLedgerPrefix() {
+  public void testRequireLedgerPrefixNotLedgerPrefix() {
     try {
       InterledgerAddress.requireLedgerPrefix(InterledgerAddress.of("example.bar"));
       fail("Should have thrown an IllegalArgumentException!");
@@ -198,7 +198,7 @@ public class InterledgerAddressTest {
    * {@link InterledgerAddress#requireLedgerPrefix(InterledgerAddress)} check.
    */
   @Test
-  public void testRequireLedgerPrefix_IsLedgerPrefix() {
+  public void testRequireLedgerPrefixIsLedgerPrefix() {
     final InterledgerAddress controlPrefix = InterledgerAddress.of("example.bar.");
     final InterledgerAddress checkedLedgerPrefix = InterledgerAddress
         .requireLedgerPrefix(controlPrefix);
@@ -211,7 +211,7 @@ public class InterledgerAddressTest {
    * {@link InterledgerAddress#requireNotLedgerPrefix(InterledgerAddress)} check.
    */
   @Test
-  public void testRequireNotLedgerPrefix_NotLedgerPrefix() {
+  public void testRequireNotLedgerPrefixNotLedgerPrefix() {
     final InterledgerAddress controlPrefix = InterledgerAddress.of("example.bar");
     final InterledgerAddress checkedLedgerPrefix = InterledgerAddress
         .requireNotLedgerPrefix(controlPrefix);
@@ -224,7 +224,7 @@ public class InterledgerAddressTest {
    * {@link InterledgerAddress#requireNotLedgerPrefix(InterledgerAddress)} check.
    */
   @Test(expected = IllegalArgumentException.class)
-  public void testRequireNotLedgerPrefix_IsLedgerPrefix() {
+  public void testRequireNotLedgerPrefixIsLedgerPrefix() {
     try {
       InterledgerAddress.requireNotLedgerPrefix(InterledgerAddress.of("example.bar."));
       fail("Should have thrown an IllegalArgumentException!");
