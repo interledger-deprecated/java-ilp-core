@@ -440,7 +440,7 @@ public interface InterledgerProtocolError extends InterledgerPacket {
 
         @Override
         public String toString() {
-          return "Impl{"
+          return "ErrorCode.Impl{"
               + "code='" + code + '\''
               + ", name='" + name + '\''
               + ", errorFamily=" + errorFamily
