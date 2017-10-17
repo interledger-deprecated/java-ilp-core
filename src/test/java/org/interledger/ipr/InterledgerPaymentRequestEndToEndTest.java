@@ -4,11 +4,11 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.interledger.Condition;
-import org.interledger.Fulfillment;
 import org.interledger.InterledgerAddress;
 import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.CodecContextFactory;
+import org.interledger.cryptoconditions.Condition;
+import org.interledger.cryptoconditions.Fulfillment;
 import org.interledger.ilp.InterledgerPayment;
 import org.interledger.psk.PskContext;
 import org.interledger.psk.PskEncryptionType;
@@ -159,7 +159,7 @@ public class InterledgerPaymentRequestEndToEndTest {
         .size() > 0);
 
     Fulfillment fulfillment = receiverContext.generateFulfillment(decodedPayment);
-    assertTrue("Fulfillment is not valid", fulfillment.validate(decodedCondition));
+    assertTrue("Fulfillment is not valid", fulfillment.verify(decodedCondition, new byte[]{}));
   }
 
 }

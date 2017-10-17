@@ -1,6 +1,5 @@
 package org.interledger.codecs.psk;
 
-import org.interledger.Condition;
 import org.interledger.codecs.Codec;
 import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.CodecException;

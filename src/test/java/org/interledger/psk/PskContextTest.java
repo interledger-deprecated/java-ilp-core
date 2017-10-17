@@ -3,8 +3,9 @@ package org.interledger.psk;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
-import org.interledger.Fulfillment;
 import org.interledger.InterledgerAddress;
+import org.interledger.cryptoconditions.Fulfillment;
+import org.interledger.cryptoconditions.InterledgerSha256Fulfillment;
 import org.interledger.ilp.InterledgerPayment;
 import org.interledger.mocks.DeterministicSecureRandomProvider;
 
@@ -154,7 +155,7 @@ public class PskContextTest {
 
     Fulfillment fulfillment = context.generateFulfillment(payment);
 
-    assertArrayEquals("Incorrect fulfillment.", fulfillment.getPreimage(), TEST_PREIMAGE);
+    assertArrayEquals("Incorrect fulfillment.", ((InterledgerSha256Fulfillment) fulfillment).getPreimage(), TEST_PREIMAGE);
 
   }
 

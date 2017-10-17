@@ -1,10 +1,11 @@
 package org.interledger.codecs.oer.ipr;
 
-import org.interledger.Condition;
 import org.interledger.codecs.Codec;
 import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.InterledgerPaymentRequestCodec;
 import org.interledger.codecs.oer.OerUint8Codec.OerUint8;
+import org.interledger.cryptoconditions.Condition;
+import org.interledger.cryptoconditions.InterledgerSha256Condition;
 import org.interledger.ilp.InterledgerPayment;
 import org.interledger.ipr.InterledgerPaymentRequest;
 
@@ -33,7 +34,7 @@ public class InterledgerPaymentRequestOerCodec implements InterledgerPaymentRequ
     }
 
     final InterledgerPayment packet = context.read(InterledgerPayment.class, inputStream);
-    final Condition condition = context.read(Condition.class, inputStream);
+    final InterledgerSha256Condition condition = context.read(InterledgerSha256Condition.class, inputStream);
 
     return InterledgerPaymentRequest.builder()
         .payment(packet)

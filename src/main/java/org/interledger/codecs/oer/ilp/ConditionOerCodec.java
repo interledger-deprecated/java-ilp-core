@@ -1,10 +1,11 @@
 package org.interledger.codecs.oer.ilp;
 
-import org.interledger.Condition;
 import org.interledger.codecs.Codec;
 import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.ConditionCodec;
 import org.interledger.codecs.oer.OerUint256Codec.OerUint256;
+import org.interledger.cryptoconditions.Condition;
+import org.interledger.cryptoconditions.InterledgerSha256Condition;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,7 +24,7 @@ public class ConditionOerCodec implements ConditionCodec {
     Objects.requireNonNull(inputStream);
     final byte[] value = context.read(OerUint256.class, inputStream)
         .getValue();
-    return Condition.of(value);
+    return new InterledgerSha256Condition(value);
   }
 
   @Override
@@ -33,7 +34,7 @@ public class ConditionOerCodec implements ConditionCodec {
     Objects.requireNonNull(instance);
     Objects.requireNonNull(outputStream);
 
-    context.write(OerUint256.class, new OerUint256(instance.getHash()), outputStream);
+    context.write(OerUint256.class, new OerUint256(instance.getFingerprint()), outputStream);
   }
 
 }

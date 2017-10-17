@@ -3,10 +3,11 @@ package org.interledger.codecs.oer.ilp;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import org.interledger.Condition;
 import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.CodecContextFactory;
 
+import org.interledger.cryptoconditions.Condition;
+import org.interledger.cryptoconditions.InterledgerSha256Condition;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -31,7 +32,7 @@ public class ConditionOerCodecTests {
    */
   @Parameters
   public static Collection<Object[]> data() {
-    return Arrays.asList(new Object[][]{{Condition.builder().hash(new byte[32]).build()},
+    return Arrays.asList(new Object[][]{{new InterledgerSha256Condition(new byte[32])},
         // TODO: Some more test values
     });
   }

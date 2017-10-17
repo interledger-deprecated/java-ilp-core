@@ -1,6 +1,5 @@
 package org.interledger.codecs;
 
-import org.interledger.Condition;
 import org.interledger.InterledgerAddress;
 import org.interledger.codecs.oer.OerGeneralizedTimeCodec;
 import org.interledger.codecs.oer.OerGeneralizedTimeCodec.OerGeneralizedTime;
@@ -20,11 +19,7 @@ import org.interledger.codecs.oer.OerUint64Codec;
 import org.interledger.codecs.oer.OerUint64Codec.OerUint64;
 import org.interledger.codecs.oer.OerUint8Codec;
 import org.interledger.codecs.oer.OerUint8Codec.OerUint8;
-import org.interledger.codecs.oer.ilp.ConditionOerCodec;
-import org.interledger.codecs.oer.ilp.InterledgerAddressOerCodec;
-import org.interledger.codecs.oer.ilp.InterledgerPacketTypeOerCodec;
-import org.interledger.codecs.oer.ilp.InterledgerPaymentOerCodec;
-import org.interledger.codecs.oer.ilp.InterledgerProtocolProtocolErrorOerCodec;
+import org.interledger.codecs.oer.ilp.*;
 import org.interledger.codecs.oer.ilqp.QuoteByDestinationAmountRequestOerCodec;
 import org.interledger.codecs.oer.ilqp.QuoteByDestinationAmountResponseOerCodec;
 import org.interledger.codecs.oer.ilqp.QuoteBySourceAmountRequestOerCodec;
@@ -34,6 +29,8 @@ import org.interledger.codecs.oer.ilqp.QuoteLiquidityResponseOerCodec;
 import org.interledger.codecs.oer.ipr.InterledgerPaymentRequestOerCodec;
 import org.interledger.codecs.packettypes.InterledgerPacketType;
 import org.interledger.codecs.psk.PskMessageBinaryCodec;
+import org.interledger.cryptoconditions.Condition;
+import org.interledger.cryptoconditions.Fulfillment;
 import org.interledger.ilp.InterledgerPayment;
 import org.interledger.ilp.InterledgerProtocolError;
 import org.interledger.ilqp.QuoteByDestinationAmountRequest;
@@ -78,6 +75,7 @@ public class CodecContextFactory {
       .register(InterledgerProtocolError.class, new InterledgerProtocolProtocolErrorOerCodec())
       .register(InterledgerPaymentRequest.class, new InterledgerPaymentRequestOerCodec())
       .register(Condition.class, new ConditionOerCodec())
+      .register(Fulfillment.class, new FulfillmentOerCodec())
 
       // ILQP
       .register(QuoteByDestinationAmountRequest.class,
