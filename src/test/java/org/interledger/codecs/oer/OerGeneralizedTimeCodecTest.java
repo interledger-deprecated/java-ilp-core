@@ -16,6 +16,7 @@ import org.junit.runners.Parameterized.Parameters;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
@@ -31,7 +32,7 @@ public class OerGeneralizedTimeCodecTest {
   private CodecContext codecContext;
 
   private String stringValue;
-  private ZonedDateTime timeValue;
+  private Instant timeValue;
 
   /**
    * The data for this test. Note that in some cases the input and output format differ, because we
@@ -40,29 +41,42 @@ public class OerGeneralizedTimeCodecTest {
    */
   @Parameters
   public static Collection<Object[]> data() {
-    return Arrays.asList(new Object[][] {
+    return Arrays.asList(new Object[][]{
         /*
          * test parameters are arrays of the form [input string representation] [Zoned date time
          * representation]
          */
-        {"20170630010203.000Z", ZonedDateTime.of(2017, 6, 30, 1, 2, 3, 0, ZoneId.of("Z"))},
-        {"20170630010203.100Z",
-            ZonedDateTime.of(2017, 6, 30, 1, 2, 3, (int) TimeUnit.MILLISECONDS.toNanos(100),
-                ZoneId.of("Z"))},
-        {"20170630010203.100Z",
-            ZonedDateTime.of(2017, 6, 30, 3, 2, 3, (int) TimeUnit.MILLISECONDS.toNanos(100),
-                ZoneId.of("+02:00"))},
-        {"20170630010203.100Z", ZonedDateTime.of(2017, 6, 29, 23, 2, 3,
-            (int) TimeUnit.MILLISECONDS.toNanos(100), ZoneId.of("-02:00"))}});
+        {
+            "20170630010203.000Z",
+            Instant.from(ZonedDateTime.of(2017, 6, 30, 1, 2, 3, 0, ZoneId.of("Z")))
+        },
+        {
+            "20170630010203.100Z",
+            Instant.from(
+                ZonedDateTime.of(2017, 6, 30, 1, 2, 3, (int) TimeUnit.MILLISECONDS.toNanos(100),
+                    ZoneId.of("Z")))
+        },
+        {
+            "20170630010203.100Z",
+            Instant.from(
+                ZonedDateTime.of(2017, 6, 30, 3, 2, 3, (int) TimeUnit.MILLISECONDS.toNanos(100),
+                    ZoneId.of("+02:00")))
+        },
+        {
+            "20170630010203.100Z",
+            Instant.from(ZonedDateTime
+                .of(2017, 6, 29, 23, 2, 3, (int) TimeUnit.MILLISECONDS.toNanos(100),
+                    ZoneId.of("-02:00")))}
+    });
   }
 
   /**
    * Construct an instance of this parameterized test with the supplied inputs.
    *
    * @param stringValue The expected value, as a {@link String}, in 'YYYYMMDDHHMMSS.fffZ' format.
-   * @param timeValue The same time as an instance of {@link ZonedDateTime}.
+   * @param timeValue   The same time as an instance of {@link Instant}.
    */
-  public OerGeneralizedTimeCodecTest(final String stringValue, final ZonedDateTime timeValue) {
+  public OerGeneralizedTimeCodecTest(final String stringValue, final Instant timeValue) {
     this.stringValue = stringValue;
     this.timeValue = timeValue;
   }
@@ -84,12 +98,12 @@ public class OerGeneralizedTimeCodecTest {
      * assert that the codec reads the sequence of bytes as a string and converts into the expected
      * zoned date time
      */
-    final ZonedDateTime actualValue =
+    final Instant actualValue =
         codecContext.read(OerGeneralizedTime.class, inputStream).getValue();
 
     /* ensure the times are the same, taking into account timezones */
     assertTrue("expected time : " + timeValue + " got : " + actualValue,
-        timeValue.isEqual(actualValue));
+        timeValue.equals(actualValue));
   }
 
   @Test
@@ -114,7 +128,7 @@ public class OerGeneralizedTimeCodecTest {
     final OerGeneralizedTime actual = codecContext.read(OerGeneralizedTime.class, inputStream);
 
     /* assert that the times are equivalent (when represented in the same timezone) */
-    assertTrue("expected time: " + timeValue, actual.getValue().isEqual(timeValue));
+    assertTrue("expected time: " + timeValue, actual.getValue().equals(timeValue));
 
     /* write the data just read back to a stream ... */
     final ByteArrayOutputStream outputStream2 = new ByteArrayOutputStream();
@@ -127,10 +141,11 @@ public class OerGeneralizedTimeCodecTest {
   /**
    * Convenience method to convert the expected time string into the byte format that would be found
    * on the wire.
-   * 
+   *
    * @param value The string to convert. Must not be null.
+   *
    * @return A byte[] representing the expected representation of the string as would be found on
-   *         the wire.
+   *     the wire.
    */
   public static byte[] encodeString(String value) {
     String length = Integer.toHexString(value.length()).toUpperCase();
