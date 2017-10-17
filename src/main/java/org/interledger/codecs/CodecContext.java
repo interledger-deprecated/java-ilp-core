@@ -82,8 +82,9 @@ public class CodecContext {
   /**
    * Helper method that accepts an {@link InputStream}, detects the type of the packet to be read
    * and decodes the packet to {@link InterledgerPacket}. Because {@link InterledgerPacket} is
-   * simply a marker interface, callers might prefer to utilize the functionality supplied by {@code
-   * #readAndHandle(InputStream, Handler)} or {@code #readAndHandle(InputStream, VoidHandler)}.
+   * simply a marker interface, callers might prefer to utilize the functionality supplied by {@link
+   * #readAndHandle(InputStream, InterledgerPacket.Handler)} or
+   * {@link #readAndHandle(InputStream, InterledgerPacket.VoidHandler)}.
    *
    * @param inputStream An instance of {@link InputStream} that contains bytes in a certain
    *                    encoding.

@@ -33,7 +33,7 @@ public interface InterledgerAddress {
    * Constructor to allow quick create of String.
    *
    * @param value String representation of an Interledger Address
-   * @return a {@link InterledgerAddress} instance.
+   * @return an {@link InterledgerAddress} instance.
    */
   static InterledgerAddress of(final String value) {
     return new Builder()
