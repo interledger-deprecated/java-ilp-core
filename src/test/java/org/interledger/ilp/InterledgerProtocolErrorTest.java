@@ -3,7 +3,9 @@ package org.interledger.ilp;
 import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.fail;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertFalse;
 
 import org.interledger.InterledgerAddress;
@@ -14,7 +16,6 @@ import com.google.common.collect.ImmutableList;
 import org.junit.Test;
 
 import java.time.Instant;
-
 import java.util.List;
 
 /**
@@ -73,33 +74,27 @@ public class InterledgerProtocolErrorTest {
   @Test
   public void testBuildWithUnintializedValues() throws Exception {
     try {
-      new Builder()
-          .build();
-      fail();
+      new Builder().build();
+      fail("Builder should have thrown an exception but did not!");
     } catch (Exception e) {
       assertTrue(e instanceof NullPointerException);
       assertThat(e.getMessage(), is("errorCode must not be null!"));
     }
 
     try {
-      new Builder()
-          .errorCode(ErrorCode.T00_INTERNAL_ERROR)
-          .build();
-      fail();
+      new Builder().errorCode(ErrorCode.T00_INTERNAL_ERROR).build();
+      fail("Builder should have thrown an exception but did not!");
     } catch (Exception e) {
       assertTrue(e instanceof NullPointerException);
       assertThat(e.getMessage(), is("triggeredByAddress must not be null!"));
     }
 
     try {
-      new Builder()
-          .errorCode(ErrorCode.T00_INTERNAL_ERROR)
-          .triggeredByAddress(FOO)
-          .build();
-      fail();
+      final InterledgerProtocolError error
+          = new Builder().errorCode(ErrorCode.T00_INTERNAL_ERROR).triggeredByAddress(FOO).build();
+      assertThat(error.getTriggeredAt(), is(not(nullValue())));
     } catch (Exception e) {
-      assertTrue(e instanceof NullPointerException);
-      assertThat(e.getMessage(), is("triggeredAt must not be null!"));
+      fail("Builder threw an exception but should not have!");
     }
 
   }

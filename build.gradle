@@ -1,6 +1,6 @@
 group = 'org.interledger'
 description = 'Core libraries for implementing the Interledger suite of protocols.'
-version = '0.8.1-SNAPSHOT'
+version = '0.8.2-SNAPSHOT'
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
