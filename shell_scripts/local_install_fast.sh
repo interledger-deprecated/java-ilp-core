@@ -5,4 +5,4 @@
 
 . preChecks
 
-gradle build install -x test -x checkstyleMain -x javaDoc
+gradle build install -x test -x checkstyleMain -x javaDoc -x checkstyleTest
