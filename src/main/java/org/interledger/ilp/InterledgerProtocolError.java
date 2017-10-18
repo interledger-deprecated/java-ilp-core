@@ -56,7 +56,9 @@ public interface InterledgerProtocolError extends InterledgerPacket {
    *
    * @return {@link Instant}.
    */
-  Instant getTriggeredAt();
+  default Instant getTriggeredAt() {
+    return Instant.now();
+  }
 
   /**
    * Optional error data, provided for debugging purposes.
@@ -197,23 +199,21 @@ public interface InterledgerProtocolError extends InterledgerPacket {
         this.errorCode = Objects
             .requireNonNull(builder.errorCode, "errorCode must not be null!");
         this.triggeredByAddress = Objects
-            .requireNonNull(builder.triggeredByAddress,
-                "triggeredByAddress must not be null!");
+            .requireNonNull(builder.triggeredByAddress, "triggeredByAddress must not be null!");
 
         // Disallow the triggeredBy from being included in the forwardedBy. The rationale is that
         // the triggering node should not accidentally add itself to the forwarding addresses.
         // Likewise, if that ever happens with an incoming error, then we should throw an exception.
         builder.forwardedByAddresses.stream()
-            .filter(
-                interledgerAddress -> interledgerAddress.equals(builder.triggeredByAddress))
-            .findFirst().ifPresent(interledgerAddress -> {
-              // Throw an exception here because if this occurs, it indicates a packet loop, and we
-              // don't want to simply remove the address from the ForwardedBy list and send the
-              // packet on, because doing so would likely mean it will come back to us.
-              throw new IllegalArgumentException(
-                  String.format(
-                      "TriggeredByAddress \"%s\" was found in the ForwardedByAddresses list, "
-                          + "which indicates an Interledger packet loop!", triggeredByAddress));
+            .filter(interledgerAddress -> interledgerAddress.equals(builder.triggeredByAddress))
+            .findFirst()
+            .ifPresent(interledgerAddress -> {
+                  // Throw an exception here because if this occurs, it indicates a packet loop, and
+                  // we don't want to simply remove the address from the ForwardedBy list and send
+                  // the packet on, because doing so would likely mean it will come back to us.
+                  throw new IllegalArgumentException(String.format(
+                      "TriggeredByAddress \"%s\" was found in the ForwardedByAddresses list, which "
+                          + "indicates an Interledger packet loop!", triggeredByAddress));
             }
           );
 
@@ -223,8 +223,7 @@ public interface InterledgerProtocolError extends InterledgerPacket {
             "forwardedByAddresses must not be null!"
         );
 
-        this.triggeredAt = Objects
-            .requireNonNull(builder.triggeredAt, "triggeredAt must not be null!");
+        this.triggeredAt = Optional.ofNullable(builder.triggeredAt).orElse(Instant.now());
         this.data = Objects.requireNonNull(builder.data, "data must not be null!");
       }
 
@@ -455,7 +454,7 @@ public interface InterledgerProtocolError extends InterledgerPacket {
 
         @Override
         public String toString() {
-          return "Impl{"
+          return "ErrorCode.Impl{"
               + "code='" + code + '\''
               + ", name='" + name + '\''
               + ", errorFamily=" + errorFamily

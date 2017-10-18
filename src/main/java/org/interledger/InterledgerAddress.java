@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
 public interface InterledgerAddress {
 
   /**
-   * Constructor to allow quick create of String.
+   * Constructor to allow quick construction from a String representation of an ILP address.
    *
    * @param value String representation of an Interledger Address
    * @return an {@link InterledgerAddress} instance.
@@ -39,6 +39,66 @@ public interface InterledgerAddress {
     return new Builder()
         .value(value)
         .build();
+  }
+
+  /**
+   * Checks that the specified {@code ledgerPrefix} is a ledger-prefix.
+   *
+   * <p>This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:</p> <blockquote>
+   * <pre>
+   * public Foo(InterledgerAddress bar) {
+   *     this.ledgerPrefix = InterledgerAddress.requireLedgerPrefix(bar);
+   * }
+   * </pre>
+   * </blockquote>
+   *
+   * @param ledgerPrefix A {@link InterledgerAddress} to check.
+   *
+   * @return {@code ledgerPrefix} if its value ends with a dot (.).
+   *
+   * @throws IllegalArgumentException if the supplied Interledger address is not a ledger-prefix.
+   */
+  static InterledgerAddress requireLedgerPrefix(final InterledgerAddress ledgerPrefix) {
+    if (!ledgerPrefix.isLedgerPrefix()) {
+      throw new IllegalArgumentException(
+          String.format("InterledgerAddress '%s' must be a Ledger Prefix ending with a dot (.)",
+              ledgerPrefix
+          )
+      );
+    } else {
+      return ledgerPrefix;
+    }
+  }
+
+  /**
+   * Checks that the specified {@code ledgerPrefix} is not a ledger-prefix.
+   *
+   * <p>This method is designed primarily for doing parameter validation in methods and
+   * constructors, as demonstrated below:</p> <blockquote>
+   * <pre>
+   * public Foo(InterledgerAddress bar) {
+   *     this.nonLedgerPrefix = InterledgerAddress.requireNotLedgerPrefix(bar);
+   * }
+   * </pre>
+   * </blockquote>
+   *
+   * @param ledgerPrefix A {@link InterledgerAddress} to check.
+   *
+   * @return {@code ledgerPrefix} if its value ends with a dot (.).
+   *
+   * @throws IllegalArgumentException if the supplied Interledger address is not a ledger-prefix.
+   */
+  static InterledgerAddress requireNotLedgerPrefix(final InterledgerAddress ledgerPrefix) {
+    if (ledgerPrefix.isLedgerPrefix()) {
+      throw new IllegalArgumentException(
+          String.format("InterledgerAddress '%s' must NOT be a Ledger Prefix ending with a dot (.)",
+              ledgerPrefix
+          )
+      );
+    } else {
+      return ledgerPrefix;
+    }
   }
 
   /**

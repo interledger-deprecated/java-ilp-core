@@ -3,7 +3,7 @@ package org.interledger.ilqp;
 import org.interledger.InterledgerAddress;
 
 import java.time.Duration;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,18 +23,19 @@ public interface QuoteLiquidityResponse extends QuoteResponse {
    * a liquidity curve contains the rate [0,0] and [10,20], then there is a linear path of rates for
    * which one currency can be exchange for another. To illustrate, it can be assumed that [5,10]
    * exists on this curve.</p>
-   * 
+   *
    * @return A {@link List} of type {link ExchangeRate}.
    */
   LiquidityCurve getLiquidityCurve();
 
   /**
    * <p>A common address prefix of all addresses for which the above liquidity curve applies. If the
-   * curve only applies to the destination account (see
-   * {@link QuoteLiquidityRequest#getDestinationAccount()}) of the corresponding quote request, then
-   * this value will be equal to that address. If the curve applies to other accounts with a certain
-   * prefix, then this value will be set to that prefix.</p> <p>For more on ILP Address Prefixes,
-   * see {@link InterledgerAddress}.</p>
+   * curve only applies to the destination account (see {@link QuoteLiquidityRequest
+   * #getDestinationAccount()}) of the corresponding quote request, then this value will be equal to
+   * that address. If the curve applies to other accounts with a certain prefix, then this value
+   * will be set to that prefix.</p>
+   *
+   * <p>For more on ILP Address Prefixes, see {@link InterledgerAddress}.</p>
    *
    * @return An instance of {@link InterledgerAddress}.
    */
@@ -45,19 +46,20 @@ public interface QuoteLiquidityResponse extends QuoteResponse {
    * liquidity curve. Note that a quote in ILP is non-committal, meaning that the liquidity is only
    * likely to be available -- but not reserved -- and therefore not guaranteed.
    *
-   * @return An instance of {@link ZonedDateTime}.
+   * @return An instance of {@link Instant}.
    */
-  ZonedDateTime getExpiresAt();
-  
+  Instant getExpiresAt();
+
   /**
    * A builder for instances of {@link QuoteLiquidityResponse}.
    */
   class Builder {
+
     private LiquidityCurve liquidityCurve;
     private InterledgerAddress appliesTo;
     private Duration sourceHoldDuration;
-    private ZonedDateTime expiresAt;
-    
+    private Instant expiresAt;
+
     /**
      * Set the liquidity curve into this builder.
      *
@@ -68,7 +70,7 @@ public interface QuoteLiquidityResponse extends QuoteResponse {
       this.liquidityCurve = Objects.requireNonNull(liquidityCurve);
       return this;
     }
-    
+
     /**
      * Set the applies-to address into this builder.
      *
@@ -79,7 +81,7 @@ public interface QuoteLiquidityResponse extends QuoteResponse {
       this.appliesTo = Objects.requireNonNull(appliesTo);
       return this;
     }
-    
+
     /**
      * Set the source hold duration into this builder.
      *
@@ -90,14 +92,14 @@ public interface QuoteLiquidityResponse extends QuoteResponse {
       this.sourceHoldDuration = Objects.requireNonNull(sourceHoldDuration);
       return this;
     }
-    
+
     /**
      * Set the expires-at into this builder.
-     * 
-     * @param expiresAt An instance of {@link ZonedDateTime}
+     *
+     * @param expiresAt An instance of {@link Instant}
      * @return This {@link Builder} instance.
      */
-    public Builder expiresAt(final ZonedDateTime expiresAt) {
+    public Builder expiresAt(final Instant expiresAt) {
       this.expiresAt = Objects.requireNonNull(expiresAt);
       return this;
     }
@@ -118,49 +120,50 @@ public interface QuoteLiquidityResponse extends QuoteResponse {
     public static Builder builder() {
       return new Builder();
     }
-    
-    
+
+
     private static class Impl implements QuoteLiquidityResponse {
+
       private final LiquidityCurve liquidityCurve;
       private final InterledgerAddress appliesTo;
       private final Duration sourceHoldDuration;
-      private final ZonedDateTime expiresAt;
-      
+      private final Instant expiresAt;
+
       private Impl(Builder builder) {
         Objects.requireNonNull(builder);
-        
+
         this.liquidityCurve =
             Objects.requireNonNull(builder.liquidityCurve, "Liquidity curve must not be null!.");
-        
+
         this.appliesTo =
             Objects.requireNonNull(builder.appliesTo, "Applies-to address must not be null.!");
-        
+
         this.sourceHoldDuration = Objects.requireNonNull(builder.sourceHoldDuration,
             "sourceHoldDuration must not be null!");
-        
+
         this.expiresAt = Objects.requireNonNull(builder.expiresAt, "Expires-at must not be null!.");
       }
-      
+
       @Override
       public LiquidityCurve getLiquidityCurve() {
         return this.liquidityCurve;
       }
-      
+
       @Override
       public InterledgerAddress getAppliesToPrefix() {
         return this.appliesTo;
       }
-      
+
       @Override
       public Duration getSourceHoldDuration() {
         return this.sourceHoldDuration;
       }
 
       @Override
-      public ZonedDateTime getExpiresAt() {
+      public Instant getExpiresAt() {
         return this.expiresAt;
       }
-      
+
       @Override
       public boolean equals(Object obj) {
         if (this == obj) {
@@ -175,12 +178,12 @@ public interface QuoteLiquidityResponse extends QuoteResponse {
 
         /*
          * compare the quote responses, taking care that the expiration date is compared with
-         * timezone information -> .equals != .isEquals for ZonedDateTime :(
+         * timezone information -> .equals != .isEquals for Instant :(
          */
         return Objects.equals(liquidityCurve, impl.liquidityCurve)
             && Objects.equals(appliesTo, impl.appliesTo)
             && Objects.equals(sourceHoldDuration, impl.sourceHoldDuration)
-            && (expiresAt.isEqual(impl.expiresAt));
+            && (expiresAt.equals(impl.expiresAt));
       }
 
       @Override
