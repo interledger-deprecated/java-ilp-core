@@ -70,12 +70,11 @@ public class InterledgerProtocolProtocolErrorOerCodec implements InterledgerProt
         context.read(InterledgerAddress.class, inputStream);
 
     // 6. Read the forwardedBy,which is a SEQUENCE OF InterledgerAddress
-    final List<InterledgerAddress> addressList = context
-        .read(OerSequenceOfAddress.class, inputStream).getInterledgerAddresses();
+    final List<InterledgerAddress> addressList =
+        context.read(OerSequenceOfAddress.class, inputStream).getInterledgerAddresses();
 
     // 7. Read the triggeredAt, which is a Timestamp
-    final Instant triggeredAt = context.read(OerGeneralizedTime.class, inputStream).getValue()
-        .toInstant();
+    final Instant triggeredAt = context.read(OerGeneralizedTime.class, inputStream).getValue();
 
     // 8. Read the data, which is an OctetString.
     final byte[] data = context.read(OerOctetString.class, inputStream)
