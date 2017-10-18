@@ -1,0 +1,8 @@
+TEST_DIR="src/main/"
+
+if [ -d ../${TEST_DIR} ] ; then cd ..; fi
+
+if [ ! -d ${TEST_DIR} ] ; then
+     echo "Wrong directory. ${TEST_DIR} not found"
+     exit 1
+fi
