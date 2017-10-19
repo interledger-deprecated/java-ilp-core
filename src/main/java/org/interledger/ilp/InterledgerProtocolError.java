@@ -62,6 +62,8 @@ public interface InterledgerProtocolError extends InterledgerPacket {
 
   /**
    * Optional error data, provided for debugging purposes.
+   *
+   * @return The optional error data.
    */
   Optional<byte[]> getData();
 
@@ -84,6 +86,8 @@ public interface InterledgerProtocolError extends InterledgerPacket {
    * @param interledgerProtocolError An existing error that will eventually be forwarded.
    * @param forwardedByAddress       A {@link InterledgerAddress} to be added to the list of
    *                                 forwarders.
+   *
+   * @return a new instance of {@link InterledgerProtocolError} with forwardedByAddress data
    */
   static InterledgerProtocolError withForwardedAddress(
       final InterledgerProtocolError interledgerProtocolError,
@@ -133,6 +137,9 @@ public interface InterledgerProtocolError extends InterledgerPacket {
     /**
      * Builder method to actually construct an instance of {@link InterledgerProtocolError} of the
      * data in this builder.
+     *
+     * @return a new instance of {@link InterledgerProtocolError} built using the data in this
+     *         builder.
      */
     public InterledgerProtocolError build() {
       return new Impl(this);
@@ -315,6 +322,8 @@ public interface InterledgerProtocolError extends InterledgerPacket {
     /**
      * Accessor for this error's code, which is the definitive identifier of an Interledger Protocol
      * error. For example, "F00".
+     *
+     * @return The code of the error.
      */
     String getCode();
 
@@ -325,6 +334,8 @@ public interface InterledgerProtocolError extends InterledgerPacket {
      * defined above. This name is primarily provided as a convenience to facilitate debugging by
      * humans. If the name does not match the code, the code is the definitive identifier of the
      * error.</p>
+     *
+     * @return The name of the error code.
      */
     String getName();
 
@@ -335,8 +346,12 @@ public interface InterledgerProtocolError extends InterledgerPacket {
      */
     ErrorFamily getErrorFamily();
 
+
     /**
      * Helper method to construct an instance of {@link ErrorCode}.
+     * @param code The definitive identifier of the error.
+     * @param name The name of the error code.
+     * @return An {@link ErrorCode}
      */
     static ErrorCode of(final String code, final String name) {
       return new Builder().setCode(code).setName(name).build();

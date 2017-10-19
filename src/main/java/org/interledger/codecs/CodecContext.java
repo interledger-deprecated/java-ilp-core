@@ -83,7 +83,8 @@ public class CodecContext {
    * Helper method that accepts an {@link InputStream}, detects the type of the packet to be read
    * and decodes the packet to {@link InterledgerPacket}. Because {@link InterledgerPacket} is
    * simply a marker interface, callers might prefer to utilize the functionality supplied by {@link
-   * #readAndHandle(InputStream, Handler)} or {@link #readAndHandle(InputStream, VoidHandler)}.
+   * #readAndHandle(InputStream, InterledgerPacket.Handler)} or
+   * {@link #readAndHandle(InputStream, InterledgerPacket.VoidHandler)}.
    *
    * @param inputStream An instance of {@link InputStream} that contains bytes in a certain
    *                    encoding.
@@ -177,6 +178,7 @@ public class CodecContext {
    * Read an object from {@code inputStream} according to the rules defined in the {@code context},
    * handle any concrete logic inside of {@code packetHandler}, and return a result.
    *
+   * @param <R>           This describes the type parameter of the object to be read.
    * @param inputStream   An instance of {@link InputStream} to read data from.
    * @param packetHandler A {@link InterledgerPacket.Handler} that allows callers to supply business
    *                      logic to be applied against the packet, depending on what the
@@ -205,6 +207,8 @@ public class CodecContext {
    * @param <T>          The type of object to encode.
    *
    * @return An instance of {@link CodecContext} for further operations.
+   *
+   * @throws IOException If anything goes wrong while writing to the {@link OutputStream}
    */
   public <T> CodecContext write(final Class<T> type, final T instance,
       final OutputStream outputStream) throws IOException {
@@ -223,6 +227,8 @@ public class CodecContext {
    * @param outputStream An instance of {@link OutputStream} that will be written to.
    *
    * @return An instance of {@link CodecContext} for further operations.
+   *
+   * @throws IOException If anything goes wrong while writing to the {@link OutputStream}
    */
   public CodecContext write(final Object instance, final OutputStream outputStream)
       throws IOException {
