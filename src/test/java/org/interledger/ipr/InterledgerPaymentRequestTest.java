@@ -55,8 +55,10 @@ public class InterledgerPaymentRequestTest {
         new InterledgerPayment.Builder().destinationAccount(InterledgerAddress.of("test2.bar"))
             .destinationAmount(BigInteger.ZERO).data("other data".getBytes()).build();
 
-    Condition condition2 = new PreimageSha256Condition(32, new byte[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2,
-        3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2});
+    Condition condition2 = new PreimageSha256Condition(32,
+        new byte[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 0,
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 0,
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2});
 
     InterledgerPaymentRequest ipr2 =
         InterledgerPaymentRequest.builder().payment(payment2).condition(condition2).build();

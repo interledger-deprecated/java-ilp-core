@@ -15,10 +15,10 @@ import java.util.Objects;
 /**
  * An implementation of {@link Codec} that reads and writes instances of {@link Condition}.
  *
- * In universal mode ILP, conditions are assumed to always be PreimageSha256 Crypto Conditions
+ * <p>In universal mode ILP, conditions are assumed to always be PreimageSha256 Crypto Conditions
  * encoded simply as a 32 byte hash.
  *
- * The preimage of the hash is always 32 bytes.
+ * <p>The preimage of the hash is always 32 bytes.
  *
  */
 public class ConditionOerCodec implements ConditionCodec {
@@ -42,7 +42,7 @@ public class ConditionOerCodec implements ConditionCodec {
     Objects.requireNonNull(instance);
     Objects.requireNonNull(outputStream);
 
-    if(instance.getCost() != 32) {
+    if (instance.getCost() != 32) {
       throw new IllegalArgumentException("Instance.getCost() must be equal to 32");
     }
 
