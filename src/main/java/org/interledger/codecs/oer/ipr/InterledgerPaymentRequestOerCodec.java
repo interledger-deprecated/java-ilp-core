@@ -5,7 +5,7 @@ import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.InterledgerPaymentRequestCodec;
 import org.interledger.codecs.oer.OerUint8Codec.OerUint8;
 import org.interledger.cryptoconditions.Condition;
-import org.interledger.cryptoconditions.InterledgerSha256Condition;
+import org.interledger.cryptoconditions.PreimageSha256Condition;
 import org.interledger.ilp.InterledgerPayment;
 import org.interledger.ipr.InterledgerPaymentRequest;
 
@@ -34,7 +34,7 @@ public class InterledgerPaymentRequestOerCodec implements InterledgerPaymentRequ
     }
 
     final InterledgerPayment packet = context.read(InterledgerPayment.class, inputStream);
-    final InterledgerSha256Condition condition = context.read(InterledgerSha256Condition.class, inputStream);
+    final PreimageSha256Condition condition = context.read(PreimageSha256Condition.class, inputStream);
 
     return InterledgerPaymentRequest.builder()
         .payment(packet)

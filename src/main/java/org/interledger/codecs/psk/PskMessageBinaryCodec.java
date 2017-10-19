@@ -20,7 +20,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 /**
- * An implementation of {@link Codec} that reads and writes instances of {@link Condition}.
+ * An implementation of {@link Codec} that reads and writes instances of {@link PskMessage}.
  */
 public class PskMessageBinaryCodec implements PskMessageCodec {
 

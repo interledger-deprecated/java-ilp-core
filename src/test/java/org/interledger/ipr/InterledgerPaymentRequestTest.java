@@ -7,7 +7,7 @@ import org.interledger.InterledgerAddress;
 import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.CodecContextFactory;
 import org.interledger.cryptoconditions.Condition;
-import org.interledger.cryptoconditions.InterledgerSha256Condition;
+import org.interledger.cryptoconditions.PreimageSha256Condition;
 import org.interledger.ilp.InterledgerPayment;
 
 import org.junit.Test;
@@ -46,7 +46,7 @@ public class InterledgerPaymentRequestTest {
         new InterledgerPayment.Builder().destinationAccount(InterledgerAddress.of("test1.foo"))
             .destinationAmount(BigInteger.valueOf(100L)).data("test data".getBytes()).build();
 
-    Condition condition1 = new InterledgerSha256Condition(new byte[32]);
+    Condition condition1 = new PreimageSha256Condition(32, new byte[32]);
 
     InterledgerPaymentRequest ipr1 =
         InterledgerPaymentRequest.builder().payment(payment1).condition(condition1).build();
@@ -55,7 +55,7 @@ public class InterledgerPaymentRequestTest {
         new InterledgerPayment.Builder().destinationAccount(InterledgerAddress.of("test2.bar"))
             .destinationAmount(BigInteger.ZERO).data("other data".getBytes()).build();
 
-    Condition condition2 = new InterledgerSha256Condition(new byte[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2,
+    Condition condition2 = new PreimageSha256Condition(32, new byte[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2,
         3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2});
 
     InterledgerPaymentRequest ipr2 =

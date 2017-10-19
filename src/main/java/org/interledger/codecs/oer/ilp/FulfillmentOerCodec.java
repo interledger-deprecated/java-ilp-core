@@ -5,11 +5,12 @@ import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.FulfillmentCodec;
 import org.interledger.codecs.oer.OerUint256Codec.OerUint256;
 import org.interledger.cryptoconditions.Fulfillment;
-import org.interledger.cryptoconditions.InterledgerSha256Fulfillment;
+import org.interledger.cryptoconditions.PreimageSha256Fulfillment;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Base64;
 import java.util.Objects;
 
 /**
@@ -24,7 +25,7 @@ public class FulfillmentOerCodec implements FulfillmentCodec {
     Objects.requireNonNull(inputStream);
     final byte[] value = context.read(OerUint256.class, inputStream)
         .getValue();
-    return new InterledgerSha256Fulfillment(value);
+    return new PreimageSha256Fulfillment(value);
   }
 
   @Override
@@ -34,13 +35,16 @@ public class FulfillmentOerCodec implements FulfillmentCodec {
     Objects.requireNonNull(instance);
     Objects.requireNonNull(outputStream);
 
-    if(instance instanceof InterledgerSha256Fulfillment){
-      InterledgerSha256Fulfillment fulfillment = (InterledgerSha256Fulfillment) instance;
-      context.write(OerUint256.class, new OerUint256(fulfillment.getPreimage()), outputStream);
+    if(instance instanceof PreimageSha256Fulfillment){
+      PreimageSha256Fulfillment fulfillment = (PreimageSha256Fulfillment) instance;
+      byte[] preimage = Base64.getUrlDecoder().decode(fulfillment.getPreimage());
+      context.write(OerUint256.class, new OerUint256(preimage), outputStream);
     }
     else
     {
-      throw new IllegalArgumentException("Only InterledgerSha256Fulfillment instances can be encoded");
+      //TODO This is problematic because it's possible that there may be another
+      // implementation with the same type. Design of Crypto-conditions is the problem
+      throw new IllegalArgumentException("Only PreimageSha256Fulfillment instances can be encoded");
     }
 
   }

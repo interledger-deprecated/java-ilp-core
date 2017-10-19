@@ -31,6 +31,8 @@ import org.interledger.codecs.packettypes.InterledgerPacketType;
 import org.interledger.codecs.psk.PskMessageBinaryCodec;
 import org.interledger.cryptoconditions.Condition;
 import org.interledger.cryptoconditions.Fulfillment;
+import org.interledger.cryptoconditions.PreimageSha256Condition;
+import org.interledger.cryptoconditions.PreimageSha256Fulfillment;
 import org.interledger.ilp.InterledgerPayment;
 import org.interledger.ilp.InterledgerProtocolError;
 import org.interledger.ilqp.QuoteByDestinationAmountRequest;
@@ -75,7 +77,9 @@ public class CodecContextFactory {
       .register(InterledgerProtocolError.class, new InterledgerProtocolProtocolErrorOerCodec())
       .register(InterledgerPaymentRequest.class, new InterledgerPaymentRequestOerCodec())
       .register(Condition.class, new ConditionOerCodec())
+      .register(PreimageSha256Condition.class, new ConditionOerCodec())
       .register(Fulfillment.class, new FulfillmentOerCodec())
+      .register(PreimageSha256Fulfillment.class, new FulfillmentOerCodec())
 
       // ILQP
       .register(QuoteByDestinationAmountRequest.class,

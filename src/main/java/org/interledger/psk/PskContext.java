@@ -5,7 +5,7 @@ import org.interledger.InterledgerRuntimeException;
 import org.interledger.codecs.CodecContextFactory;
 import org.interledger.codecs.psk.PskMessageBinaryCodec;
 import org.interledger.cryptoconditions.Fulfillment;
-import org.interledger.cryptoconditions.InterledgerSha256Fulfillment;
+import org.interledger.cryptoconditions.PreimageSha256Fulfillment;
 import org.interledger.ilp.InterledgerPayment;
 import org.interledger.psk.PskCryptoUtils.AesGcmEncryptResult;
 import org.interledger.psk.PskMessage.Header.WellKnown;
@@ -449,7 +449,7 @@ public interface PskContext {
       Objects.requireNonNull(payment);
       byte[] packet = CodecContextFactory.interledger()
           .write(InterledgerPayment.class, payment);
-      return new InterledgerSha256Fulfillment(hmacSha256(fulfillmentHmacKey, packet));
+      return new PreimageSha256Fulfillment(hmacSha256(fulfillmentHmacKey, packet));
     }
 
     @Override

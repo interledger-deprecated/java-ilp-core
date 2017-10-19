@@ -7,7 +7,7 @@ import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.CodecContextFactory;
 
 import org.interledger.cryptoconditions.Condition;
-import org.interledger.cryptoconditions.InterledgerSha256Condition;
+import org.interledger.cryptoconditions.PreimageSha256Condition;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -32,7 +32,7 @@ public class ConditionOerCodecTests {
    */
   @Parameters
   public static Collection<Object[]> data() {
-    return Arrays.asList(new Object[][]{{new InterledgerSha256Condition(new byte[32])},
+    return Arrays.asList(new Object[][]{{new PreimageSha256Condition(32, new byte[32])},
         // TODO: Some more test values
     });
   }
