@@ -6,7 +6,6 @@ import org.immutables.value.Value.Immutable;
 
 import java.math.BigInteger;
 import java.time.Instant;
-import java.time.ZonedDateTime;
 
 @Immutable
 public interface PreparePacket extends TransferPacket {
@@ -29,7 +28,7 @@ public interface PreparePacket extends TransferPacket {
   /**
    * Expiry of the transfer.
    *
-   * @return An instance of {@link ZonedDateTime}.
+   * @return An instance of {@link Instant}.
    */
   Instant getExpiresAt();
 
