@@ -1,9 +1,9 @@
 package org.interledger.codecs.oer;
 
-import org.interledger.InterledgerAddress;
+import org.interledger.btp.SubProtocolData;
 import org.interledger.codecs.Codec;
 import org.interledger.codecs.CodecContext;
-import org.interledger.codecs.oer.OerSequenceOfAddressCodec.OerSequenceOfAddress;
+import org.interledger.codecs.oer.OerSequenceOfSubProtocolDataCodec.OerSequenceOfSubProtocolData;
 import org.interledger.codecs.oer.OerUint8Codec.OerUint8;
 
 import java.io.IOException;
@@ -21,39 +21,41 @@ import java.util.stream.IntStream;
  * occurrences (not to the number of octets), and is encoded as an integer type with a lower bound
  * of zero and no upper bound.</p>
  */
-public class OerSequenceOfAddressCodec implements Codec<OerSequenceOfAddress> {
+public class OerSequenceOfSubProtocolDataCodec implements Codec<OerSequenceOfSubProtocolData> {
 
   @Override
-  public OerSequenceOfAddress read(final CodecContext context, final InputStream inputStream)
+  public OerSequenceOfSubProtocolData read(final CodecContext context,
+      final InputStream inputStream)
       throws IOException {
     Objects.requireNonNull(context);
     Objects.requireNonNull(inputStream);
 
     // Read the quantity to get the number of addresses...
-    final int numAddresses = context.read(OerUint8.class, inputStream).getValue();
+    final int numSubProtocols = context.read(OerUint8.class, inputStream).getValue();
 
-    final List<InterledgerAddress> addressList = IntStream.range(0, numAddresses)
+    final List<SubProtocolData> subProtocolData = IntStream.range(0, numSubProtocols)
         .mapToObj(index -> {
           try {
-            return context.read(InterledgerAddress.class, inputStream);
+            return context.read(SubProtocolData.class, inputStream);
           } catch (IOException e) {
             throw new RuntimeException(e);
           }
         })
         .collect(Collectors.toList());
 
-    return new OerSequenceOfAddress(addressList);
+    return new OerSequenceOfSubProtocolData(subProtocolData);
   }
 
   @Override
-  public void write(CodecContext context, OerSequenceOfAddress instance, OutputStream outputStream)
+  public void write(CodecContext context, OerSequenceOfSubProtocolData instance,
+                    OutputStream outputStream)
       throws IOException {
 
     // Write the length...
-    context.write(new OerUint8(instance.getInterledgerAddresses().size()), outputStream);
+    context.write(new OerUint8(instance.getSubProtocols().size()), outputStream);
 
     // Write the addresses...
-    instance.getInterledgerAddresses().forEach(address -> {
+    instance.getSubProtocols().forEach(address -> {
       try {
         context.write(address, outputStream);
       } catch (IOException e) {
@@ -65,16 +67,16 @@ public class OerSequenceOfAddressCodec implements Codec<OerSequenceOfAddress> {
   /**
    * An typing mechanism for registering codecs.
    */
-  public static class OerSequenceOfAddress {
+  public static class OerSequenceOfSubProtocolData {
 
-    private List<InterledgerAddress> interledgerAddresses;
+    private List<SubProtocolData> subProtocolData;
 
-    public OerSequenceOfAddress(final List<InterledgerAddress> interledgerAddresses) {
-      this.interledgerAddresses = interledgerAddresses;
+    public OerSequenceOfSubProtocolData(final List<SubProtocolData> subProtocolData) {
+      this.subProtocolData = subProtocolData;
     }
 
-    public List<InterledgerAddress> getInterledgerAddresses() {
-      return interledgerAddresses;
+    public List<SubProtocolData> getSubProtocols() {
+      return subProtocolData;
     }
 
     @Override
@@ -86,20 +88,20 @@ public class OerSequenceOfAddressCodec implements Codec<OerSequenceOfAddress> {
         return false;
       }
 
-      OerSequenceOfAddress that = (OerSequenceOfAddress) object;
+      OerSequenceOfSubProtocolData that = (OerSequenceOfSubProtocolData) object;
 
-      return interledgerAddresses.equals(that.interledgerAddresses);
+      return subProtocolData.equals(that.subProtocolData);
     }
 
     @Override
     public int hashCode() {
-      return interledgerAddresses.hashCode();
+      return subProtocolData.hashCode();
     }
 
     @Override
     public String toString() {
       return "OerSequenceOf{"
-          + "interledgerAddresses=" + interledgerAddresses
+          + "subProtocolData=" + subProtocolData
           + '}';
     }
   }
