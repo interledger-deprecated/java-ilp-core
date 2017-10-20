@@ -51,7 +51,7 @@ public class CodecContext {
    *
    * @return A {@link CodecContext} for the supplied {@code type}.
    */
-  public <T> CodecContext register(final Class<T> type, final Codec<T> converter) {
+  public <T> CodecContext register(final Class<? extends T> type, final Codec<T> converter) {
     Objects.requireNonNull(type);
     Objects.requireNonNull(converter);
 

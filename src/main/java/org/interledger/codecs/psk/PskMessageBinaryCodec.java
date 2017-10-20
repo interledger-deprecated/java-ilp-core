@@ -1,6 +1,5 @@
 package org.interledger.codecs.psk;
 
-import org.interledger.Condition;
 import org.interledger.codecs.Codec;
 import org.interledger.codecs.CodecContext;
 import org.interledger.codecs.CodecException;
@@ -21,7 +20,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 /**
- * An implementation of {@link Codec} that reads and writes instances of {@link Condition}.
+ * An implementation of {@link Codec} that reads and writes instances of {@link PskMessage}.
  */
 public class PskMessageBinaryCodec implements PskMessageCodec {
 

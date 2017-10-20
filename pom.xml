@@ -10,6 +10,16 @@
   <inceptionYear>2016</inceptionYear>
   <packaging>jar</packaging>
 
+  <!-- Remove later when we are using a stable version of crypto-conditions -->
+  <repositories>
+    <repository>
+      <id>snapshots-repo</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+      <releases><enabled>false</enabled></releases>
+      <snapshots><enabled>true</enabled></snapshots>
+    </repository>
+  </repositories>
+
   <profiles>
     <profile>
       <id>sign</id>
@@ -86,6 +96,12 @@
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>org.interledger</groupId>
+      <artifactId>java-crypto-conditions</artifactId>
+      <version>0.3.1-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>

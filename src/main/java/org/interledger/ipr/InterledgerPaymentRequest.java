@@ -1,6 +1,6 @@
 package org.interledger.ipr;
 
-import org.interledger.Condition;
+import org.interledger.cryptoconditions.Condition;
 import org.interledger.ilp.InterledgerPayment;
 
 import java.util.Objects;
