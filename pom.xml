@@ -10,6 +10,16 @@
   <inceptionYear>2016</inceptionYear>
   <packaging>jar</packaging>
 
+  <!-- Remove later when we are using a stable version of crypto-conditions -->
+  <repositories>
+    <repository>
+      <id>snapshots-repo</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+      <releases><enabled>false</enabled></releases>
+      <snapshots><enabled>true</enabled></snapshots>
+    </repository>
+  </repositories>
+
   <profiles>
     <profile>
       <id>sign</id>
