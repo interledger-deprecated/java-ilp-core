@@ -35,13 +35,12 @@ public class FulfillmentOerCodec implements FulfillmentCodec {
     Objects.requireNonNull(instance);
     Objects.requireNonNull(outputStream);
 
+    //TODO Review after https://github.com/interledger/java-crypto-conditions/issues/75 is closed
     if (instance instanceof PreimageSha256Fulfillment) {
       PreimageSha256Fulfillment fulfillment = (PreimageSha256Fulfillment) instance;
       byte[] preimage = Base64.getUrlDecoder().decode(fulfillment.getPreimage());
       context.write(OerUint256.class, new OerUint256(preimage), outputStream);
     } else {
-      //TODO This is problematic because it's possible that there may be another
-      // implementation with the same type. Design of Crypto-conditions is the problem
       throw new IllegalArgumentException("Only PreimageSha256Fulfillment instances can be encoded");
     }
 
