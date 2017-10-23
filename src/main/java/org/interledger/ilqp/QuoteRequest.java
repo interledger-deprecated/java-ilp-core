@@ -19,6 +19,7 @@ public interface QuoteRequest extends InterledgerPacket {
   
   /**
    * Returns the amount of time the receiver needs to fulfill the payment.
+   * @return An instance of {@link Duration}
    */
   Duration getDestinationHoldDuration();
 }

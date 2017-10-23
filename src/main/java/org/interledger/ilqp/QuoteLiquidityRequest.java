@@ -32,6 +32,7 @@ public interface QuoteLiquidityRequest extends QuoteRequest {
      * Set the destination account address into this builder.
      *
      * @param destinationAccount An instance of {@link InterledgerAddress}.
+     * @return This {@link Builder} instance.
      */
     public Builder destinationAccount(final InterledgerAddress destinationAccount) {
       this.destinationAccount = Objects.requireNonNull(destinationAccount);
@@ -42,6 +43,7 @@ public interface QuoteLiquidityRequest extends QuoteRequest {
      * Set the destination hold duration into this builder.
      *
      * @param destinationHoldDuration An instance of {@link Duration}.
+     * @return This {@link Builder} instance.
      */
     public Builder destinationHoldDuration(final Duration destinationHoldDuration) {
       this.destinationHoldDuration = Objects.requireNonNull(destinationHoldDuration);

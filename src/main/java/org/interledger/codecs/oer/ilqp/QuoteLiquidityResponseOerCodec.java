@@ -18,6 +18,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigInteger;
 import java.time.Duration;
+import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Collection;
@@ -60,7 +61,7 @@ public class QuoteLiquidityResponseOerCodec implements QuoteLiquidityResponseCod
     long sourceHoldDuration = context.read(OerUint32.class, inputStream).getValue();
 
     /* read the expires-at timestamp */
-    ZonedDateTime expiresAt = context.read(OerGeneralizedTime.class, inputStream).getValue();
+    Instant expiresAt = context.read(OerGeneralizedTime.class, inputStream).getValue();
 
     return QuoteLiquidityResponse.Builder.builder()
         .liquidityCurve(curveBuilder.build())

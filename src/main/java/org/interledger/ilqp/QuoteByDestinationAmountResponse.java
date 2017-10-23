@@ -38,6 +38,7 @@ public interface QuoteByDestinationAmountResponse extends QuoteResponse {
 
     /**
      * Constructs a new builder.
+     * @return A new {@link Builder} instance.
      */
     public static Builder builder() {
       return new Builder();
@@ -47,6 +48,7 @@ public interface QuoteByDestinationAmountResponse extends QuoteResponse {
      * Set the source amount into this builder.
      *
      * @param sourceAmount The source amount value.
+     * @return This {@link Builder} instance.
      */
     public Builder sourceAmount(final BigInteger sourceAmount) {
       this.sourceAmount = Objects.requireNonNull(sourceAmount);
@@ -57,6 +59,7 @@ public interface QuoteByDestinationAmountResponse extends QuoteResponse {
      * Set the source hold duration into this builder.
      *
      * @param sourceHoldDuration An instance of {@link Duration}.
+     * @return This {@link Builder} instance.
      */
     public Builder sourceHoldDuration(final Duration sourceHoldDuration) {
       this.sourceHoldDuration = Objects.requireNonNull(sourceHoldDuration);
