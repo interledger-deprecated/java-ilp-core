@@ -1,0 +1,14 @@
+TEST_DIR="src/main/"
+
+which mvn 1>/dev/null 2>&1 
+if [ $? != 0 ] ; then
+   echo "'mvn' not found in path. check local maven installation"
+   exit 1
+fi
+
+if [ -d ../${TEST_DIR} ] ; then cd ..; fi
+
+if [ ! -d ${TEST_DIR} ] ; then
+     echo "Wrong directory. ${TEST_DIR} not found"
+     exit 1
+fi
