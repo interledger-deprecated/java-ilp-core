@@ -9,16 +9,24 @@ machine:
     - sudo mv -f /tmp/UnlimitedJCEPolicyJDK8/US_export_policy.jar $JAVA_HOME/jre/lib/security/US_export_policy.jar
     - sudo mv -f /tmp/UnlimitedJCEPolicyJDK8/local_policy.jar $JAVA_HOME/jre/lib/security/local_policy.jar
 
+dependencies:
+  override:
+    - mvn -DskipTests clean install dependency:resolve-plugins dependency:go-offline
+
 test:
+  override:
+    - mvn surefire:test
+
   post:
-    # run the checkstyle checks
-    - if [ -e ./gradlew ]; then ./gradlew check;else gradle check ;fi
-    # run the code coverage report 
-    - if [ -e ./gradlew ]; then ./gradlew jacocoTestReport;else gradle jacocoTestReport;fi
+    # run the checkstyle report
+    - mvn checkstyle:checkstyle
+
     # gather the junit reports, see https://circleci.com/docs/test-metadata/#gradle-junit-results
     - mkdir -p $CIRCLE_TEST_REPORTS/junit/
-    - find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
+    - find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
+
     - mkdir -p $CIRCLE_TEST_REPORTS/checkstyle/
-    - find . -type f -regex ".*/build/reports/checkstyle/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/checkstyle/ \;
+    - find . -type f -regex ".*/target/checkstyle-reports/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/checkstyle/ \;
+
     # publish the coverage report to codecov.io
     - bash <(curl -s https://codecov.io/bash)

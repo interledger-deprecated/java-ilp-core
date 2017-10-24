@@ -11,11 +11,13 @@ public interface LiquidityPoint extends Comparable<LiquidityPoint> {
 
   /**
    * Returns the input amount associated with a point on the liquidity curve.
+   * @return A {@link BigInteger} amount.
    */
   BigInteger getInputAmount();
 
   /**
    * Returns the output amount associated with a point on the liquidity curve.
+   * @return A {@link BigInteger} amount.
    */
   BigInteger getOutputAmount();
 
@@ -37,6 +39,7 @@ public interface LiquidityPoint extends Comparable<LiquidityPoint> {
      * Sets the input amount into the builder.
      *
      * @param inputAmount An instance of {@link BigInteger}.
+     * @return This {@link Builder} instance.
      */
     public Builder inputAmount(BigInteger inputAmount) {
       this.inputAmount = Objects.requireNonNull(inputAmount);
@@ -47,6 +50,7 @@ public interface LiquidityPoint extends Comparable<LiquidityPoint> {
      * Sets the output amount into the builder.
      *
      * @param outputAmount An instance of {@link BigInteger}.
+     * @return This {@link Builder} instance.
      */
     public Builder outputAmount(BigInteger outputAmount) {
       this.outputAmount = Objects.requireNonNull(outputAmount);

@@ -3,8 +3,9 @@ package org.interledger.psk;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
-import org.interledger.Fulfillment;
 import org.interledger.InterledgerAddress;
+import org.interledger.cryptoconditions.Fulfillment;
+import org.interledger.cryptoconditions.PreimageSha256Fulfillment;
 import org.interledger.ilp.InterledgerPayment;
 import org.interledger.mocks.DeterministicSecureRandomProvider;
 
@@ -12,6 +13,7 @@ import com.google.common.io.BaseEncoding;
 import org.junit.Test;
 
 import java.math.BigInteger;
+import java.util.Base64;
 import java.util.UUID;
 
 public class PskContextTest {
@@ -154,7 +156,11 @@ public class PskContextTest {
 
     Fulfillment fulfillment = context.generateFulfillment(payment);
 
-    assertArrayEquals("Incorrect fulfillment.", fulfillment.getPreimage(), TEST_PREIMAGE);
+    assertEquals("Incorrect fulfillment.",
+            ((PreimageSha256Fulfillment) fulfillment).getPreimage(),
+            //TODO Fix crypto-conditions to use Bas64Url without padding
+            //Base64.getUrlEncoder().withoutPadding().encodeToString(TEST_PREIMAGE));
+            Base64.getUrlEncoder().encodeToString(TEST_PREIMAGE));
 
   }
 

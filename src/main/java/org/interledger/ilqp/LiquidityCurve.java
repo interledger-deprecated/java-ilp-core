@@ -42,6 +42,7 @@ public interface LiquidityCurve {
      * Sets a liquidity curve into this builder, clearing any liquidity points already set.
      * 
      * @param curve An instance of {@link LiquidityCurve}.
+     * @return This {@link Builder} instance.
      */
     public Builder liquidityCurve(final LiquidityCurve curve) {
       Objects.requireNonNull(curve);
@@ -54,6 +55,7 @@ public interface LiquidityCurve {
      * Sets an individual liquidity point into the builder to be added to the curve.
      * 
      * @param liquidityPoint An instance of {@link LiquidityPoint}.
+     * @return This {@link Builder} instance.
      */
     public Builder liquidityPoint(final LiquidityPoint liquidityPoint) {
       Objects.requireNonNull(liquidityPoint);
