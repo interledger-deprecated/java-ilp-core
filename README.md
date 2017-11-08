@@ -1,3 +1,14 @@
+# WE'VE MOVED
+
+This project is now a part of [Hyperledger Quilt](https://github.com/hyperledger/quilt/ilp-core).
+
+Thanks to all of the core contributors that got this work to this point:
+
+- @adrianhopebailie
+- @andrew-g-za
+- @earizon
+- @sappenin
+
 # Interledger Core (Java) [![join the chat on gitter][gitter-image]][gitter-url] [![circle-ci][circle-image]][circle-url] [![codecov][codecov-image]][codecov-url]
 
 [gitter-url]: https://gitter.im/interledger/java
