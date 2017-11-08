@@ -1,6 +1,6 @@
 # WE'VE MOVED
 
-This project is now a part of [Hyperledger Quilt](https://github.com/hyperledger/quilt/ilp-core).
+This project is now a part of [Hyperledger Quilt](https://github.com/hyperledger/quilt/tree/master/ilp-core).
 
 Thanks to all of the core contributors that got this work to this point:
 
