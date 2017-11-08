@@ -6,7 +6,7 @@ import java.io.OutputStream;
 import java.util.Objects;
 
 /**
- * An abstract implementation of {@link Codec} that works with Interledger packets.
+ * An abstract implementation of {@link Codec} that works with typed packets.
  *
  * @param <T> The type of object that this codec
  */

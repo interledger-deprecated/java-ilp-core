@@ -1,6 +1,13 @@
 package org.interledger.codecs;
 
 import org.interledger.InterledgerAddress;
+import org.interledger.btp.ErrorPacket;
+import org.interledger.btp.FulfillPacket;
+import org.interledger.btp.MessagePacket;
+import org.interledger.btp.PreparePacket;
+import org.interledger.btp.RejectPacket;
+import org.interledger.btp.ResponsePacket;
+import org.interledger.codecs.btp.BtpCodecContext;
 import org.interledger.codecs.oer.OerGeneralizedTimeCodec;
 import org.interledger.codecs.oer.OerGeneralizedTimeCodec.OerGeneralizedTime;
 import org.interledger.codecs.oer.OerIA5StringCodec;
@@ -11,6 +18,10 @@ import org.interledger.codecs.oer.OerOctetStringCodec;
 import org.interledger.codecs.oer.OerOctetStringCodec.OerOctetString;
 import org.interledger.codecs.oer.OerSequenceOfAddressCodec;
 import org.interledger.codecs.oer.OerSequenceOfAddressCodec.OerSequenceOfAddress;
+import org.interledger.codecs.oer.OerSequenceOfSubProtocolDataCodec;
+import org.interledger.codecs.oer.OerSequenceOfSubProtocolDataCodec.OerSequenceOfSubProtocolData;
+import org.interledger.codecs.oer.OerUint128Codec;
+import org.interledger.codecs.oer.OerUint128Codec.OerUint128;
 import org.interledger.codecs.oer.OerUint256Codec;
 import org.interledger.codecs.oer.OerUint256Codec.OerUint256;
 import org.interledger.codecs.oer.OerUint32Codec;
@@ -19,6 +30,12 @@ import org.interledger.codecs.oer.OerUint64Codec;
 import org.interledger.codecs.oer.OerUint64Codec.OerUint64;
 import org.interledger.codecs.oer.OerUint8Codec;
 import org.interledger.codecs.oer.OerUint8Codec.OerUint8;
+import org.interledger.codecs.oer.btp.ErrorOerCodec;
+import org.interledger.codecs.oer.btp.FulfillOerCodec;
+import org.interledger.codecs.oer.btp.MessageOerCodec;
+import org.interledger.codecs.oer.btp.PrepareOerCodec;
+import org.interledger.codecs.oer.btp.RejectOerCodec;
+import org.interledger.codecs.oer.btp.ResponseOerCodec;
 import org.interledger.codecs.oer.ilp.ConditionOerCodec;
 import org.interledger.codecs.oer.ilp.FulfillmentOerCodec;
 import org.interledger.codecs.oer.ilp.InterledgerAddressOerCodec;
@@ -98,6 +115,41 @@ public class CodecContextFactory {
 
       // PSK
       .register(PskMessage.class, new PskMessageBinaryCodec());
+  }
+
+  /**
+   * Create an instance of {@link CodecContext} that encodes and decodes Interledger packets using
+   * ASN.1 OER encoding.
+   */
+  public static CodecContext bilateralTransferProtocol() {
+
+    // OER Base...
+    return new BtpCodecContext()
+        .register(OerUint8.class, new OerUint8Codec())
+        .register(OerUint32.class, new OerUint32Codec())
+        .register(OerUint64.class, new OerUint64Codec())
+        .register(OerUint128.class, new OerUint128Codec())
+        .register(OerUint256.class, new OerUint256Codec())
+        .register(OerLengthPrefix.class, new OerLengthPrefixCodec())
+        .register(OerIA5String.class, new OerIA5StringCodec())
+        .register(OerOctetString.class, new OerOctetStringCodec())
+        .register(OerGeneralizedTime.class, new OerGeneralizedTimeCodec())
+        .register(OerSequenceOfSubProtocolData.class, new OerSequenceOfSubProtocolDataCodec())
+        .register(Fulfillment.class, new FulfillmentOerCodec())
+
+        // BTP
+        .register(ErrorPacket.class,
+            new ErrorOerCodec())
+        .register(FulfillPacket.class,
+            new FulfillOerCodec())
+        .register(MessagePacket.class,
+            new MessageOerCodec())
+        .register(PreparePacket.class,
+            new PrepareOerCodec())
+        .register(RejectPacket.class,
+            new RejectOerCodec())
+        .register(ResponsePacket.class,
+            new ResponseOerCodec());
   }
 
 

@@ -97,6 +97,12 @@
 
   <dependencies>
     <dependency>
+      <groupId>org.immutables</groupId>
+      <artifactId>value</artifactId>
+      <version>2.5.6</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>org.interledger</groupId>
       <artifactId>java-crypto-conditions</artifactId>
       <version>0.3.1-SNAPSHOT</version>
